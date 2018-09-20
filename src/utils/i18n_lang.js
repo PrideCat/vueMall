@@ -129,7 +129,7 @@ const lang = {
 const messages = {
     zh: {},
     en: {}
-}
+};
 
 for (let k in lang) {
     messages.zh[k] = k
