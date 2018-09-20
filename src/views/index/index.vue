@@ -14,7 +14,7 @@
               <div>
                 <ul class="fbox">
                   <li>
-                    <a href="javascript:void(0);">{{$t("如何下單")}}</a>
+                    <router-link to="/faq" tag="a">{{$t("如何下單")}}</router-link>
                     <span class="s12">|</span>
                     <a href="javascript:void(0);">{{$t("如何付款")}}</a>
                     <span class="s12">|</span>
@@ -23,19 +23,19 @@
                     <a href="javascript:void(0);">{{$t("隱私政策")}}</a>
                   </li>
                   <li>
-                    <a href="javascript:void(0);">{{$t("登錄")}}</a>
+                    <a href="javascript:void(0);" @click="login">{{$t("登錄")}}</a>
                     <span class="s12">|</span>
-                    <a href="javascript:void(0);">{{$t("註冊")}}</a>
+                    <a href="javascript:void(0);" @click="login">{{$t("註冊")}}</a>
                   </li>
                   <li>
                     <a href="javascript:void(0);">{{$t("我的訂單")}}</a>
-                    <a href="javascript:void(0);">{{$t("購物車")}}</a>
+                    <router-link to="/shoppingCart" tag="a">{{$t("購物車")}}</router-link>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <div class="h_tab maxWidth s18 c1">
+          <div :class="`h_tab maxWidth s18 c1 ${$route.name==='home'?'':'activeHead'}`">
             <ul class="defuWidth fbox f_jc_sb f_si_c">
               <li :class="`posct ${menuI==index?'active':''}`" :style="item.type=='img'?'width:auto;':''" v-for="(item,index) in menu.item" :key="index">
                 <img v-if="item.type=='img'" :src="item.src">
@@ -86,7 +86,7 @@
                     <a href="javascript:void(0);">{{$t("如何註冊")}}</a>
                   </p>
                   <p>
-                    <a href="javascript:void(0);">{{$t("如何落單")}}</a>
+                    <router-link to="/faq" tag="a">{{$t("如何下單")}}</router-link>
                   </p>
                   <p>
                     <a href="javascript:void(0);">{{$t("如何付款")}}</a>
@@ -164,11 +164,11 @@ export default {
             src: require("./img/logo.png")
           },
           {
-            src: "/",
+            src: "/care",
             label: "關愛社會"
           },
           {
-            src: "/",
+            src: "/auth",
             label: "認證"
           },
           {
@@ -176,8 +176,7 @@ export default {
             label: "加入我們"
           }
         ]
-      },
-      cartsLen: 0
+      }
     };
   },
   computed: {
@@ -190,48 +189,72 @@ export default {
         this.$store.dispatch("setLanguage", lang);
       }
     },
-    menuI: {
-      get() {
-        return this.$store.state.app.menuI;
-      }
+    menuI() {
+      return this.$store.state.app.menuI;
     },
-    breadCrumbs: {
-      get() {
-        return this.$store.state.app.breadCrumbs;
-      }
+    breadCrumbs() {
+      return this.$store.state.app.breadCrumbs;
+    },
+    cartsLen() {
+      return this.$store.state.app.cartsLen;
     }
   },
   methods: {
     toTop() {
       (document.documentElement || document.body).scrollTop = 0;
+    },
+    login() {
+      window.sessionStorage.setItem("inMellToLogin", 1);
+      window.location.href = "../../vue/dist/index.html";
+      // window.location.href = "http://localhost:8081/#/user/index";
     }
   },
   created() {
     window.onscroll = _ => {
       this.scrollTop = (document.documentElement || document.body).scrollTop;
     };
-    
-    // this.ajax({
-    //   apiName: "carts",
-    //   data: {
-    //     name: "",
-    //     no: 1,
-    //     size: -1
-    //   }
-    // })
-    //   .then(res => {
-    //     console.log(res);
-    //     this.cartsLen = "";
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+    let userStorage = sessionStorage.getItem("userStorage");
+    if (userStorage) {
+      userStorage = JSON.parse(userStorage);
+      this.ajax({
+        apiName: "login",
+        data: {
+          uid: userStorage.uid,
+          password: userStorage.password
+        }
+      }).then(res => {
+        console.log(res);
+        this.$store.dispatch("setUserInfo", res.data);
+
+        this.ajax({
+          apiName: "carts",
+          data: {
+            name: "",
+            no: 1,
+            size: -1
+          }
+        }).then(res => {
+          console.log(res);
+          this.$store.dispatch("setCartsLen", res.data.record);
+        });
+      });
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.activeHead {
+  background: #fff !important;
+  color: #000;
+  border-bottom: 2px solid #4883ad;
+}
+.activeHead ul li:nth-child(4) {
+  background: #4883ad;
+  height: 118px !important;
+}
+
 .main {
   overflow-x: hidden;
 }

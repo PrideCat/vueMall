@@ -2,45 +2,47 @@
   <div>
     <div class="defuWidth s_head">
       <p class="fbox f_si_c">
-        <i class="checkBox s12">✔</i>
-        <span>全选</span>
+        <label @click="allCheck" style="cursor:pointer;">
+          <i :class="`checkBox s12 ${isAllChecked?'checked':''}`">✔</i>
+          <span>{{$t('全選')}}</span>
+        </label>
       </p>
       <div class="m_item c7">
         <div class="fbox i_title i_col">
           <p></p>
-          <p class="flex">商品</p>
-          <p class="posct">單價</p>
-          <p class="posct">數量</p>
-          <p class="posct">總額</p>
+          <p class="flex">{{$t('商品')}}</p>
+          <p class="posct">{{$t('單價')}}</p>
+          <p class="posct">{{$t('數量')}}</p>
+          <p class="posct">{{$t('總額')}}</p>
           <p></p>
         </div>
         <div class="i_list">
           <ul>
-            <li class="fbox i_col f_si_c">
+            <li class="fbox i_col f_si_c" v-for="(item,index) in items" :key="index" @click="check(item)">
               <p class="posct">
-                <i class="checkBox s12 checked">✔</i>
+                <i :class="`checkBox s12 ${item.checked?'checked':''}`">✔</i>
               </p>
               <p class="flex fbox f_si_c">
-                <img src="">
+                <img :src="item.pic">
                 <span>
-                  <span class="c6">PLANTSCRIPTION</span>
-                  <span class="c3">
+                  <span class="c6">{{item.name}}</span>
+                  <!-- <span class="c3">
                     <b class="s16">snowkids 美白套装</b>
                   </span>
-                  <span>0.17 FL. OZ. / 5 ML</span>
+                  <span>0.17 FL. OZ. / 5 ML</span> -->
                 </span>
               </p>
               <p class="posct">
                 <span>HK</span>&nbsp;
-                <span class="c6">$975</span>
+                <span class="c6">${{item.money}}</span>
               </p>
-              <p class="posct"><input class="c6" type="number"></p>
+              <p class="posct"><input class="c6" type="number" v-model="item.amount" @click.stop></p>
               <p class="posct">
                 <span>HK</span>&nbsp;
-                <span class="c6">$975</span>
+                <span class="c6">${{item.money*item.amount}}</span>
               </p>
               <p class="posct">
-                <i>×</i>
+                <i @click.stop="removeCart(item.id)">×</i>
               </p>
             </li>
           </ul>
@@ -51,24 +53,24 @@
       <div class="defuWidth">
         <div class="fbox f_si_c f_jc_sb">
           <p class="s12">
-            <a href="javascript:void(0);">刪除選擇商品</a>
-            <a href="javascript:void(0);">清空購物車</a>
+            <a href="javascript:void(0);" @click="isAllChecked=true;allCheck()">{{$t('刪除選擇商品')}}</a>
+            <a href="javascript:void(0);" @click="clearCart">{{$t('清空購物車')}}</a>
           </p>
           <p class="fbox f_si_c">
             <span>
-              <span class="s12">總額：</span>
+              <span class="s12">{{$t('總額')}}：</span>
               <span class="s24 c9">
-                <b>hk$975</b>
+                <b>hk${{total}}</b>
               </span>
             </span>
             <a class="s18 b6 c1 posct" href="javascript:void(0);">
-              <b>去結賬</b>
+              <b>{{$t('去結賬')}}</b>
             </a>
           </p>
         </div>
         <div>
           <p class="s20 c3">
-            <b>相關產品推介</b>
+            <b>{{$t('相關產品推介')}}</b>
           </p>
           <div>
             <ul class="defuWidth fbox ct s18">
@@ -100,16 +102,70 @@
 export default {
   name: "shoppingCart",
   data() {
-    return {};
+    return {
+      items: [],
+      isAllChecked: 0
+    };
   },
-  computed: {},
-  methods: {},
+  computed: {
+    total() {
+      let money = 0;
+      this.items.forEach(v => (money += v.checked ? v.money * v.amount : 0));
+      return money;
+    }
+  },
+  methods: {
+    allCheck() {
+      this.isAllChecked = !this.isAllChecked;
+      this.items.forEach(v => (v.checked = this.isAllChecked));
+    },
+    check(item) {
+      item.checked = !item.checked;
+      this.isAllChecked = !this.items.some(v => !v.checked);
+    },
+    removeCart(id) {
+      this.ajax({
+        apiName: "removeCart",
+        data: {
+          id
+        }
+      }).then(res => {
+        console.log(res);
+        this.init();
+      });
+    },
+    clearCart() {
+      this.items.forEach(v => this.removeCart(v.id));
+    },
+    init() {
+      this.ajax({
+        apiName: "carts",
+        data: {
+          name: "",
+          no: 1,
+          size: -1
+        }
+      }).then(res => {
+        res.data.items.forEach(v => (v.checked = ""));
+        this.items = res.data.items;
+        this.$store.dispatch("setCartsLen", res.data.record);
+      });
+    }
+  },
+  watch: {
+    items: {
+      handler(items) {
+        items.forEach(v => (v.amount = v.amount <= 0 ? 1 : v.amount));
+      },
+      deep: true
+    }
+  },
   created() {
     this.$store.dispatch("setMenuI", 2);
     this.$store.dispatch("setBreadCrumbs", [
-      { label: "全部產品", isI18n: true, src: "/product" },
-      { label: "某分类" }
+      { label: "全部產品", isI18n: true, src: "/product" }
     ]);
+    this.init();
   }
 };
 </script>
@@ -186,9 +242,11 @@ export default {
   margin-right: 20px;
 }
 .s_body div p:last-child a {
-  width: 130px;
+  min-width: 130px;
   height: 50px;
   margin-left: 20px;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 .s_body > div > div:last-child > p {
   margin: 40px 0 30px;
@@ -223,8 +281,9 @@ export default {
 .s_body ul li p:nth-child(4) a {
   line-height: 44px;
   display: inline-block;
-  width: 65%;
+  min-width: 45%;
   border-radius: 5px;
+  padding: 0 10%;
 }
 .s_body ul li p:last-child {
   padding: 10px 0 25px;

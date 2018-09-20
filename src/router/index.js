@@ -9,9 +9,37 @@ export default new Router({
         name: 'index',
         redirect: '/home',
         children: [{
+            path: '/auth',
+            name: 'auth',
+            component: r => require(["views/auth"], r)
+        }, {
+            path: '/care',
+            name: 'care',
+            component: r => require(["views/news"], r)
+        }, {
+            path: '/careDetail',
+            name: 'careDetail',
+            component: r => require(["views/newsDetail"], r)
+        }, {
+            path: '/company',
+            name: 'company',
+            component: r => require(["views/news"], r)
+        }, {
+            path: '/companyDetail',
+            name: 'companyDetail',
+            component: r => require(["views/newsDetail"], r)
+        }, {
+            path: '/faq',
+            name: 'faq',
+            component: r => require(["views/faq"], r)
+        }, {
             path: '/home',
             name: 'home',
             component: r => require(["views/home"], r)
+        }, {
+            path: '/payment',
+            name: 'payment',
+            component: r => require(["views/payment"], r)
         }, {
             path: '/product',
             name: 'product',
@@ -36,10 +64,6 @@ export default new Router({
             path: '/newsDetail',
             name: 'newsDetail',
             component: r => require(["views/newsDetail"], r)
-        }, {
-            path: '/faq',
-            name: 'faq',
-            component: r => require(["views/faq"], r)
         }],
         component: r => require(["views/index"], r)
     }]

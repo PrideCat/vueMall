@@ -15,7 +15,7 @@
             <span class="c3">${{item.money}}</span>
           </p>
           <p>
-            <a class="c1 b5 s16" href="javascript:void(0);">
+            <a class="c1 b5 s16" href="javascript:void(0);" @click="addCart(item.id,1)">
               <b>{{$t("加入購物車")}}</b>
             </a>
           </p>
@@ -41,30 +41,45 @@ export default {
       return this.$route.query.type;
     }
   },
-  methods: {},
+  methods: {
+    addCart(cid, amount) {
+      this.ajax({
+        apiName: "addCart",
+        data: {
+          cid,
+          amount
+        }
+      }).then(res => {
+        this.$store.dispatch("setCartsLen", this.$store.state.app.cartsLen + 1);
+        console.log(res);
+      });
+    }
+  },
   created() {
     const type = this.type;
-
-    this.$store.dispatch("setMenuI", 2);
-    this.$store.dispatch("setBreadCrumbs", [
-      { label: "全部產品", isI18n: true, src: "/product" },
-      {
-        label: this.$store.state.app.productCategories.filter(v => v.type == type)[0]
-          .name,
+    const name = this.$route.query.searchTxt;
+    let data = {
+      name,
+      sort: 0,
+      no: 1,
+      size: -1,
+      dir: 0
+    };
+    let breadCrumbs = [{ label: "全部產品", isI18n: true, src: "/product" }];
+    if (type !== undefined) {
+      data.type = type;
+      breadCrumbs.push({
+        label: this.$store.state.app.productCategories.filter(
+          v => v.type == type
+        )[0].name,
         isI18n: true
-      }
-    ]);
-
+      });
+    }
+    this.$store.dispatch("setMenuI", 2);
+    this.$store.dispatch("setBreadCrumbs", breadCrumbs);
     this.ajax({
       apiName: "orders",
-      data: {
-        type,
-        name: "",
-        sort: 0,
-        no: 1,
-        size: -1,
-        dir: 0
-      }
+      data
     }).then(res => {
       console.log(res);
       this.items = res.data.items;

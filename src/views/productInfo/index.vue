@@ -117,20 +117,12 @@ export default {
   computed: {},
   methods: {},
   created() {
-    const type = this.$route.query.type;
+    let type = this.$route.query.type;
     const id = this.$route.query.id;
+    let breadCrumbs = [{ label: "全部產品", isI18n: true, src: "/product" }];
 
     this.$store.dispatch("setMenuI", 2);
-    this.$store.dispatch("setBreadCrumbs", [
-      { label: "全部產品", isI18n: true, src: "/product" },
-      {
-        label: this.$store.state.app.productCategories.filter(
-          v => v.type == type
-        )[0].name,
-        isI18n: true,
-        src: `/products?type=${type}`
-      }
-    ]);
+    this.$store.dispatch("setBreadCrumbs", breadCrumbs);
 
     this.ajax({
       apiName: "orderInfo",
@@ -141,6 +133,16 @@ export default {
       console.log(res);
       this.info = res.data;
       this.details = res.details;
+
+      if (this.info) type = this.info.type;
+      if (type !== undefined)
+        breadCrumbs.push({
+          label: this.$store.state.app.productCategories.filter(
+            v => v.type == type
+          )[0].name,
+          isI18n: true,
+          src: `/products?type=${type}`
+        });
     });
   }
 };

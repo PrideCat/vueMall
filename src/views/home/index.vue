@@ -23,16 +23,18 @@
         <p class="posct c6">
           <span class="posct">
             <i class="posct c1 b3"></i>
-            <a href="javascript:void(0);">{{$t('查看更多')}}</a>
+            <router-link to="/news" tag="a">{{$t('查看更多')}}</router-link>
           </span>
         </p>
       </div>
       <div class="defuWidth defuItemBox">
         <ul class="fbox">
           <li v-for="(item,index) in news" :key="index">
-            <p><img :src="item.pic"></p>
-            <p class="c6 s16">{{item.name}}</p>
-            <p class="c7 cr">{{item.createTime}}</p>
+            <router-link :to="`/newsDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`">
+              <p><img width="382" height="250" :src="item.pic"></p>
+              <p class="c6 s16">{{item.name}}</p>
+              <p class="c7 cr">{{item.createTime.toTimes().format("yyyy-MM-dd")}}</p>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -50,10 +52,12 @@
       </div>
       <div class="defuWidth defuItemBox">
         <ul class="fbox">
-          <li>
-            <p><img src="./img/pic1.jpg"></p>
-            <p class="c3 s16">ageLOC®潔面調理摩絲ageLOC®潔面調理摩絲ageLOC®潔面調理摩絲</p>
-            <p class="c7 cr">2018.08.06</p>
+          <li v-for="(item,index) in orders" :key="index">
+            <router-link :to="`/productInfo?id=${item.id}`">
+              <p><img width="382" height="250" :src="item.pic"></p>
+              <p class="c3 s16">{{item.name}}</p>
+              <p class="c7 cr">{{item.create_time.toTimes().format("yyyy-MM-dd")}}</p>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -65,7 +69,7 @@
         <p class="posct c6">
           <span class="posct">
             <i class="posct c1 b3"></i>
-            <router-link to="" tag="a">{{$t('查看更多')}}</router-link>
+            <router-link to="/company" tag="a">{{$t('查看更多')}}</router-link>
           </span>
         </p>
       </div>
@@ -79,10 +83,10 @@
             </p>
           </li> -->
           <li v-for="(item,index) in companyEvent" :key="index">
-            <p class="c7 s24">{{item.createTime}}</p>
+            <p class="c7 s24">{{item.createTime.toTimes().format("yyyy-MM-dd")}}</p>
             <p class="c6 s16">{{item.name}}</p>
             <p>
-              <a class="b5 c1 posct s16" href="javascript:(0);">{{$t("查看詳情")}}</a>
+              <router-link class="b5 c1 posct s16" :to="`/companyDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`" tag="a">{{$t("查看詳情")}}</router-link>
             </p>
           </li>
         </ul>
@@ -107,7 +111,8 @@ export default {
         timer1: null
       },
       companyEvent: [],
-      news: []
+      news: [],
+      orders: []
     };
   },
   computed: {
@@ -142,26 +147,41 @@ export default {
     this.ajax({
       apiName: "news",
       data: {
-        type: 1,
-        year: todate.getFullYear(),
-        no: 1,
-        size: 10
-      }
-    }).then(res => {
-      console.log("公司事件", res);
-      this.companyEvent = res.data.items;
-    });
-    this.ajax({
-      apiName: "news",
-      data: {
         type: 0,
         year: todate.getFullYear(),
         no: 1,
-        size: 10
+        size: 6
       }
     }).then(res => {
       console.log("新聞", res);
       this.news = res.data.items;
+    });
+
+    this.ajax({
+      apiName: "orders",
+      data: {
+        name: "",
+        sort: 2,
+        no: 1,
+        size: 6,
+        dir: 0
+      }
+    }).then(res => {
+      console.log("熱賣產品", res);
+      this.orders = res.data.items;
+    });
+
+    this.ajax({
+      apiName: "news",
+      data: {
+        type: 1,
+        year: todate.getFullYear(),
+        no: 1,
+        size: 6
+      }
+    }).then(res => {
+      console.log("公司事件", res);
+      this.companyEvent = res.data.items;
     });
   }
 };

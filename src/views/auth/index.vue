@@ -1,44 +1,57 @@
 <template>
   <div class="main">
-    <div class="m_head defuWidth">
+    <!-- <div class="m_head defuWidth">
       <div class="h_pic">
-        <img src="./img/bg.png">
+        <img src="./img/banner1.jpg">
       </div>
       <div class="h_search fbox">
         <p class="fbox flex">
           <input class="flex s16" type="text" :placeholder="$t('輸入您想要搜索的產品')" v-model="searchTxt">
         </p>
         <p class="b5 c1 fbox">
-          <router-link class="flex posct s18" :to="`/products?searchTxt=${searchTxt}`" tag="a">{{$t("搜索")}}</router-link>
+          <a class="flex posct s18" href="javascript:void(0);">{{$t("搜索")}}</a>
         </p>
       </div>
-    </div>
+    </div> -->
     <div class="m_body">
       <ul class="defuWidth fbox f_jc_sb">
         <li v-for="(item,index) in $store.state.app.productCategories" :key="index">
-          <p><img src="./img/bg.png"></p>
+          <p @click="show()"><img src="./img/banner1.jpg"></p>
           <p class="fbox f_jc_sb f_si_c">
             <span class="c3 s22">{{$t(item.name)}}</span>
-            <router-link class="s16 c6 b1" :to="`/products?type=${item.type}&searchTxt=${searchTxt}`" tag="a">{{$t("查看分類")}}></router-link>
+            <!-- <router-link class="s16 c6 b1" :to="`/products?type=${item.type}`" tag="a">{{$t("查看分類")}}></router-link> -->
           </p>
+          <p class="des">你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗</p>
+          <p></p>
         </li>
       </ul>
+    </div>
+    <div :class="this.switch?'position':'position hide'" @click="hide()">
+      <div @click.stop><img src="./img/banner1.jpg"></div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "product",
+  name: "auth",
   data() {
     return {
-      searchTxt: ""
+      searchTxt: "",
+      switch: 0 //查看大图的开关
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    hide() {
+      this.switch = 0;
+    },
+    show() {
+      this.switch = 1;
+    }
+  },
   created() {
-    this.$store.dispatch("setMenuI", 2);
+    this.$store.dispatch("setMenuI", 5);
     this.$store.dispatch("setBreadCrumbs", [
       { label: "全部產品", isI18n: true }
     ]);
@@ -93,21 +106,20 @@ export default {
 .main .m_head .h_search p:last-child a {
   opacity: 0.5;
 }
-.main .m_head .h_search p:last-child a:hover {
-  opacity: 1;
-}
 .main .m_body ul {
   flex-wrap: wrap;
 }
 .main .m_body ul li {
   margin-bottom: 60px;
+  width: 350px;
 }
 .main .m_body ul li:nth-child(2n) {
-  margin-left: 28px;
+  /*margin-left: 28px;*/
 }
 .main .m_body ul li img {
-  width: 586px;
-  height: 300px;
+  width: 350px;
+  height: 400px;
+  /*height: 300px;*/
 }
 .main .m_body ul li:hover img {
   box-shadow: 0 0 5px 1px #4ca9cd;
@@ -124,5 +136,36 @@ export default {
 .main .m_body ul li:hover p:last-child a {
   background: #4ca9cd;
   color: #fff;
+}
+.main .m_body ul li p span {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+.position {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #0000007a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 22;
+}
+.position > div {
+  width: 600px;
+}
+.position > div > img {
+  width: 100%;
+}
+.hide {
+  display: none !important;
+}
+.des {
+  word-wrap: break-word;
+  word-break: break-all;
+  margin-top: 10px;
 }
 </style>

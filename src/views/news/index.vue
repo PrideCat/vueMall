@@ -1,104 +1,109 @@
 <template>
-	<div>
-		<div class="w1200 flex">
-			<div class="content">
-				<div>
-					<h3>
-						<i></i>08月</h3>
-					<ul>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-					</ul>
-				</div>
-				<div>
-					<h3>
-						<i></i>08月</h3>
-					<ul>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-					</ul>
-				</div>
-				<div>
-					<h3>
-						<i></i>08月</h3>
-					<ul>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-						<li>
-							<span>2018.08.14</span>
-							<p>1234657896412315</p>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="date">
-				<div class="flex al-c sp-b">
-					<div>
-						<p>年份索引</p>
-						<p>Vintage Index</p>
-					</div>
-					<i class="down"></i>
-				</div>
-				<ul>
-					<li>
-						<i></i>2018年</li>
-					<li>
-						<i></i>2018年</li>
-					<li>
-						<i></i>2018年</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+  <div>
+    <div class="w1200 flex">
+      <div class="content">
+        <div v-for="(item,index) in items" :key="index">
+          <h3>
+            <i></i>{{$t(item.month+'月')}}</h3>
+          <ul>
+            <li v-for="(items,indexs) in item.children" :key="indexs">
+              <span>{{items.createTime.toTimes().format("yyyy-MM-dd")}}</span>
+              <router-link :to="`/${$route.name}Detail?itemInfo=${encodeURIComponent(JSON.stringify(items))}`" tag="p">{{items.name}}</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="date">
+        <div class="flex al-c sp-b">
+          <div>
+            <p>{{$t('年份索引')}}</p>
+            <p>Vintage Index</p>
+          </div>
+          <i class="down"></i>
+        </div>
+        <ul>
+          <li @click="init('2018')">
+            <i></i>2018
+          </li>
+          <li @click="init('2019')">
+            <i></i>2019
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   name: "news",
+  data() {
+    return {
+      items: []
+    };
+  },
+  methods: {
+    init(type, year) {
+      this.ajax({
+        apiName: "news",
+        data: {
+          type,
+          year,
+          no: 1,
+          size: -1
+        }
+      }).then(res => {
+        console.log(res);
+
+        let items = [];
+
+        res.data.items.forEach(v => {
+          let month = v.createTime.toTimes().format("MM");
+          if (
+            !items.some(v => {
+              return v.month == month;
+            })
+          )
+            items.push({ month, children: [] });
+          items[items.length - 1].children.push(v);
+        });
+        this.items = items;
+      });
+    },
+    fetchDate() {
+      const routeName = this.$route.name;
+      const year = this.$route.query.year;
+      let type;
+      let menuI;
+      let label;
+      switch (routeName) {
+        case "news":
+          type = 0;
+          menuI = 1;
+          label = "最新資訊";
+          break;
+        case "care":
+          type = 2;
+          menuI = 4;
+          label = "關愛社會";
+          break;
+        case "company":
+          type = 1;
+          menuI = 0;
+          label = "公司事件";
+          break;
+      }
+      this.init(type, year || "2018");
+      this.$store.dispatch("setMenuI", menuI);
+      this.$store.dispatch("setBreadCrumbs", [{ label, isI18n: true }]);
+    }
+  },
+  watch: {
+    $route: "fetchDate"
+  },
   created() {
-    this.$store.dispatch("setMenuI", 1);
-    this.$store.dispatch("setBreadCrumbs", [
-      { label: "最新資訊", isI18n: true }
-	]);
-	
+    const todate = new Date();
+    this.fetchDate();
   }
 };
 </script>
