@@ -64,6 +64,7 @@
               </span>
             </span>
             <a class="s18 b6 c1 posct" href="javascript:void(0);">
+              <!-- <router-link :to="`/payment?items=${encodeURIComponent(JSON.stringify(items))}`" tag="b">{{$t('去結賬')}}</router-link> -->
               <b>{{$t('去結賬')}}</b>
             </a>
           </p>

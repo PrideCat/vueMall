@@ -158,7 +158,7 @@ export default {
     });
 
     this.ajax({
-      apiName: "orders",
+      apiName: "commoditys",
       data: {
         name: "",
         sort: 2,

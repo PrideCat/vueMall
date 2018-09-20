@@ -78,7 +78,7 @@ export default {
     this.$store.dispatch("setMenuI", 2);
     this.$store.dispatch("setBreadCrumbs", breadCrumbs);
     this.ajax({
-      apiName: "orders",
+      apiName: "commoditys",
       data
     }).then(res => {
       console.log(res);

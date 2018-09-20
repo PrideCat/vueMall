@@ -5,13 +5,15 @@ export default {
     const fns = {
       api(name) {
         const urljson = {
+          address: 'address/list',
           login: 'user/login',
-          orders: 'commodity/retrive',
-          orderInfo: 'commodity/msg',
+          commoditys: 'commodity/retrive',
+          commodityInfo: 'commodity/msg',
           carts: 'cart/retrive',
           addCart: 'cart/add',
           removeCart: 'cart/remove',
-          news: 'news/retrive'
+          news: 'news/retrive',
+          addOrder: 'commodity/order/add'
         }
         return urljson[name]
       },
@@ -52,6 +54,21 @@ export default {
                   break;
                 case 'type':
                   msg = '當前用戶不支持購買該套餐'
+                  break;
+                case 'order':
+                  msg = '商品訂單不存在'
+                  break;
+                case 'owner':
+                  msg = '非訂單用戶'
+                  break;
+                case 'trace':
+                  msg = '訂單交易狀態異常'
+                  break;
+                case 'password':
+                  msg = '密碼錯誤'
+                  break;
+                case 'less':
+                  msg = '餘額不足'
                   break;
               }
               this.$message.error({

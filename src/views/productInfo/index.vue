@@ -125,7 +125,7 @@ export default {
     this.$store.dispatch("setBreadCrumbs", breadCrumbs);
 
     this.ajax({
-      apiName: "orderInfo",
+      apiName: "commodityInfo",
       data: {
         id
       }

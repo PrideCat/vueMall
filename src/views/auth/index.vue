@@ -113,9 +113,6 @@ export default {
   margin-bottom: 60px;
   width: 350px;
 }
-.main .m_body ul li:nth-child(2n) {
-  /*margin-left: 28px;*/
-}
 .main .m_body ul li img {
   width: 350px;
   height: 400px;

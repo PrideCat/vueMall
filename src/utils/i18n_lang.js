@@ -83,8 +83,27 @@ const lang = {
   '總額': ['lump sum'],
   '刪除選擇商品': ['Delete selected item'],
   '清空購物車': ['Empty shopping cart'],
-  '去結賬':['Go to checkout'],
-  '相關產品推介':['Related product introduction']
+  '去結賬': ['Go to checkout'],
+  '相關產品推介': ['Related product introduction'],
+  '填寫并核對訂單信息': ['Fill in and check the order information'],
+  '收貨人信息': ['recipient information'],
+  '默認地址': ['default address'],
+  '送貨清單': ['delivery order'],
+  '更多地址': ['More addresses'],
+  '收起': ['Collapse'],
+  '返現': ['Cash back'],
+  '運費': ['Freight'],
+  '折扣': ['discount'],
+  '應付總額': ['Total amount payable'],
+  '寄送至': ['Send to'],
+  '收貨人': ['Receiver'],
+  '提交訂單': ['Submit Order'],
+  '件商品，总商品金额': [' items, total merchandise amount'],
+  '商品訂單不存在': ['Product order does not exist'],
+  '非訂單用戶': ['Non-order user'],
+  '訂單交易狀態異常': ['Order transaction status is abnormal'],
+  '密碼錯誤': ['wrong password'],
+  '餘額不足': ['Insufficient balance']
 }
 
 const messages = {
