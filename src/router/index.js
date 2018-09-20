@@ -64,6 +64,18 @@ export default new Router({
             path: '/newsDetail',
             name: 'newsDetail',
             component: r => require(["views/newsDetail"], r)
+        }, {
+            path: '/collection',
+            name: 'collection',
+            component: r => require(["views/collection"], r)
+        }, {
+            path: '/joinUs',
+            name: 'joinUs',
+            component: r => require(["views/joinUs"], r)
+        }, {
+            path: '/messageBoard',
+            name: 'messageBoard',
+            component: r => require(["views/messageBoard"], r)
         }],
         component: r => require(["views/index"], r)
     }]
