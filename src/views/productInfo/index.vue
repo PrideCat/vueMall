@@ -165,6 +165,10 @@ export default {
       });
     },
     canBuy(callback) {
+      if (!this.userInfo) {
+        window.sessionStorage.setItem("inMellToLogin", 1);
+        window.location.href = "../member/index.html";
+      }
       const uType = this.userInfo.type;
       const uRank = this.userInfo.rank;
       const pType = this.info.type;
