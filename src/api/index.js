@@ -20,7 +20,8 @@ export default {
                     pay: 'commodity/order/pay',
                     questions: 'question/retrive',
                     addQuestion: 'question/add',
-                    removeQuestion: 'question/remove'
+                    removeQuestion: 'question/remove',
+                    signOut: 'auth/out'
                 }
                 return urljson[name]
             },
@@ -45,7 +46,7 @@ export default {
                         } else if (res.data.result === 'login') {
                             if (!this.$store.state.app.userInfo) {
                                 window.sessionStorage.setItem("inMellToLogin", 1);
-                                window.location.href = "../../member/dist/index.html";
+                                window.location.href = "../member/index.html";
                             }
                         } else {
                             switch (res.data.result) {

@@ -24,14 +24,14 @@
                   </li>
                   <li v-if="userInfo">
                     <span>{{$t('歡迎登錄，')+userInfo.nickname}}</span>
+                    <span class="s12">|</span>
+                    <a href="javascript:void(0);" @click="signOut">{{$t("退出登錄")}}</a>
                   </li>
                   <li v-else>
                     <a href="javascript:void(0);" @click="login">{{$t("登錄")}}</a>
-                    <!-- <span class="s12">|</span> -->
-                    <!-- <a href="javascript:void(0);" @click="login">{{$t("註冊")}}</a> -->
                   </li>
                   <li>
-                    <a href="javascript:void(0);">{{$t("我的訂單")}}</a>
+                    <a href="javascript:void(0);" @click="goOrder">{{$t("我的訂單")}}</a>
                     <router-link to="/shoppingCart" tag="a">{{$t("購物車")}}</router-link>
                     <router-link to="/collection" tag="a">{{$t("我的收藏")}}</router-link>
                   </li>
@@ -212,8 +212,11 @@ export default {
     },
     login() {
       window.sessionStorage.setItem("inMellToLogin", 1);
-      window.location.href = "../../vue/dist/index.html";
-      // window.location.href = "http://localhost:8081/#/user/index";
+      window.location.href = "../member/index.html";
+    },
+    goOrder() {
+      window.sessionStorage.setItem("goOrder", 1);
+      window.location.href = "../member/index.html";
     },
     init(userStorage) {
       userStorage = JSON.parse(userStorage);
@@ -238,6 +241,17 @@ export default {
           console.log(res);
           this.$store.dispatch("setCartsLen", res.data.record);
         });
+      });
+    },
+    signOut() {
+      this.ajax({
+        apiName: "signOut",
+        data: ""
+      }).then(res => {
+        console.log(res);
+        delete sessionStorage.userStorage;
+        this.$store.dispatch("setUserInfo", "");
+        this.$store.dispatch("setCartsLen", "");
       });
     }
   },

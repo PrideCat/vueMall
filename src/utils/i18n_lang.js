@@ -123,7 +123,8 @@ const lang = {
     '發送': ['Send'],
     '問': ['Ask'],
     '答': ['Answer'],
-    '歡迎登錄，': ['Login Please,']
+    '歡迎登錄，': ['Login Please,'],
+    '退出登錄': ['sign out']
 }
 
 const messages = {
