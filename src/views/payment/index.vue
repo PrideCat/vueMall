@@ -1,75 +1,74 @@
 <template>
-	<div>
-		<div class="w1200">
-			<h2>{{$t('填寫并核對訂單信息')}}</h2>
-			<div class="sur">
-				<h3>{{$t('收貨人信息')}}</h3>
-				<ul :class="ulswitch?'info':'info close'">
-					<li v-for="(item,index) in address" :key="index" @click="activeI=index">
-						<span :class="activeI==index?'choose':''">
-							{{item.contact}}
-						</span>
-						<p>
-							{{item.seat+item.address}}
-							&nbsp;&nbsp;&nbsp;
-							<span>{{item.mobile}}</span>
-							&nbsp;&nbsp;&nbsp;
-							<em v-if="item.setting">{{$t('默認地址')}}</em>
-						</p>
-					</li>
-				</ul>
-				<span class="more" @click="ultoggle()">
-					{{$t(switchTxt)}}
-					<i :class="ulswitch?'open':'close'"></i>
-				</span>
-				<h3>{{$t('送貨清單')}}</h3>
-				<div class="m_item c7">
-					<div class="fbox i_title i_col">
-						<p></p>
-						<p class="flex">{{$t('商品')}}</p>
-						<p class="posct">{{$t('單價')}}</p>
-						<p class="posct">{{$t('數量')}}</p>
-						<p class="posct">{{$t('總額')}}</p>
-						<p></p>
-					</div>
-					<div class="i_list">
-						<ul>
-							<li class="fbox i_col f_si_c" v-for="(item,index) in items" :key="index">
-								<p class="posct">
-								</p>
-								<p class="flex fbox f_si_c">
-									<img :src="item.pic">
-									<span>
-									<span class="c6">{{item.name}}</span>
-									<!-- <span class="c3">
+  <div>
+    <div class="w1200">
+      <h2>{{$t('填寫并核對訂單信息')}}</h2>
+      <div class="sur">
+        <h3>{{$t('收貨人信息')}}</h3>
+        <ul :class="ulswitch?'info':'info close'">
+          <li v-for="(item,index) in address" :key="index" @click="activeI=index">
+            <span :class="activeI==index?'choose':''">
+              {{item.contact}}
+            </span>
+            <p>
+              {{item.seat+item.address}} &nbsp;&nbsp;&nbsp;
+              <span>{{item.mobile}}</span>
+              &nbsp;&nbsp;&nbsp;
+              <em v-if="item.setting">{{$t('默認地址')}}</em>
+            </p>
+          </li>
+        </ul>
+        <span class="more" @click="ultoggle()">
+          {{$t(switchTxt)}}
+          <i :class="ulswitch?'open':'close'"></i>
+        </span>
+        <h3>{{$t('送貨清單')}}</h3>
+        <div class="m_item c7">
+          <div class="fbox i_title i_col">
+            <p></p>
+            <p class="flex">{{$t('商品')}}</p>
+            <p class="posct">{{$t('單價')}}</p>
+            <p class="posct">{{$t('數量')}}</p>
+            <p class="posct">{{$t('總額')}}</p>
+            <p></p>
+          </div>
+          <div class="i_list">
+            <ul>
+              <li class="fbox i_col f_si_c" v-for="(item,index) in items" :key="index">
+                <p class="posct">
+                </p>
+                <p class="flex fbox f_si_c">
+                  <img :src="item.pic">
+                  <span>
+                    <span class="c6">{{item.name}}</span>
+                    <!-- <span class="c3">
 										<b class="s16">snowkids 美白套装</b>
 									</span>
 									<span>0.17 FL. OZ. / 5 ML</span> -->
-									</span>
-								</p>
-								<p class="posct">
-									<span>HK</span>&nbsp;
-									<span class="c6">${{item.money}}</span>
-								</p>
-								<p class="posct">{{item.amount}}</p>
-								<p class="posct">
-									<span>HK</span>&nbsp;
-									<span class="c6">${{item.money*item.amount}}</span>
-								</p>
-								<p class="posct">
-								</p>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="total">
-				<ul>
-					<li>
-						<span>{{allNumber+$t('件商品，总商品金额')}}：</span>
-						<span>${{total}}</span>
-					</li>
-					<!-- <li>
+                  </span>
+                </p>
+                <p class="posct">
+                  <span>HK</span>&nbsp;
+                  <span class="c6">${{item.money}}</span>
+                </p>
+                <p class="posct">{{item.amount}}</p>
+                <p class="posct">
+                  <span>HK</span>&nbsp;
+                  <span class="c6">${{item.money*item.amount}}</span>
+                </p>
+                <p class="posct">
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="total">
+        <ul>
+          <li>
+            <span>{{allNumber+$t('件商品，总商品金额')}}：</span>
+            <span>${{total}}</span>
+          </li>
+          <!-- <li>
 						<span>{{$t('返現')}}：</span>
 						<span>$12.00</span>
 					</li>
@@ -81,57 +80,66 @@
 						<span>{{$t('折扣')}}：</span>
 						<span>$1324.00</span>
 					</li> -->
-				</ul>
-			</div>
-			<div class="totalInfo">
-				<p>{{$t('應付總額')}}：<span>${{total}}</span></p>
-				<p>
-					<span>{{$t('寄送至')}}：{{address[activeI].seat+address[activeI].address}}</span>
-					<span>{{$t('收貨人')}}：{{address[activeI].contact}}</span>
-					<span>{{address[activeI].mobile}}</span>
-				</p>
-			</div>
-			<div class="submit">
-				<span @click="showPis()">{{$t('提交訂單')}}</span>
-			</div>
-		</div>
-		<!--弹窗 -->
-		<div :class="pis?'position':'position hide'">
-			<div>
-				<h3>请选择您的支付方式<i @click="hidePis()"></i></h3>
-				<div>
-					<div class="payType">
-						<span :class="epSwitch?'':'check'" @click="ep1()">EP1</span>
-						<span :class="!epSwitch?'':'check'" @click="ep2()">EP2</span>
-					</div>
-					<div class="payTypeCheck">
-						<span>支付方式：</span>
-						<span>{{!epSwitch?'EP1':'EP2'}}</span>
-					</div>
-					<p>应付金额：<span class="sum">$92</span></p>
-					<div class="pwd">
-						<p>请输入您的支付密码：</p>
-						<input type="password" name="">
-						<span>确定</span>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 支付成功弹窗 -->
-		<div class="position hide">
-			<div>
-				<h3>支付状态<i></i></h3>
-				<div>
-					<div style="width: 100px;margin:0 auto 10px"><img style="width: 100%" src="./img/success.png"></div>
-					<p style="text-align: center;">支付成功</p>
-					<div class="button">
-						<span>查看订单</span>
-						<span>继续购物</span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+        </ul>
+      </div>
+      <div class="totalInfo">
+        <p>{{$t('應付總額')}}：
+          <span>${{total}}</span>
+        </p>
+        <p>
+          <span>{{$t('寄送至')}}：{{address[activeI].seat+address[activeI].address}}</span>
+          <span>{{$t('收貨人')}}：{{address[activeI].contact}}</span>
+          <span>{{address[activeI].mobile}}</span>
+        </p>
+      </div>
+      <div class="submit">
+        <span @click="addOrder">{{$t('提交訂單')}}</span>
+      </div>
+    </div>
+    <!--弹窗 -->
+    <div :class="pis?'position':'position hide'">
+      <div>
+        <h3>
+          {{$t('請選擇您的支付方式')}}
+          <i @click="hidePis()"></i>
+        </h3>
+        <div>
+          <div class="payType">
+            <span :class="epSwitch?'':'check'" @click="ep1()">EP1</span>
+            <span :class="!epSwitch?'':'check'" @click="ep2()">EP2</span>
+          </div>
+          <div class="payTypeCheck">
+            <span>{{$t('支付方式')}}：</span>
+            <span>{{!epSwitch?'EP1':'EP2'}}</span>
+          </div>
+          <p>{{$t('應付金額')}}：
+            <span class="sum">${{total}}</span>
+          </p>
+          <div class="pwd">
+            <p>{{$t('請輸入您的支付密碼')}}：</p>
+            <input type="password" v-model="password">
+            <span @click="pay">{{$t('確定')}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 支付成功弹窗 -->
+    <div :class="`position ${popIsShow?'':'hide'}`">
+      <div>
+        <h3>{{$t('支付狀態')}}
+          <i></i>
+        </h3>
+        <div>
+          <div style="width: 100px;margin:0 auto 10px"><img style="width: 100%" src="./img/success.png"></div>
+          <p style="text-align: center;">{{$t('支付成功')}}</p>
+          <div class="button">
+            <span>{{$t('查看訂單')}}</span>
+            <router-link to="/product" tag="span">{{$t('繼續購物')}}</router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -145,18 +153,10 @@ export default {
       switchTxt: "更多地址",
       address: [{}],
       activeI: 0,
-      items: [
-        {
-          amount: 1,
-          cid: 5,
-          createTime: "2018-09-20 15:01:36",
-          id: 11,
-          money: 23,
-          name: "商品5",
-          pic:
-            "http://148.66.63.170:7070/dsTest/files/1806/1530269332173-6306410000.png"
-        }
-      ]
+      items: [],
+      password: "",
+      orderNumber: "",
+      popIsShow: 0
     };
   },
   computed: {
@@ -169,6 +169,9 @@ export default {
       let money = 0;
       this.items.forEach(v => (money += v.checked ? v.money * v.amount : 0));
       return money;
+    },
+    cartsLen() {
+      return this.$store.state.app.cartsLen;
     }
   },
   methods: {
@@ -187,6 +190,69 @@ export default {
     },
     showPis() {
       this.pis = 1;
+    },
+    addOrder() {
+      const source = this.total;
+      let cids = [];
+      let amounts = [];
+      const theAddress = this.address[this.activeI];
+      const address = theAddress.seat + theAddress.address;
+      const mobile = theAddress.mobile;
+      const contact = theAddress.contact;
+
+      this.items.forEach(v => {
+        if (v.checked) {
+          cids.push(v.cid);
+          amounts.push(v.amount);
+        }
+      });
+
+      this.ajax({
+        apiName: "addOrder",
+        data: {
+          source,
+          cids,
+          amounts,
+          deliveryWay: 1,
+          address,
+          mobile,
+          contact,
+          remark: "备注"
+        }
+      }).then(res => {
+        console.log("addOrder", res);
+        this.orderNumber = res.data.orderNumber;
+        this.showPis();
+      });
+    },
+    pay() {
+      let orderNumber = this.orderNumber;
+      let payWay = this.epSwitch;
+      let password = this.password;
+      this.ajax({
+        apiName: "pay",
+        data: {
+          payWay,
+          orderNumber,
+          password
+        }
+      }).then(res => {
+        console.log("pay", res);
+        this.hidePis();
+        this.$store.dispatch("setCartsLen", this.cartsLen - this.items.length);
+        this.items.forEach(v => this.removeCart(v.id));
+        this.popIsShow = 1;
+      });
+    },
+    removeCart(id) {
+      this.ajax({
+        apiName: "removeCart",
+        data: {
+          id
+        }
+      }).then(res => {
+        console.log(res);
+      });
     }
   },
   created() {

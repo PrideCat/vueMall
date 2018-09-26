@@ -29,15 +29,15 @@
             <div class="fbox f_si_c flex">
               <p class="flex fbox f_jc_sb c6">
                 <span>
-                  <span class="c2">HK:</span>${{info.money}}
+                  <span class="c2">HK:</span>${{money}}
                 </span>
                 <span>{{$t('數量')}}:</span>
               </p>
-              <p><input class="ct b5 c1 s16" type="text" value="1"></p>
+              <p><input class="ct b5 c1 s16" type="text" v-model="info.amount"></p>
             </div>
             <p class="fbox">
-              <a class="posct c6" href="javascript:void(0);">{{$t('加入購物車')}}</a>
-              <a class="posct b5 c1" href="javascript:void(0);">{{$t('立即購買')}}</a>
+              <a class="posct c6" href="javascript:void(0);" @click="addCart(info.id,info.amount)">{{$t('加入購物車')}}</a>
+              <a class="posct b5 c1" href="javascript:void(0);" @click="bug()">{{$t('立即購買')}}</a>
             </p>
           </div>
           <div class="c_psTxt fbox f_jc_sb f_si_c">
@@ -46,7 +46,7 @@
               <b>{{$t('購買此商品可以獲得')+' '+info.integral+' '+$t('積分')}}</b>
             </p>
             <p class="fbox f_si_c">
-              <a href="javascript:void(0);">
+              <a href="javascript:void(0);" @click="addFavorite(info.id)">
                 <span class="fbox f_si_c">
                   <img src="./img/icon1.jpg">{{$t('收藏')}}
                 </span>
@@ -69,12 +69,12 @@
                 <span>{{$t('天然萃取')}}</span>
               </p>
             </div>
-            <div>
+            <!-- <div>
               <p class="fbox f_si_c">
                 <img src="./img/icon5.jpg">
                 <span>{{$t('微信分享')}}</span>
               </p>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -114,8 +114,95 @@ export default {
       details: []
     };
   },
-  computed: {},
-  methods: {},
+  computed: {
+    money() {
+      return this.info.money * this.info.amount;
+    },
+    lang() {
+      return this.$store.state.app.language;
+    },
+    userInfo() {
+      return this.$store.state.app.userInfo;
+    }
+  },
+  watch: {
+    info: {
+      handler(val) {
+        if (val.amount <= 0) this.info.amount = 1;
+      },
+      deep: true
+    }
+  },
+  methods: {
+    addCart(cid, amount) {
+      this.canBuy(_ => {
+        this.ajax({
+          apiName: "addCart",
+          data: {
+            cid,
+            amount
+          }
+        }).then(res => {
+          this.$store.dispatch(
+            "setCartsLen",
+            this.$store.state.app.cartsLen + 1
+          );
+          console.log(res);
+        });
+      });
+    },
+    addFavorite(cid) {
+      this.ajax({
+        apiName: "addFavorite",
+        data: {
+          cid
+        }
+      }).then(res => {
+        console.log(res);
+        this.$message.success(
+          this.lang == "zh" ? "收藏成功" : "Successful collection"
+        );
+      });
+    },
+    canBuy(callback) {
+      const uType = this.userInfo.type;
+      const uRank = this.userInfo.rank;
+      const pType = this.info.type;
+      let bool;
+      if (pType == 0 && uType == 0) {
+        bool = true;
+      } else if (pType == 1 && uType == 1) {
+        bool = true;
+      } else if (pType == 2 && uRank == 5) {
+        bool = true;
+      } else if (
+        pType == 3 &&
+        (uRank == 2 || uRank == 6 || (uRank == 1 && uType == 1))
+      ) {
+        bool = true;
+      } else {
+        bool = false;
+      }
+      if (bool) {
+        if (callback) callback();
+      } else
+        this.$message.error({
+          message:
+            this.lang == "zh"
+              ? "當前套餐無法進行購買"
+              : "Current package cannot be purchased"
+        });
+      return bool;
+    },
+    bug() {
+      this.canBuy(_ => {
+        this.$router.push({
+          path:
+            "/payment?items=" + encodeURIComponent(JSON.stringify([this.info]))
+        });
+      });
+    }
+  },
   created() {
     let type = this.$route.query.type;
     const id = this.$route.query.id;
@@ -131,6 +218,8 @@ export default {
       }
     }).then(res => {
       console.log(res);
+      res.data.checked = true;
+      res.data.amount = 1;
       this.info = res.data;
       this.details = res.details;
 

@@ -11,7 +11,7 @@ import i18n from 'lang'
 import api from 'api'
 import "utils/common"
 import {
-  Message
+    Message
 } from 'element-ui'
 
 Vue.use(VueAxios, axios)
@@ -20,17 +20,17 @@ Vue.use(api)
 Vue.prototype.$message = Message
 
 axios.defaults.baseURL = process.env.API_HOST
-// axios.defaults.withCredentials = true
+    // axios.defaults.withCredentials = true
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  i18n,
-  store,
-  components: {
-    App
-  },
-  template: '<App/>'
+    el: '#app',
+    router,
+    i18n,
+    store,
+    components: {
+        App
+    },
+    template: '<App/>'
 })

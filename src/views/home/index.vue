@@ -84,7 +84,7 @@
           </li> -->
           <li v-for="(item,index) in companyEvent" :key="index">
             <p class="c7 s24">{{item.createTime.toTimes().format("yyyy-MM-dd")}}</p>
-            <p class="c6 s16">{{item.name}}</p>
+            <router-link class="c6 s16 cursor-p" :to="`/companyDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`" tag="p">{{item.name}}</router-link>
             <p>
               <router-link class="b5 c1 posct s16" :to="`/companyDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`" tag="a">{{$t("查看詳情")}}</router-link>
             </p>

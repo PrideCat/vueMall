@@ -22,14 +22,18 @@
                     <span class="s12">|</span>
                     <a href="javascript:void(0);">{{$t("隱私政策")}}</a>
                   </li>
-                  <li>
+                  <li v-if="userInfo">
+                    <span>{{$t('歡迎登錄，')+userInfo.nickname}}</span>
+                  </li>
+                  <li v-else>
                     <a href="javascript:void(0);" @click="login">{{$t("登錄")}}</a>
-                    <span class="s12">|</span>
-                    <a href="javascript:void(0);" @click="login">{{$t("註冊")}}</a>
+                    <!-- <span class="s12">|</span> -->
+                    <!-- <a href="javascript:void(0);" @click="login">{{$t("註冊")}}</a> -->
                   </li>
                   <li>
                     <a href="javascript:void(0);">{{$t("我的訂單")}}</a>
                     <router-link to="/shoppingCart" tag="a">{{$t("購物車")}}</router-link>
+                    <router-link to="/collection" tag="a">{{$t("我的收藏")}}</router-link>
                   </li>
                 </ul>
               </div>
@@ -113,7 +117,7 @@
                     <a href="javascript:void(0);">{{$t("公司介紹")}}</a>
                   </p>
                   <p>
-                    <a href="javascript:void(0);">{{$t("好轉反應")}}</a>
+                    <router-link to="/messageBoard" tag="a">{{$t("留言板")}}</router-link>
                   </p>
                 </li>
                 <li>
@@ -172,7 +176,7 @@ export default {
             label: "認證"
           },
           {
-            src: "/",
+            src: "/joinUs",
             label: "加入我們"
           }
         ]
@@ -197,6 +201,9 @@ export default {
     },
     cartsLen() {
       return this.$store.state.app.cartsLen;
+    },
+    userInfo() {
+      return this.$store.state.app.userInfo;
     }
   },
   methods: {
@@ -207,14 +214,8 @@ export default {
       window.sessionStorage.setItem("inMellToLogin", 1);
       window.location.href = "../../vue/dist/index.html";
       // window.location.href = "http://localhost:8081/#/user/index";
-    }
-  },
-  created() {
-    window.onscroll = _ => {
-      this.scrollTop = (document.documentElement || document.body).scrollTop;
-    };
-    let userStorage = sessionStorage.getItem("userStorage");
-    if (userStorage) {
+    },
+    init(userStorage) {
       userStorage = JSON.parse(userStorage);
       this.ajax({
         apiName: "login",
@@ -225,7 +226,7 @@ export default {
       }).then(res => {
         console.log(res);
         this.$store.dispatch("setUserInfo", res.data);
-
+        console.log(this.userInfo);
         this.ajax({
           apiName: "carts",
           data: {
@@ -238,6 +239,15 @@ export default {
           this.$store.dispatch("setCartsLen", res.data.record);
         });
       });
+    }
+  },
+  created() {
+    window.onscroll = _ => {
+      this.scrollTop = (document.documentElement || document.body).scrollTop;
+    };
+    let userStorage = sessionStorage.getItem("userStorage");
+    if (userStorage) {
+      this.init(userStorage);
     }
   }
 };

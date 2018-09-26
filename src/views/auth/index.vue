@@ -53,7 +53,7 @@ export default {
   created() {
     this.$store.dispatch("setMenuI", 5);
     this.$store.dispatch("setBreadCrumbs", [
-      { label: "全部產品", isI18n: true }
+      { label: "認證", isI18n: true }
     ]);
   }
 };

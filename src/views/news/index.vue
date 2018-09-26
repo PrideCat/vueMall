@@ -22,10 +22,10 @@
           <i class="down"></i>
         </div>
         <ul>
-          <li @click="init('2018')">
+          <li @click="init(type,'2018')">
             <i></i>2018
           </li>
-          <li @click="init('2019')">
+          <li @click="init(type,'2019')">
             <i></i>2019
           </li>
         </ul>
@@ -39,7 +39,8 @@ export default {
   name: "news",
   data() {
     return {
-      items: []
+      items: [],
+      type: 0
     };
   },
   methods: {
@@ -73,7 +74,7 @@ export default {
     fetchDate() {
       const routeName = this.$route.name;
       const year = this.$route.query.year;
-      let type;
+      let type = this.type;
       let menuI;
       let label;
       switch (routeName) {

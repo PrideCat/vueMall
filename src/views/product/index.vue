@@ -4,24 +4,16 @@
       <div class="h_pic">
         <img src="./img/bg.png">
       </div>
-      <div class="h_search fbox">
-        <p class="fbox flex">
-          <input class="flex s16" type="text" :placeholder="$t('輸入您想要搜索的產品')" v-model="searchTxt">
-        </p>
-        <p class="b5 c1 fbox">
-          <router-link class="flex posct s18" :to="`/products?searchTxt=${searchTxt}`" tag="a">{{$t("搜索")}}</router-link>
-        </p>
-      </div>
     </div>
     <div class="m_body">
       <ul class="defuWidth fbox f_jc_sb">
-        <li v-for="(item,index) in $store.state.app.productCategories" :key="index">
+        <router-link class="cursor-p" :to="`/products?type=${item.type}`" tag="li" v-for="(item,index) in $store.state.app.productCategories" :key="index">
           <p><img src="./img/bg.png"></p>
           <p class="fbox f_jc_sb f_si_c">
             <span class="c3 s22">{{$t(item.name)}}</span>
-            <router-link class="s16 c6 b1" :to="`/products?type=${item.type}&searchTxt=${searchTxt}`" tag="a">{{$t("查看分類")}}></router-link>
+            <b class="s16 c6 b1" href="javascript:void(0);">{{$t("查看分類")}}></b>
           </p>
-        </li>
+        </router-link>
       </ul>
     </div>
   </div>
@@ -31,9 +23,7 @@
 export default {
   name: "product",
   data() {
-    return {
-      searchTxt: ""
-    };
+    return {};
   },
   computed: {},
   methods: {},
@@ -53,51 +43,9 @@ export default {
   line-height: 53px;
   margin-bottom: 39px;
 }
-.main .m_head .h_search {
-  margin: 19px 0 40px;
-}
-.main .m_head .h_search p:first-child {
-  position: relative;
-}
-.main .m_head .h_search p:first-child:before {
-  content: "";
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  top: 0;
-  bottom: 0;
-  left: 20px;
-  margin: auto;
-}
-.main .m_head .h_search p:first-child:after {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 2px;
-  background: #ccc;
-  top: 15px;
-  bottom: 0;
-  left: 31px;
-  margin: auto;
-  transform: rotate(45deg);
-}
-.main .m_head .h_search p:first-child input {
-  padding-left: 3em;
-}
-.main .m_head .h_search p:last-child {
-  width: 160px;
-  height: 65px;
-}
-.main .m_head .h_search p:last-child a {
-  opacity: 0.5;
-}
-.main .m_head .h_search p:last-child a:hover {
-  opacity: 1;
-}
 .main .m_body ul {
   flex-wrap: wrap;
+  margin-top: 40px;
 }
 .main .m_body ul li {
   margin-bottom: 60px;
@@ -115,13 +63,13 @@ export default {
 .main .m_body ul li p:last-child {
   margin-top: 20px;
 }
-.main .m_body ul li p:last-child a {
+.main .m_body ul li p:last-child b {
   padding: 0 24px;
   line-height: 38px;
   border-radius: 3px;
   border: 1px solid #4ca9cd;
 }
-.main .m_body ul li:hover p:last-child a {
+.main .m_body ul li:hover p:last-child b {
   background: #4ca9cd;
   color: #fff;
 }

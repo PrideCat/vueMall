@@ -4,12 +4,20 @@
       <div class="h_pic">
         <img src="./img/bg.png">
       </div>
+      <div class="h_search fbox">
+        <p class="fbox flex">
+          <input class="flex s16" type="text" :placeholder="$t('輸入您想要搜索的產品')" v-model="data.name">
+        </p>
+        <p class="b5 c1 fbox">
+          <a class="flex posct s18" href="javascript:void(0);" @click="init">{{$t("搜索")}}</a>
+        </p>
+      </div>
     </div>
     <div class="m_body">
       <ul class="defuWidth fbox ct s18">
         <li v-for="(item,index) in items" :key="index">
-          <p><img :src="item.pic"></p>
-          <p class="c6">{{item.name}}</p>
+          <router-link class="cursor-p" :to="`/productInfo?type=${type}&id=${item.id}`" tag="p"><img :src="item.pic"></router-link>
+          <router-link class="c6 cursor-p" :to="`/productInfo?type=${type}&id=${item.id}`" tag="p">{{item.name}}</router-link>
           <p>
             <span class="c2">HK</span>
             <span class="c3">${{item.money}}</span>
@@ -33,7 +41,15 @@ export default {
   name: "products",
   data() {
     return {
-      items: []
+      items: [],
+      searchTxt: "",
+      data: {
+        name: "",
+        sort: 0,
+        no: 1,
+        size: -1,
+        dir: 0
+      }
     };
   },
   computed: {
@@ -53,19 +69,22 @@ export default {
         this.$store.dispatch("setCartsLen", this.$store.state.app.cartsLen + 1);
         console.log(res);
       });
+    },
+    init() {
+      this.ajax({
+        apiName: "commoditys",
+        data: this.data
+      }).then(res => {
+        console.log(res);
+        this.items = res.data.items;
+      });
     }
   },
   created() {
     const type = this.type;
-    const name = this.$route.query.searchTxt;
-    let data = {
-      name,
-      sort: 0,
-      no: 1,
-      size: -1,
-      dir: 0
-    };
+    let data = this.data;
     let breadCrumbs = [{ label: "全部產品", isI18n: true, src: "/product" }];
+
     if (type !== undefined) {
       data.type = type;
       breadCrumbs.push({
@@ -75,15 +94,11 @@ export default {
         isI18n: true
       });
     }
+
     this.$store.dispatch("setMenuI", 2);
     this.$store.dispatch("setBreadCrumbs", breadCrumbs);
-    this.ajax({
-      apiName: "commoditys",
-      data
-    }).then(res => {
-      console.log(res);
-      this.items = res.data.items;
-    });
+
+    this.init();
   }
 };
 </script>
@@ -92,6 +107,49 @@ export default {
 <style scoped>
 .main .m_head .h_pic {
   margin-bottom: 30px;
+}
+.main .m_head .h_search {
+  margin: 19px 0 40px;
+}
+.main .m_head .h_search p:first-child {
+  position: relative;
+}
+.main .m_head .h_search p:first-child:before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  top: 0;
+  bottom: 0;
+  left: 20px;
+  margin: auto;
+}
+.main .m_head .h_search p:first-child:after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 2px;
+  background: #ccc;
+  top: 15px;
+  bottom: 0;
+  left: 31px;
+  margin: auto;
+  transform: rotate(45deg);
+}
+.main .m_head .h_search p:first-child input {
+  padding-left: 3em;
+}
+.main .m_head .h_search p:last-child {
+  width: 160px;
+  height: 65px;
+}
+.main .m_head .h_search p:last-child a {
+  opacity: 0.5;
+}
+.main .m_head .h_search p:last-child a:hover {
+  opacity: 1;
 }
 .main .m_body ul {
   flex-wrap: wrap;
