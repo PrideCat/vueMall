@@ -263,6 +263,15 @@ export default {
     if (userStorage) {
       this.init(userStorage);
     }
+  },
+  created() {
+    window.onscroll = _ => {
+      this.scrollTop = (document.documentElement || document.body).scrollTop;
+    };
+    let userStorage = sessionStorage.getItem("userStorage");
+    if (userStorage) {
+      this.init(userStorage);
+    }
   }
 };
 </script>
