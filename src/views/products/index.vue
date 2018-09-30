@@ -4,36 +4,36 @@
       <div class="h_pic">
         <img src="./img/bg.png">
       </div>
-      <div class="h_search fbox">
-        <p class="fbox flex">
-          <input class="flex s16" type="text" :placeholder="$t('輸入您想要搜索的產品')" v-model="data.name">
+        <div class="h_search fbox">
+          <p class="fbox flex">
+            <input class="flex s16" type="text" :placeholder="$t('輸入您想要搜索的產品')" v-model="data.name">
         </p>
-        <p class="b5 c1 fbox">
-          <a class="flex posct s18" href="javascript:void(0);" @click="init">{{$t("搜索")}}</a>
-        </p>
+            <p class="b5 c1 fbox">
+              <a class="flex posct s18" href="javascript:void(0);" @click="init">{{$t("搜索")}}</a>
+            </p>
+        </div>
+      </div>
+      <div class="m_body">
+        <ul class="defuWidth fbox ct s18">
+          <li v-for="(item,index) in items" :key="index">
+            <router-link class="cursor-p" :to="`/productInfo?type=${type}&id=${item.id}`" tag="p"><img :src="item.pic"></router-link>
+              <router-link class="c6 cursor-p" :to="`/productInfo?type=${type}&id=${item.id}`" tag="p">{{item.name}}</router-link>
+              <p>
+                <span class="c2">HK</span>
+                <span class="c3">${{item.money}}</span>
+              </p>
+              <p>
+                <a class="c1 b5 s16" href="javascript:void(0);" @click="addCart(item.id,1)">
+                  <b>{{$t("加入購物車")}}</b>
+                </a>
+              </p>
+              <p>
+                <router-link class="c6 s14" :to="`/productInfo?type=${type}&id=${item.id}`" tag="a">{{$t("了解詳情")}}>></router-link>
+              </p>
+          </li>
+        </ul>
       </div>
     </div>
-    <div class="m_body">
-      <ul class="defuWidth fbox ct s18">
-        <li v-for="(item,index) in items" :key="index">
-          <router-link class="cursor-p" :to="`/productInfo?type=${type}&id=${item.id}`" tag="p"><img :src="item.pic"></router-link>
-          <router-link class="c6 cursor-p" :to="`/productInfo?type=${type}&id=${item.id}`" tag="p">{{item.name}}</router-link>
-          <p>
-            <span class="c2">HK</span>
-            <span class="c3">${{item.money}}</span>
-          </p>
-          <p>
-            <a class="c1 b5 s16" href="javascript:void(0);" @click="addCart(item.id,1)">
-              <b>{{$t("加入購物車")}}</b>
-            </a>
-          </p>
-          <p>
-            <router-link class="c6 s14" :to="`/productInfo?type=${type}&id=${item.id}`" tag="a">{{$t("了解詳情")}}>></router-link>
-          </p>
-        </li>
-      </ul>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -55,6 +55,9 @@ export default {
   computed: {
     type() {
       return this.$route.query.type;
+    },
+    lang() {
+      return this.$store.state.app.language;
     }
   },
   methods: {
@@ -67,6 +70,10 @@ export default {
         }
       }).then(res => {
         this.$store.dispatch("setCartsLen", this.$store.state.app.cartsLen + 1);
+        this.$message.success({
+          message:
+            this.lang == "zh" ? "加入購物車成功" : "Add to Cart successful"
+        });
         console.log(res);
       });
     },

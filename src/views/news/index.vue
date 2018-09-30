@@ -85,12 +85,12 @@ export default {
           break;
         case "care":
           type = 2;
-          menuI = 4;
+          menuI = 1;
           label = "關愛社會";
           break;
         case "company":
           type = 1;
-          menuI = 0;
+          menuI = 1;
           label = "公司事件";
           break;
       }

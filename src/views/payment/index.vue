@@ -3,21 +3,30 @@
     <div class="w1200">
       <h2>{{$t('填寫并核對訂單信息')}}</h2>
       <div class="sur">
+        <h3>{{$t('收貨方式')}}</h3>
+        <select style="margin-bottom:40px;height:30px;padding:0 0.5em;" v-model="deliveryWay">
+          <option value="0">{{$t('到店自提')}}</option>
+          <option value="1">{{$t('物流收貨')}}</option>
+        </select>
         <h3>{{$t('收貨人信息')}}</h3>
+        <p v-if="!address.length" class="c7">
+          {{$t('暫無收貨地址信息')}}，
+          <a class="c6" href="../member/index.html#/user/addresses">{{$t('先去添加')}}</a>
+        </p>
         <ul :class="ulswitch?'info':'info close'">
           <li v-for="(item,index) in address" :key="index" @click="activeI=index">
             <span :class="activeI==index?'choose':''">
               {{item.contact}}
             </span>
             <p>
-              {{item.seat+item.address}} &nbsp;&nbsp;&nbsp;
+              {{deliveryWay==1?(item.seat||'')+(item.address||''):''}} &nbsp;&nbsp;&nbsp;
               <span>{{item.mobile}}</span>
               &nbsp;&nbsp;&nbsp;
               <em v-if="item.setting">{{$t('默認地址')}}</em>
             </p>
           </li>
         </ul>
-        <span class="more" @click="ultoggle()">
+        <span class="more" @click="ultoggle()" v-if="address.length">
           {{$t(switchTxt)}}
           <i :class="ulswitch?'open':'close'"></i>
         </span>
@@ -87,9 +96,9 @@
           <span>${{total}}</span>
         </p>
         <p>
-          <span>{{$t('寄送至')}}：{{address[activeI].seat+address[activeI].address}}</span>
-          <span>{{$t('收貨人')}}：{{address[activeI].contact}}</span>
-          <span>{{address[activeI].mobile}}</span>
+          <span>{{$t('寄送至')}}：{{address[activeI]?(address[activeI].seat+address[activeI].address):''}}</span>
+          <span>{{$t('收貨人')}}：{{address[activeI]?address[activeI].contact:''}}</span>
+          <span>{{address[activeI]?address[activeI].mobile:''}}</span>
         </p>
       </div>
       <div class="submit">
@@ -114,32 +123,42 @@
           </div>
           <p>{{$t('應付金額')}}：
             <span class="sum">${{total}}</span>
+            <span class="c4 s12" style="margin-left:1em;" v-if="userInfo&&total>userInfo.money">
+              {{$t('餘額不足')}}
+              <a class="c6" href="../member/index.html#/user/recharge">{{$t('請先充值')}}</a>
+            </span>
           </p>
-          <div class="pwd">
-            <p>{{$t('請輸入您的支付密碼')}}：</p>
-            <input type="password" v-model="password">
-            <span @click="pay">{{$t('確定')}}</span>
+          <div class="pwd" v-if="userInfo&&total<=userInfo.money">
+            <p>{{$t('備註')}}：</p>
+            <input class="flex" type="text" v-model="remark"/>
+            </div>
+            <div class="pwd" v-if="userInfo&&total<=userInfo.money">
+              <p>{{$t('請輸入您的支付密碼')}}：</p>
+              <input type="password" v-model="password"/>
+              <span @click="pay" v-if="password">{{$t('確定')}}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- 支付成功弹窗 -->
-    <div :class="`position ${popIsShow?'':'hide'}`">
-      <div>
-        <h3>{{$t('支付狀態')}}
-          <i></i>
-        </h3>
+      <!-- 支付成功弹窗 -->
+      <div :class="`position ${popIsShow?'':'hide'}`">
         <div>
-          <div style="width: 100px;margin:0 auto 10px"><img style="width: 100%" src="./img/success.png"></div>
-          <p style="text-align: center;">{{$t('支付成功')}}</p>
-          <div class="button">
-            <span>{{$t('查看訂單')}}</span>
-            <router-link to="/product" tag="span">{{$t('繼續購物')}}</router-link>
+          <h3>{{$t('支付狀態')}}
+            <i @click="popIsShow=0"></i>
+          </h3>
+          <div>
+            <div style="width: 100px;margin:0 auto 10px"><img style="width: 100%" src="./img/success.png"></div>
+              <p style="text-align: center;">{{$t('支付成功')}}</p>
+              <div class="button">
+                <span>
+                  <a href="../member/index.html#/user/order" style="display:block;">{{$t('查看訂單')}}</a>
+                </span>
+                <router-link to="/product" tag="span">{{$t('繼續購物')}}</router-link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -151,12 +170,14 @@ export default {
       epSwitch: 0,
       ulswitch: 0,
       switchTxt: "更多地址",
-      address: [{}],
+      address: [],
       activeI: 0,
       items: [],
       password: "",
       orderNumber: "",
-      popIsShow: 0
+      popIsShow: 0,
+      deliveryWay: 0,
+      remark: ""
     };
   },
   computed: {
@@ -172,6 +193,9 @@ export default {
     },
     cartsLen() {
       return this.$store.state.app.cartsLen;
+    },
+    userInfo() {
+      return this.$store.state.app.userInfo;
     }
   },
   methods: {
@@ -199,13 +223,16 @@ export default {
       const address = theAddress.seat + theAddress.address;
       const mobile = theAddress.mobile;
       const contact = theAddress.contact;
+      const deliveryWay = this.deliveryWay;
+      const remark = this.remark;
 
       this.items.forEach(v => {
         if (v.checked) {
-          cids.push(v.cid);
+          cids.push(v.cid || v.id);
           amounts.push(v.amount);
         }
       });
+      console.log(this.userInfo);
 
       this.ajax({
         apiName: "addOrder",
@@ -213,16 +240,28 @@ export default {
           source,
           cids,
           amounts,
-          deliveryWay: 1,
+          deliveryWay,
           address,
           mobile,
           contact,
-          remark: "备注"
+          remark
         }
       }).then(res => {
         console.log("addOrder", res);
         this.orderNumber = res.data.orderNumber;
         this.showPis();
+
+        let userStorage = JSON.parse(sessionStorage.getItem("userStorage"));
+        this.ajax({
+          apiName: "login",
+          data: {
+            uid: userStorage.uid,
+            password: userStorage.password
+          }
+        }).then(res => {
+          console.log(res);
+          this.$store.dispatch("setUserInfo", res.data);
+        });
       });
     },
     pay() {

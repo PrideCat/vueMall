@@ -7,87 +7,94 @@
     <div class="m_head fbox">
       <div class="h_pic">
         <div><img :src="info.pic"></div>
-        <div>
-          <ul class="fbox">
-            <li><img :src="info.pic"></li>
-          </ul>
+          <div>
+            <ul class="fbox">
+              <li><img :src="info.pic"></li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="h_info flex">
-        <div class="i_txt">
-          <p>{{info.content}}</p>
-          <!-- <p>價值 $1,330</p>
+        <div class="h_info flex">
+          <div class="i_txt">
+            <p>{{info.content}}</p>
+            <!-- <p>價值 $1,330</p>
           <p>套裝包括︰</p>
           <p>PLANTSCRIPTION™ 悅肌再生逆齡抗皺精華 30ml</p>
           <p>PLANTSCRIPTION™ 悅肌再生潔面乳 150ml</p>
           <p>PLANTSCRIPTION™ 悅肌再生緊緻塑顏霜 15ml</p>
           <p>MEGA MUSHROOM 靈芝菇菌抗逆健膚紓緩水 30ml</p>
           <p>PLANTSCRIPTION™ 悅肌再生眼部修護霜 5ml</p> -->
-        </div>
-        <div class="i_content">
-          <div class="c_inputBox fbox s16 f_jc_sb">
-            <div class="fbox f_si_c flex">
-              <p class="flex fbox f_jc_sb c6">
-                <span>
-                  <span class="c2">HK:</span>${{money}}
-                </span>
-                <span>{{$t('數量')}}:</span>
-              </p>
-              <p><input class="ct b5 c1 s16" type="text" v-model="info.amount"></p>
-            </div>
-            <p class="fbox">
-              <a class="posct c6" href="javascript:void(0);" @click="addCart(info.id,info.amount)">{{$t('加入購物車')}}</a>
-              <a class="posct b5 c1" href="javascript:void(0);" @click="bug()">{{$t('立即購買')}}</a>
-            </p>
           </div>
-          <div class="c_psTxt fbox f_jc_sb f_si_c">
-            <p class="s16 c6 fbox f_si_c">
-              <i class="s14">i</i>
-              <b>{{$t('購買此商品可以獲得')+' '+info.integral+' '+$t('積分')}}</b>
-            </p>
-            <p class="fbox f_si_c">
-              <a href="javascript:void(0);" @click="addFavorite(info.id)">
-                <span class="fbox f_si_c">
-                  <img src="./img/icon1.jpg">{{$t('收藏')}}
-                </span>
-              </a>
-              <a href="javascript:void(0);">
-                <span class="fbox f_si_c">
-                  <img src="./img/icon2.jpg">{{$t('推介')}}
-                </span>
-              </a>
-            </p>
-          </div>
-          <div class="c_tag c2">
-            <div class="fbox">
-              <p class="fbox f_si_c">
-                <img src="./img/icon3.jpg">
-                <span>{{$t('正品保障')}}</span>
-              </p>
-              <p class="fbox f_si_c">
-                <img src="./img/icon4.jpg">
-                <span>{{$t('天然萃取')}}</span>
+          <div class="i_content">
+            <div class="c_inputBox fbox s16 f_jc_sb">
+              <div class="fbox f_si_c flex">
+                <p class="flex fbox f_jc_sb c6">
+                  <span>
+                    <span class="c2">HK:</span>${{money}}
+                  </span>
+                  <span>{{$t('數量')}}:</span>
+                </p>
+                <p><input class="ct b5 c1 s16" type="text" v-model="info.amount"></p>
+              </div>
+              <p class="fbox">
+                <a class="posct c6" href="javascript:void(0);" @click="addCart(info.id,info.amount)">{{$t('加入購物車')}}</a>
+                <a class="posct b5 c1" href="javascript:void(0);" @click="bug()">{{$t('立即購買')}}</a>
               </p>
             </div>
-            <!-- <div>
+            <div class="c_psTxt fbox f_jc_sb f_si_c">
+              <p class="s16 c6 fbox f_si_c">
+                <i class="s14">i</i>
+                <b>{{$t('購買此商品可以獲得')+' '+info.integral+' '+$t('積分')}}</b>
+              </p>
+              <p class="fbox f_si_c">
+                <a href="javascript:void(0);" @click="addFavorite(info.id)">
+                  <span class="fbox f_si_c">
+                    <img src="./img/icon1.jpg">{{$t('收藏')}}
+                </span>
+                </a>
+                <a href="javascript:void(0);" id="qrcodeDom">
+                  <span class="fbox f_si_c" @click="qrcodeIsShow=!qrcodeIsShow">
+                    <img src="./img/icon2.jpg">{{$t('推介')}}
+                  </span>
+                    <div v-show="qrcodeIsShow">
+                      <div id="qrcode"></div>
+                      <div id="copy">
+                        <input type="text" :value="url" style="width:98px;height:0;border:0;">
+                        <a @click="copy">{{$t('複製鏈接')}}</a>
+                      </div>
+                    </div>
+                </a>
+              </p>
+            </div>
+            <div class="c_tag c2">
+              <div class="fbox">
+                <p class="fbox f_si_c">
+                  <img src="./img/icon3.jpg">
+                  <span>{{$t('正品保障')}}</span>
+                </p>
+                <p class="fbox f_si_c">
+                  <img src="./img/icon4.jpg">
+                  <span>{{$t('天然萃取')}}</span>
+                </p>
+              </div>
+              <!-- <div>
               <p class="fbox f_si_c">
                 <img src="./img/icon5.jpg">
                 <span>{{$t('微信分享')}}</span>
               </p>
             </div> -->
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="m_body defuWidth b7">
-      <p class="s16">{{$t('產品介紹')}}</p>
-      <div class="fbox">
-        <ul style="width:100%;">
-          <li v-for="(item,index) in details" :key="index">
-            <img style="max-width:100%;" :src="item.pic" />
+      <div class="m_body defuWidth b7">
+        <p class="s16">{{$t('產品介紹')}}</p>
+        <div class="fbox">
+          <ul style="width:100%;">
+            <li v-for="(item,index) in details" :key="index">
+              <img style="max-width:100%;" :src="item.pic" />
           </li>
-        </ul>
-        <!-- <div class="c2">
+          </ul>
+          <!-- <div class="c2">
           <p>
             ageLOC®專屬淨膚露 / 霜的研製，是為了在 LumiSpa申請專利中的導頭與皮膚接觸時提供精確的緩衝、清潔，增強抗衰老效益。
           </p>
@@ -100,18 +107,21 @@
             <li><img src="./img/bg.png"></li>
           </ul>
         </div> -->
+        </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
+import QRCode from "qrcodejs2";
+
 export default {
   name: "productInfo",
   data() {
     return {
       info: {},
-      details: []
+      details: [],
+      qrcodeIsShow: 0
     };
   },
   computed: {
@@ -123,6 +133,9 @@ export default {
     },
     userInfo() {
       return this.$store.state.app.userInfo;
+    },
+    url() {
+      return location.href;
     }
   },
   watch: {
@@ -134,6 +147,23 @@ export default {
     }
   },
   methods: {
+    copy() {
+      document.getElementById("copy").children[0].select();
+      document.execCommand("Copy");
+      this.$message.success({
+        message: this.lang == "zh" ? "複製成功" : "Successful copy"
+      });
+    },
+    qrcode() {
+      let qrcode = new QRCode("qrcode", {
+        width: 100,
+        height: 100, // 高度
+        text: this.url // 二维码内容
+        // render: 'canvas' // 设置渲染方式（有两种方式 table和canvas，默认是canvas）
+        // background: '#f0f'
+        // foreground: '#ff0'
+      });
+    },
     addCart(cid, amount) {
       this.canBuy(_ => {
         this.ajax({
@@ -147,6 +177,10 @@ export default {
             "setCartsLen",
             this.$store.state.app.cartsLen + 1
           );
+          this.$message.success({
+            message:
+              this.lang == "zh" ? "加入購物車成功" : "Add to Cart successful"
+          });
           console.log(res);
         });
       });
@@ -165,6 +199,10 @@ export default {
       });
     },
     canBuy(callback) {
+      if (!this.userInfo) {
+        window.sessionStorage.setItem("inMellToLogin", 1);
+        window.location.href = "../member/index.html";
+      }
       const uType = this.userInfo.type;
       const uRank = this.userInfo.rank;
       const pType = this.info.type;
@@ -177,7 +215,7 @@ export default {
         bool = true;
       } else if (
         pType == 3 &&
-        (uRank == 2 || uRank == 6 || (uRank == 1 && uType == 1))
+        (uType == 0 || uRank == 6 || (uRank == 1 && uType == 1))
       ) {
         bool = true;
       } else {
@@ -202,6 +240,9 @@ export default {
         });
       });
     }
+  },
+  mounted() {
+    this.qrcode();
   },
   created() {
     let type = this.$route.query.type;
@@ -239,6 +280,52 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#copy a {
+  background: #4ca9cd;
+  color: #fff;
+  padding: 3px 0;
+  border-radius: 3px;
+  display: block;
+  text-align: center;
+}
+#qrcodeDom {
+  position: relative;
+}
+#qrcodeDom > div {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  border: 1px solid #4ca9cd;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  z-index: 1;
+  background: #fff;
+  opacity: 0.8;
+  border-radius: 3px;
+  flex-direction: column;
+}
+#qrcodeDom > div:before,
+#qrcodeDom > div:after {
+  content: "";
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 0;
+  margin: auto;
+}
+#qrcodeDom > div:before {
+  border-bottom: 8px solid #4ca9cd;
+  top: -8px;
+}
+#qrcodeDom > div:after {
+  border-bottom: 8px solid #ffffff;
+  top: -7px;
+}
+
 .main .m_title {
   line-height: 30px;
 }

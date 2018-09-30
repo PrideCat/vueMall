@@ -55,11 +55,11 @@ export default {
           label = "最新資訊";
           break;
         case "careDetail":
-          menuI = 4;
+          menuI = 1;
           label = "關愛社會";
           break;
         case "companyDetail":
-          menuI = 0;
+          menuI = 1;
           label = "公司事件";
           break;
       }

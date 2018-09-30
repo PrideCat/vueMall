@@ -37,13 +37,13 @@
                 <span class="c6">${{item.money}}</span>
               </p>
               <p class="posct"><input class="c6" type="number" v-model="item.amount" @click.stop></p>
-              <p class="posct">
-                <span>HK</span>&nbsp;
-                <span class="c6">${{item.money*item.amount}}</span>
-              </p>
-              <p class="posct">
-                <i @click.stop="removeCart(item.id)">×</i>
-              </p>
+                <p class="posct">
+                  <span>HK</span>&nbsp;
+                  <span class="c6">${{item.money*item.amount}}</span>
+                </p>
+                <p class="posct">
+                  <i @click.stop="removeCart(item.id)">×</i>
+                </p>
             </li>
           </ul>
         </div>
@@ -63,9 +63,9 @@
                 <b>hk${{total}}</b>
               </span>
             </span>
-            <a class="s18 b6 c1 posct" href="javascript:void(0);">
-              <router-link :to="`/payment?items=${encodeURIComponent(JSON.stringify(items))}`" tag="b">{{$t('去結賬')}}</router-link>
-            </a>
+            <router-link class="s18 b6 c1 posct" :to="`/payment?items=${encodeURIComponent(JSON.stringify(items))}`" tag="a">
+              <b>{{$t('去結賬')}}</b>
+            </router-link>
           </p>
         </div>
         <div style="display:none;">
@@ -76,19 +76,19 @@
             <ul class="defuWidth fbox ct s18">
               <li>
                 <p><img src="./img/bg.png"></p>
-                <p class="c6">ageLOC® 活顏倍彈源液</p>
-                <p>
-                  <span class="c2">HK</span>
-                  <span class="c3">$2,070.00</span>
-                </p>
-                <p>
-                  <a class="c1 b5 s16" href="javascript:void(0);">
-                    <b>{{$t("加入購物車")}}</b>
-                  </a>
-                </p>
-                <p>
-                  <router-link class="c6 s14" to="/productInfo" tag="a">{{$t("了解詳情")}}>></router-link>
-                </p>
+                  <p class="c6">ageLOC® 活顏倍彈源液</p>
+                  <p>
+                    <span class="c2">HK</span>
+                    <span class="c3">$2,070.00</span>
+                  </p>
+                  <p>
+                    <a class="c1 b5 s16" href="javascript:void(0);">
+                      <b>{{$t("加入購物車")}}</b>
+                    </a>
+                  </p>
+                  <p>
+                    <router-link class="c6 s14" to="/productInfo" tag="a">{{$t("了解詳情")}}>></router-link>
+                  </p>
               </li>
             </ul>
           </div>

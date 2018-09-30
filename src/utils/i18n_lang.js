@@ -124,7 +124,17 @@ const lang = {
     '問': ['Ask'],
     '答': ['Answer'],
     '歡迎登錄，': ['Login Please,'],
-    '退出登錄': ['sign out']
+    '退出登錄': ['Sign Out'],
+    '會員中心': ['Member Centre'],
+    '收貨方式': ['Receiving Method'],
+    '到店自提': ['Come to the store'],
+    '物流收貨': ['Logistics Receipt'],
+    '暫無收貨地址信息': ['No delivery address information'],
+    '先去添加': ['please go to add'],
+    '備註': ['Remarks'],
+    '餘額不足': ['If the balance is insufficient'],
+    '請先充值': ['please recharge first'],
+    '複製鏈接': ['Copy Link']
 }
 
 const messages = {

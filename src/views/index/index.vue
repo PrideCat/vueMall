@@ -41,9 +41,23 @@
           </div>
           <div :class="`h_tab maxWidth s18 c1 ${$route.name==='home'?'':'activeHead'}`">
             <ul class="defuWidth fbox f_jc_sb f_si_c">
-              <li :class="`posct ${menuI==index?'active':''}`" :style="item.type=='img'?'width:auto;':''" v-for="(item,index) in menu.item" :key="index">
+              <li v-if="index!=4" :class="`posct ${menuI==index?'active':''}`" :style="item.type=='img'?'width:auto;':''" v-for="(item,index) in menu.item" :key="index">
                 <img v-if="item.type=='img'" :src="item.src">
                 <router-link v-else :to="item.src" tag="a">{{$t(item.label)}}</router-link>
+                <ol v-if="index==1">
+                  <li>
+                    <router-link to="/news" tag="a">{{$t("新聞中心")}}</router-link>
+                  </li>
+                  <li>
+                    <router-link to="/company" tag="a">{{$t("公司事件")}}</router-link>
+                  </li>
+                  <li>
+                    <router-link to="/care" tag="a">{{$t("關愛社會")}}</router-link>
+                  </li>
+                </ol>
+              </li>
+              <li v-else class="posct cursor-p">
+                <a @click="toMember">{{$t(item.label)}}</a>
               </li>
             </ul>
           </div>
@@ -76,13 +90,13 @@
                   <div>
                     <img src="./img/icon.png">
                   </div>
-                  <div class="c3">
-                    <p>{{$t("本站查詢和聯繫我們")}}</p>
-                    <p>whatapps: 9503-2910</p>
-                    <p>facebook: balabal</p>
-                    <p>{{$t("微信服務號")}}: 0900232</p>
-                    <p>{{$t("週一至週六")}}：10:30 -- 20:00</p>
-                  </div>
+                    <div class="c3">
+                      <p>{{$t("本站查詢和聯繫我們")}}</p>
+                      <p>whatapps: 9503-2910</p>
+                      <p>facebook: balabal</p>
+                      <p>{{$t("微信服務號")}}: 0900232</p>
+                      <p>{{$t("週一至週六")}}：10:30 -- 20:00</p>
+                    </div>
                 </li>
                 <li>
                   <p class="s18 c3">{{$t("新手上路")}}</p>
@@ -97,15 +111,15 @@
                   </p>
                 </li>
                 <li>
-                  <p class="s18 c3">{{$t("產品常識")}}</p>
+                  <p class="s18 c3">{{$t("最新資訊")}}</p>
                   <p>
-                    <a href="javascript:void(0);">{{$t("產品與問答")}}</a>
+                    <router-link to="/news" tag="a">{{$t("新聞中心")}}</router-link>
                   </p>
                   <p>
-                    <a href="javascript:void(0);">{{$t("如何使用沛泉精華")}}</a>
+                    <router-link to="/company" tag="a">{{$t("公司事件")}}</router-link>
                   </p>
                   <p>
-                    <a href="javascript:void(0);">{{$t("好轉反應")}}</a>
+                    <router-link to="/care" tag="a">{{$t("關愛社會")}}</router-link>
                   </p>
                 </li>
                 <li>
@@ -126,14 +140,16 @@
                 </li>
               </ol>
             </li>
-            <li>
+            <!-- <li>
               <span>{{$t("友情鏈接")}} ：</span>
               <a href="javascript:void(0);">{{$t("遊民星空")}}</a>
               <a href="javascript:void(0);">{{$t("太平洋網絡")}}</a>
-            </li>
+            </li> -->
             <li class="ct">
-              <p>{{$t("广告经营许可证: 430100S003粤ICP备11046297号-4增值电信业务经营许可证: 粤ICP备11046297号")}}</p>
-              <p>Copyright 2005~2014 360XH.COM All Rights Reserved</p>
+              <!-- <p>{{$t("广告经营许可证: 430100S003粤ICP备11046297号-4增值电信业务经营许可证: 粤ICP备11046297号")}}</p> -->
+              <!-- <p>Copyright 2005~2014 360XH.COM All Rights Reserved</p> -->
+              <p>&nbsp;</p>
+              <p>© 2018. Headwind International. All Rights Reserved.</p>
             </li>
           </ul>
         </div>
@@ -168,8 +184,8 @@ export default {
             src: require("./img/logo.png")
           },
           {
-            src: "/care",
-            label: "關愛社會"
+            src: "/",
+            label: "會員中心"
           },
           {
             src: "/auth",
@@ -215,8 +231,8 @@ export default {
       window.location.href = "../member/index.html";
     },
     goOrder() {
-      window.sessionStorage.setItem("goOrder", 1);
-      window.location.href = "../member/index.html";
+      // window.sessionStorage.setItem("goOrder", 1);
+      window.location.href = "../member/index.html#/user/order";
     },
     init(userStorage) {
       userStorage = JSON.parse(userStorage);
@@ -253,15 +269,18 @@ export default {
         this.$store.dispatch("setUserInfo", "");
         this.$store.dispatch("setCartsLen", "");
       });
+    },
+    toMember() {
+      window.sessionStorage.setItem("toMember", 1);
+      window.location.href = "../member/index.html#/user/index";
     }
   },
-  created() {
-    window.onscroll = _ => {
-      this.scrollTop = (document.documentElement || document.body).scrollTop;
-    };
-    let userStorage = sessionStorage.getItem("userStorage");
-    if (userStorage) {
-      this.init(userStorage);
+  watch: {
+    $route: {
+      handler() {
+        this.toTop();
+      },
+      deep: true
     }
   },
   created() {
@@ -322,12 +341,17 @@ export default {
 .main .m_content .c_body .b_head .h_tab ul {
   height: 118px;
 }
-.main .m_content .c_body .b_head .h_tab li {
+.main .m_content .c_body .b_head .h_tab ul > li {
   width: 72px;
   height: 60px;
 }
 .main .m_content .c_body .b_head .h_tab li a {
   margin: 0 -100%;
+}
+.main .m_content .c_body .b_head .h_tab li.active ol {
+  bottom: -167px;
+  font-weight: initial;
+  color: #fff;
 }
 .main .m_content .c_body .b_head .h_tab li.active {
   border-bottom: 2px solid #4883ad;
@@ -342,6 +366,29 @@ export default {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   bottom: 0;
+}
+.main .m_content .c_body .b_head .h_tab li ol {
+  position: absolute;
+  width: 175px;
+  text-align: center;
+  box-sizing: border-box;
+  border-top: 0;
+  line-height: 45px;
+  bottom: -135px;
+  display: none;
+  padding-top: 30px;
+}
+.main .m_content .c_body .b_head .h_tab li ol li {
+  background: rgba(0, 0, 0, 0.25);
+}
+.main .m_content .c_body .b_head .h_tab li ol li:last-child {
+  border-radius: 0 0 3px 3px;
+}
+.main .m_content .c_body .b_head .h_tab li:nth-child(2):hover ol {
+  display: block;
+}
+.main .m_content .c_body .b_head .h_tab li ol a:hover {
+  color: #4883ad;
 }
 
 .main .m_content .c_body .b_breadCrumbs {
