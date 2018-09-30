@@ -70,6 +70,10 @@
             </ul>
           </div>
         </div>
+        <h3 style="margin-top:30px;">{{$t('備註信息')}}</h3>
+        <div>
+          <textarea style="padding:1em;width:100%;box-sizing:border-box;resize:none;" name="" id=""  rows="10" v-model="remark"></textarea>
+        </div>
       </div>
       <div class="total">
         <ul>
@@ -128,10 +132,6 @@
               <a class="c6" href="../member/index.html#/user/recharge">{{$t('請先充值')}}</a>
             </span>
           </p>
-          <div class="pwd" v-if="userInfo&&total<=userInfo.money">
-            <p>{{$t('備註')}}：</p>
-            <input class="flex" type="text" v-model="remark"/>
-            </div>
             <div class="pwd" v-if="userInfo&&total<=userInfo.money">
               <p>{{$t('請輸入您的支付密碼')}}：</p>
               <input type="password" v-model="password"/>
@@ -279,7 +279,7 @@ export default {
         console.log("pay", res);
         this.hidePis();
         this.$store.dispatch("setCartsLen", this.cartsLen - this.items.length);
-        this.items.forEach(v => this.removeCart(v.id));
+        // this.items.forEach(v => this.removeCart(v.id));
         this.popIsShow = 1;
       });
     },

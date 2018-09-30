@@ -134,7 +134,8 @@ const lang = {
     '備註': ['Remarks'],
     '餘額不足': ['If the balance is insufficient'],
     '請先充值': ['please recharge first'],
-    '複製鏈接': ['Copy Link']
+    '複製鏈接': ['Copy Link'],
+    '備註信息': ['Remarks']
 }
 
 const messages = {
