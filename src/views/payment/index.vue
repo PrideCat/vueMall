@@ -72,13 +72,13 @@
         </div>
         <h3 style="margin-top:30px;">{{$t('備註信息')}}</h3>
         <div>
-          <textarea style="padding:1em;width:100%;box-sizing:border-box;resize:none;" name="" id=""  rows="10" v-model="remark"></textarea>
+          <textarea style="padding:1em;width:100%;box-sizing:border-box;resize:none;" name="" id="" rows="10" v-model="remark"></textarea>
         </div>
       </div>
       <div class="total">
         <ul>
           <li>
-            <span>{{allNumber+$t('件商品，总商品金额')}}：</span>
+            <span>{{allNumber*1+$t('件商品，总商品金额')}}：</span>
             <span>${{total}}</span>
           </li>
           <!-- <li>
@@ -128,37 +128,37 @@
           <p>{{$t('應付金額')}}：
             <span class="sum">${{total}}</span>
             <span class="c4 s12" style="margin-left:1em;" v-if="userInfo&&total>userInfo.money">
-              {{$t('餘額不足')}}
-              <a class="c6" href="../member/index.html#/user/recharge">{{$t('請先充值')}}</a>
+              {{$t('餘額不足，請選擇其他支付方式')}}
+              <!-- <a class="c6" href="../member/index.html#/user/recharge">{{$t('請先充值')}}</a> -->
             </span>
           </p>
-            <div class="pwd" v-if="userInfo&&total<=userInfo.money">
-              <p>{{$t('請輸入您的支付密碼')}}：</p>
-              <input type="password" v-model="password"/>
-              <span @click="pay" v-if="password">{{$t('確定')}}</span>
-            </div>
+          <div class="pwd" v-if="userInfo&&total<=userInfo.money">
+            <p>{{$t('請輸入您的支付密碼')}}：</p>
+            <input type="password" v-model="password" />
+            <span @click="pay" v-if="password">{{$t('確定')}}</span>
           </div>
         </div>
       </div>
-      <!-- 支付成功弹窗 -->
-      <div :class="`position ${popIsShow?'':'hide'}`">
+    </div>
+    <!-- 支付成功弹窗 -->
+    <div :class="`position ${popIsShow?'':'hide'}`">
+      <div>
+        <h3>{{$t('支付狀態')}}
+          <i @click="popIsShow=0"></i>
+        </h3>
         <div>
-          <h3>{{$t('支付狀態')}}
-            <i @click="popIsShow=0"></i>
-          </h3>
-          <div>
-            <div style="width: 100px;margin:0 auto 10px"><img style="width: 100%" src="./img/success.png"></div>
-              <p style="text-align: center;">{{$t('支付成功')}}</p>
-              <div class="button">
-                <span>
-                  <a href="../member/index.html#/user/order" style="display:block;">{{$t('查看訂單')}}</a>
-                </span>
-                <router-link to="/product" tag="span">{{$t('繼續購物')}}</router-link>
-              </div>
-            </div>
+          <div style="width: 100px;margin:0 auto 10px"><img style="width: 100%" src="./img/success.png"></div>
+          <p style="text-align: center;">{{$t('支付成功')}}</p>
+          <div class="button">
+            <span>
+              <a href="../member/index.html#/user/order" style="display:block;">{{$t('查看訂單')}}</a>
+            </span>
+            <router-link to="/product" tag="span">{{$t('繼續購物')}}</router-link>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -196,6 +196,9 @@ export default {
     },
     userInfo() {
       return this.$store.state.app.userInfo;
+    },
+    lang() {
+      return this.$store.state.app.language;
     }
   },
   methods: {
@@ -219,6 +222,13 @@ export default {
       const source = this.total;
       let cids = [];
       let amounts = [];
+      if (!this.address.length) {
+        this.$message.success({
+          message:
+            this.lang == "zh" ? "請先添加地址！" : "Please add an address first!"
+        });
+        return;
+      }
       const theAddress = this.address[this.activeI];
       const address = theAddress.seat + theAddress.address;
       const mobile = theAddress.mobile;
@@ -310,6 +320,7 @@ export default {
     }).then(res => {
       console.log("address", res);
       this.address = res.data.items;
+      this.address = [];
       let index;
       this.address.forEach((v, i) => (v.setting ? (index = i) : ""));
       let defuAddress = this.address.splice(index, 1);

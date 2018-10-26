@@ -33,7 +33,7 @@
                   </span>
                   <span>{{$t('數量')}}:</span>
                 </p>
-                <p><input class="ct b5 c1 s16" type="text" v-model="info.amount"></p>
+                <p><input class="ct b5 c1 s16" type="number" v-model="info.amount"></p>
               </div>
               <p class="fbox">
                 <a class="posct c6" href="javascript:void(0);" @click="addCart(info.id,info.amount)">{{$t('加入購物車')}}</a>
@@ -374,6 +374,7 @@ export default {
   width: 45px;
   height: 44px;
   border: 0;
+  padding-left: 13px;
 }
 .main .m_head .h_info .i_content .c_inputBox > p a {
   border: 2px solid #4ca9cd;

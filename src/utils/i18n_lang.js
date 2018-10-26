@@ -135,7 +135,8 @@ const lang = {
     '餘額不足': ['If the balance is insufficient'],
     '請先充值': ['please recharge first'],
     '複製鏈接': ['Copy Link'],
-    '備註信息': ['Remarks']
+    '備註信息': ['Remarks'],
+    '餘額不足，請選擇其他支付方式': ['Insufficient balance, please choose another payment method']
 }
 
 const messages = {
