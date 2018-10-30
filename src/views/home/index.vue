@@ -75,13 +75,6 @@
       </div>
       <div class="defuWidth defuItemBox defuItemBox1">
         <ul class="fbox">
-          <!-- <li>
-            <p class="c7 s24">08.06</p>
-            <p class="c6 s16">ageLOC®潔面調理摩絲ageLOC®潔面調理摩絲ageLOC®潔面調理摩絲</p>
-            <p>
-              <a class="b5 c1 posct s16" href="javascript:(0);">{{$t("查看詳情")}}</a>
-            </p>
-          </li> -->
           <li v-for="(item,index) in companyEvent" :key="index">
             <p class="c7 s24">{{item.createTime.toTimes().format("yyyy-MM-dd")}}</p>
             <router-link class="c6 s16 cursor-p" :to="`/companyDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`" tag="p">{{item.name}}</router-link>

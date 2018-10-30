@@ -62,6 +62,27 @@
             </ul>
           </div>
         </div>
+        <div :class="`b_head1 ${$route.name==='home'?'':'activeHead'}`" v-if="isMobile">
+          <img :src="menu.item[3].src">
+          <span class="posct">
+            <svg viewBox="0 0 1214 1024" width="23.7" height="20"><path d="M890.88 93.090909h-837.818182a46.545455 46.545455 0 0 1 0-93.090909h837.818182a46.545455 46.545455 0 1 1 0 93.090909zM1168.290909 558.545455h-1117.090909a46.545455 46.545455 0 1 1 0-93.09091h1117.090909a46.545455 46.545455 0 0 1 0 93.09091zM584.610909 1024H46.545455a46.545455 46.545455 0 0 1 0-93.090909h538.065454a46.545455 46.545455 0 0 1 0 93.090909z"/></svg>
+          </span>
+        </div>
+        <div id="mobileMenu" class="show" >
+          <ul class="m_content" @click.stop="">
+            <li><p><i >×</i></p></li>
+            <li>
+              <ol>
+                <li><img src="img/avatar.png" alt=""></li>
+                <li>userInfo.nickname</li>
+                <li>userInfo.level</li>
+              </ol>
+            <li>
+            
+            </li>
+            <li><p><a>lang[lang.lang].en76</a><a>lang[lang.lang].en49</a></p></li>
+          </ul>
+        </div>
         <div class="b_breadCrumbs" v-if="breadCrumbs.length">
           <p class="defuWidth">
             <router-link to="/home" tag="a">{{$t("首頁")}}</router-link>
@@ -71,7 +92,7 @@
             </span>
           </p>
         </div>
-        <router-view></router-view>
+        <router-view :id="routeName"></router-view>
         <div class="b_tools defuWidth">
           <ul>
             <li class="posct b1" v-show="scrollTop>300">
@@ -220,6 +241,12 @@ export default {
     },
     userInfo() {
       return this.$store.state.app.userInfo;
+    },
+    routeName() {
+      return this.$route.name;
+    },
+    isMobile() {
+      return this.$store.state.app.isMobile;
     }
   },
   methods: {
@@ -288,15 +315,95 @@ export default {
       this.scrollTop = (document.documentElement || document.body).scrollTop;
     };
     let userStorage = sessionStorage.getItem("userStorage");
-    if (userStorage) {
-      this.init(userStorage);
-    }
+    if (userStorage) this.init(userStorage);
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+#mobileMenu{
+    position: fixed;
+    top: 0;
+    left: -100%;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .25);
+    display: none;
+    transition: all .25s;
+  }
+  #mobileMenu.show{
+    left: 0;
+  }
+
+  #mobileMenu .m_content{
+    width: 75% !important;
+    margin: 0;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  #mobileMenu .m_content > li:nth-child(1){
+    width: 100%;
+    text-align: right;
+  }
+  #mobileMenu .m_content > li:nth-child(1) p i{
+    font-size: 30px;
+    display: inline-block;
+    margin: 8px 16px;
+  }
+  #mobileMenu .m_content > li:nth-child(2){
+    text-align: center;
+  }
+  #mobileMenu .m_content > li:nth-child(2) ol li:nth-child(1) img{
+    width: 80px;
+    margin-top: -15px;
+  }
+  #mobileMenu .m_content > li:nth-child(2) ol li:nth-child(2){
+    font-size: 18px;
+    font-weight: bold;
+    margin: 15px;
+  }
+  #mobileMenu .m_content > li:nth-child(2) ol li:nth-child(3){
+    background: #e4a751;
+    color: #fff;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  #mobileMenu .m_content > li:nth-child(3){
+    flex: 1;
+    margin-top: 30px;
+    width: 100%;
+    max-height: calc(100vh - 265px);
+    background: #eaeaea;
+    overflow: auto;
+  }
+  #mobileMenu .m_content > li:nth-child(3) ul{
+    width: 100%;
+  }
+  #mobileMenu .m_content > li:nth-child(4){
+    height: 50px;
+    line-height: 50px;
+    width: 100%;
+    padding: 0 7.5%;
+    box-sizing: border-box;
+    border-top: 1px solid #ccc;
+    background: #eaeaea;
+  }
+  #mobileMenu .m_content > li:nth-child(4) p{
+    display: flex;
+    justify-content: space-between;
+  }
+  #mobileMenu .m_content > li:nth-child(4) p a:last-child:before{
+    background: url(img/exit.png);content: '';display: inline-block;width: 13px;height: 13px;background-size: 100%;background-repeat: no-repeat;position: relative;top: 2px;right: 2px;
+  }
+
+
 .activeHead {
   background: #fff !important;
   color: #000;

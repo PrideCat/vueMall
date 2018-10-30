@@ -5,6 +5,7 @@ const getters = {
     userInfo: state => state.app.userInfo,
     userStorage: state => state.app.userStorage,
     cartsLen: state => state.app.cartsLen,
+    isMobile: state => state.app.isMobile,
 }
 
 export default getters
