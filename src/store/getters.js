@@ -6,6 +6,7 @@ const getters = {
     userStorage: state => state.app.userStorage,
     cartsLen: state => state.app.cartsLen,
     isMobile: state => state.app.isMobile,
+    mobileMenuIsShow: state => state.app.mobileMenuIsShow,
 }
 
 export default getters

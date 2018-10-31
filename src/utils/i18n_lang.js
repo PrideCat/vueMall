@@ -39,9 +39,9 @@ const lang = {
     '首頁': ['Home'],
     '全部產品': ['All Products'],
     '輸入您想要搜索的產品': ['Enter the product you want to search for'],
-    '搜索': ['Search For'],
-    '查看分類': ['View Classification'],
-    '加入購物車': ['add to Shopping Cart'],
+    '搜索': ['Search'],
+    '查看分類': ['Look Over'],
+    '加入購物車': ['Add To Cart'],
     '了解詳情': ['Learn More'],
     '數量': ['Quantity'],
     '立即購買': ['Buy Now'],
@@ -80,10 +80,10 @@ const lang = {
     '全選': ['Select All'],
     '商品': ['Commodity'],
     '單價': ['Unit Price'],
-    '總額': ['Lump Sum'],
+    '總額': ['Total'],
     '刪除選擇商品': ['Delete selected item'],
     '清空購物車': ['Empty shopping cart'],
-    '去結賬': ['Go to checkout'],
+    '去結賬': ['Go To Pay'],
     '相關產品推介': ['Related product introduction'],
     '填寫并核對訂單信息': ['Fill in and check the order information'],
     '收貨人信息': ['Recipient Information'],
@@ -136,7 +136,8 @@ const lang = {
     '請先充值': ['please recharge first'],
     '複製鏈接': ['Copy Link'],
     '備註信息': ['Remarks'],
-    '餘額不足，請選擇其他支付方式': ['Insufficient balance, please choose another payment method']
+    '餘額不足，請選擇其他支付方式': ['Insufficient balance, please choose another payment method'],
+    '未登錄': ['Not Logged In']
 }
 
 const messages = {

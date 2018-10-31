@@ -38,6 +38,53 @@ export default {
         .b_head1.activeHead{background: #fff;margin-bottom:0;}
         .b_head1.activeHead img{background: #4883ad;}
         .b_head1.activeHead span svg path{fill:#4883ad;}
+        .w1200{width:100% !important;}
+        .main .m_content .c_body .b_breadCrumbs{padding:0 10px;}
+        .w1200 .date{display:none;}
+        .w1200 .content{width:100%;padding:0 10px;}
+        #product .h_pic,#products .h_pic{width: 200%;margin: 0 -50%;}
+        #product .h_pic img,#products .h_pic img{width: 100%;}
+        #product,#products{margin-top: -39px !important;}
+        #product.main .m_body ul li{margin:0 0 50px;padding:0 10px;}
+        #product.main .m_body ul li img{width:100%;height:50vw;}
+        #products.main .m_head .h_search{padding:0 10px;}
+        #products.main .m_head .h_search p{width: 22vw;}
+        #products.main .m_head .h_search p:first-child input{border:1px solid #f1f1f1;}
+        #products.main .m_body ul{justify-content: space-around;}
+        #products.main .m_body ul li{width:47%;margin:0 0 20px;}
+        #products.main .m_body ul li img{width: 85%;margin: 10px auto 0;height: 40vw;}
+        #products.main .m_body ul li p:nth-child(2){margin-top:15px;}
+        #products.main .m_body ul li p:nth-child(3){margin:10px 0 15px;}
+        #products.main .m_body ul li p:last-child{padding:10px 0 15px;}
+        #productInfo{padding: 0 10px;box-sizing: border-box;}
+        #productInfo .m_head{flex-wrap: wrap;}
+        #productInfo .m_head .h_pic div:last-child{display:none;}
+        #productInfo .m_head .h_pic div:first-child img{width:100%;height:auto;}
+        #productInfo .m_head .h_info{margin-left:0 !important;}
+        #productInfo .m_head .h_info .i_content .c_inputBox{flex-wrap: wrap;justify-content: center;}
+        #productInfo .m_head .h_info .i_content .c_inputBox>div{margin-right: 0px !important;margin-bottom:15px;}
+        #productInfo .m_head .h_info .i_content .c_psTxt{flex-wrap: wrap;margin-bottom: 0px !important;}
+        #productInfo .m_head .h_info .i_content .c_psTxt p:first-child{margin-bottom:10px;}
+        .i_col > p:first-child,.i_col > p:last-child{width:10vw !important;}
+        .i_col > p:nth-child(3){display:none;}
+        .i_col > p:nth-child(4){width:10vw !important;}
+        .i_col > p:nth-child(5){width:20vw !important;}
+        .i_list .i_col p input{width:100% !important;}
+        .i_list .i_col p img{width:20vw !important;height:20vw !important;margin-right:0 !important;}
+        .i_list .i_col p img+span{margin:4px 2vw !important;}
+        #shoppingCart .s_body div p:first-child a:last-child,#shoppingCart .s_body span.s12{display:none;}
+        #payment textarea{border: 1px solid #f1f1f1;}
+        #payment h2{padding-left:10px;}
+        #payment .total{padding-right:10px;}
+        #payment .submit{padding-right:10px;padding-bottom:50px;}
+        #auth .m_body ul li[data-v-9040f476]{width:100%;padding:0 10px;}
+        #auth .m_body ul li img[data-v-9040f476]{width:100%;height:50vw;}
+        #joinUs .w1200>div>img{width:100%;}
+        #joinUs .companyInfo{padding:0 10px;}
+        #messageBoard .qAndA{padding: 0 10px;}
+        #messageBoard .mesBox{padding: 0 10px;}
+        #messageBoard .mesBox > div > div > i{margin-left: .5em;margin-right: .5em;}
+        #messageBoard .submit{margin: 0 10px 50px;}
       </style>`;
     return { isMobile: false, styleDom, maxMobileWidth: 1024 };
   },

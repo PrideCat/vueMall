@@ -68,6 +68,7 @@ export default {
   line-height: 38px;
   border-radius: 3px;
   border: 1px solid #4ca9cd;
+  white-space:nowrap;
 }
 .main .m_body ul li:hover p:last-child b {
   background: #4ca9cd;

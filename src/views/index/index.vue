@@ -64,23 +64,37 @@
         </div>
         <div :class="`b_head1 ${$route.name==='home'?'':'activeHead'}`" v-if="isMobile">
           <img :src="menu.item[3].src">
-          <span class="posct">
-            <svg viewBox="0 0 1214 1024" width="23.7" height="20"><path d="M890.88 93.090909h-837.818182a46.545455 46.545455 0 0 1 0-93.090909h837.818182a46.545455 46.545455 0 1 1 0 93.090909zM1168.290909 558.545455h-1117.090909a46.545455 46.545455 0 1 1 0-93.09091h1117.090909a46.545455 46.545455 0 0 1 0 93.09091zM584.610909 1024H46.545455a46.545455 46.545455 0 0 1 0-93.090909h538.065454a46.545455 46.545455 0 0 1 0 93.090909z"/></svg>
+          <span class="posct" @click="showMobileMenu">
+            <svg viewBox="0 0 1214 1024" width="23.7" height="20">
+              <path d="M890.88 93.090909h-837.818182a46.545455 46.545455 0 0 1 0-93.090909h837.818182a46.545455 46.545455 0 1 1 0 93.090909zM1168.290909 558.545455h-1117.090909a46.545455 46.545455 0 1 1 0-93.09091h1117.090909a46.545455 46.545455 0 0 1 0 93.09091zM584.610909 1024H46.545455a46.545455 46.545455 0 0 1 0-93.090909h538.065454a46.545455 46.545455 0 0 1 0 93.090909z" />
+            </svg>
           </span>
         </div>
-        <div id="mobileMenu" class="show" >
+        <div id="mobileMenu" class="show" v-show="mobileMenuIsShow" @click="hideMobileMenu">
           <ul class="m_content" @click.stop="">
-            <li><p><i >×</i></p></li>
+            <li>
+              <p><i @click="hideMobileMenu">×</i></p>
+            </li>
             <li>
               <ol>
-                <li><img src="img/avatar.png" alt=""></li>
-                <li>userInfo.nickname</li>
-                <li>userInfo.level</li>
+                <li><img src="./img/avatar.png" alt=""></li>
+                <li v-if="userInfo">{{userInfo.nickname}}</li>
+                <li v-else @click="login">{{$t("未登錄")}}</li>
               </ol>
             <li>
-            
+              <ul>
+                <li v-for="(item,index) in mobileMenu.item" :key="index">
+                  <a href="javascript:void(0);" @click="toMember" v-if="item.src=='/'">{{$t(item.label)}}</a>
+                  <router-link :to="item.src" v-else>{{$t(item.label)}}</router-link>
+                </li>
+              </ul>
             </li>
-            <li><p><a>lang[lang.lang].en76</a><a>lang[lang.lang].en49</a></p></li>
+            <li>
+              <p><a><select v-model="lang">
+                  <option value="zh">{{$t("繁體中文")}}</option>
+                  <option value="en">{{$t("英文")}}</option>
+                </select></a><a @click="signOut">{{$t("退出登錄")}}</a></p>
+            </li>
           </ul>
         </div>
         <div class="b_breadCrumbs" v-if="breadCrumbs.length">
@@ -111,13 +125,13 @@
                   <div>
                     <img src="./img/icon.png">
                   </div>
-                    <div class="c3">
-                      <p>{{$t("本站查詢和聯繫我們")}}</p>
-                      <p>whatapps: 9503-2910</p>
-                      <p>facebook: balabal</p>
-                      <p>{{$t("微信服務號")}}: 0900232</p>
-                      <p>{{$t("週一至週六")}}：10:30 -- 20:00</p>
-                    </div>
+                  <div class="c3">
+                    <p>{{$t("本站查詢和聯繫我們")}}</p>
+                    <p>whatapps: 9503-2910</p>
+                    <p>facebook: balabal</p>
+                    <p>{{$t("微信服務號")}}: 0900232</p>
+                    <p>{{$t("週一至週六")}}：10:30 -- 20:00</p>
+                  </div>
                 </li>
                 <li>
                   <p class="s18 c3">{{$t("新手上路")}}</p>
@@ -217,6 +231,55 @@ export default {
             label: "加入我們"
           }
         ]
+      },
+      mobileMenu: {
+        index: 0,
+        item: [
+          {
+            src: "/home",
+            label: "首頁"
+          },
+          {
+            src: "/news",
+            label: "最新資訊"
+          },
+          {
+            src: "/company",
+            label: "公司事件"
+          },
+          {
+            src: "/care",
+            label: "關愛社會"
+          },
+          {
+            src: "/product",
+            label: "產品"
+          },
+          {
+            src: "/collection",
+            label: "我的收藏"
+          },
+          {
+            src: "/",
+            label: "會員中心"
+          },
+          {
+            src: "/auth",
+            label: "認證"
+          },
+          {
+            src: "/joinUs",
+            label: "加入我們"
+          },
+          {
+            src: "/messageBoard",
+            label: "留言板"
+          },
+          {
+            src: "/faq",
+            label: "如何下單"
+          }
+        ]
       }
     };
   },
@@ -247,9 +310,18 @@ export default {
     },
     isMobile() {
       return this.$store.state.app.isMobile;
+    },
+    mobileMenuIsShow() {
+      return this.$store.state.app.mobileMenuIsShow;
     }
   },
   methods: {
+    showMobileMenu() {
+      this.$store.dispatch("setMobileMenuIsShow", 1);
+    },
+    hideMobileMenu() {
+      this.$store.dispatch("setMobileMenuIsShow", 0);
+    },
     toTop() {
       (document.documentElement || document.body).scrollTop = 0;
     },
@@ -306,6 +378,7 @@ export default {
     $route: {
       handler() {
         this.toTop();
+        this.hideMobileMenu();
       },
       deep: true
     }
@@ -322,87 +395,106 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#mobileMenu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.25);
+  transition: all 0.25s;
+}
+#mobileMenu.show {
+  left: 0;
+}
 
-#mobileMenu{
-    position: fixed;
-    top: 0;
-    left: -100%;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, .25);
-    display: none;
-    transition: all .25s;
-  }
-  #mobileMenu.show{
-    left: 0;
-  }
-
-  #mobileMenu .m_content{
-    width: 75% !important;
-    margin: 0;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-  }
-  #mobileMenu .m_content > li:nth-child(1){
-    width: 100%;
-    text-align: right;
-  }
-  #mobileMenu .m_content > li:nth-child(1) p i{
-    font-size: 30px;
-    display: inline-block;
-    margin: 8px 16px;
-  }
-  #mobileMenu .m_content > li:nth-child(2){
-    text-align: center;
-  }
-  #mobileMenu .m_content > li:nth-child(2) ol li:nth-child(1) img{
-    width: 80px;
-    margin-top: -15px;
-  }
-  #mobileMenu .m_content > li:nth-child(2) ol li:nth-child(2){
-    font-size: 18px;
-    font-weight: bold;
-    margin: 15px;
-  }
-  #mobileMenu .m_content > li:nth-child(2) ol li:nth-child(3){
-    background: #e4a751;
-    color: #fff;
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 4px;
-  }
-  #mobileMenu .m_content > li:nth-child(3){
-    flex: 1;
-    margin-top: 30px;
-    width: 100%;
-    max-height: calc(100vh - 265px);
-    background: #eaeaea;
-    overflow: auto;
-  }
-  #mobileMenu .m_content > li:nth-child(3) ul{
-    width: 100%;
-  }
-  #mobileMenu .m_content > li:nth-child(4){
-    height: 50px;
-    line-height: 50px;
-    width: 100%;
-    padding: 0 7.5%;
-    box-sizing: border-box;
-    border-top: 1px solid #ccc;
-    background: #eaeaea;
-  }
-  #mobileMenu .m_content > li:nth-child(4) p{
-    display: flex;
-    justify-content: space-between;
-  }
-  #mobileMenu .m_content > li:nth-child(4) p a:last-child:before{
-    background: url(img/exit.png);content: '';display: inline-block;width: 13px;height: 13px;background-size: 100%;background-repeat: no-repeat;position: relative;top: 2px;right: 2px;
-  }
-
+#mobileMenu .m_content {
+  width: 75% !important;
+  height: 100%;
+  margin: 0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+#mobileMenu .m_content > li:nth-child(1) {
+  width: 100%;
+  text-align: right;
+}
+#mobileMenu .m_content > li:nth-child(1) p i {
+  font-size: 30px;
+  display: inline-block;
+  margin: 8px 16px;
+}
+#mobileMenu .m_content > li:nth-child(2) {
+  text-align: center;
+}
+#mobileMenu .m_content > li:nth-child(2) ol li:nth-child(1) img {
+  width: 80px;
+  margin: -15px auto 0;
+}
+#mobileMenu .m_content > li:nth-child(2) ol li:nth-child(2) {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 15px;
+}
+#mobileMenu .m_content > li:nth-child(2) ol li:nth-child(3) {
+  background: #e4a751;
+  color: #fff;
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+#mobileMenu .m_content > li:nth-child(3) {
+  flex: 1;
+  margin-top: 30px;
+  width: 100%;
+  max-height: calc(100vh - 265px);
+  background: #eaeaea;
+  overflow: auto;
+}
+#mobileMenu .m_content > li:nth-child(3) ul {
+  min-height: 100%;
+  border-top: 1px solid #f1f1f1;
+  box-sizing: border-box;
+  padding: 20px;
+  background: #fff;
+}
+#mobileMenu .m_content > li:nth-child(3) ul li {
+  border-bottom: 1px solid #f1f1f1;
+  line-height: 40px;
+  padding-left: 20px;
+}
+#mobileMenu .m_content > li:nth-child(3) ul li a{
+  display: block;
+}
+#mobileMenu .m_content > li:nth-child(4) {
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
+  padding: 0 7.5%;
+  box-sizing: border-box;
+  border-top: 1px solid #ccc;
+  background: #eaeaea;
+}
+#mobileMenu .m_content > li:nth-child(4) p {
+  display: flex;
+  justify-content: space-between;
+}
+#mobileMenu .m_content > li:nth-child(4) p a:last-child:before {
+  background: url(./img/exit.png);
+  content: "";
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  position: relative;
+  top: 2px;
+  right: 2px;
+}
 
 .activeHead {
   background: #fff !important;

@@ -247,6 +247,7 @@ export default {
   margin-left: 20px;
   padding: 0 20px;
   box-sizing: border-box;
+  white-space: nowrap;
 }
 .s_body > div > div:last-child > p {
   margin: 40px 0 30px;
