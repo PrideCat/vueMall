@@ -127,12 +127,12 @@
           </div>
           <p>{{$t('應付金額')}}：
             <span class="sum">${{total}}</span>
-            <span class="c4 s12" style="margin-left:1em;" v-if="userInfo&&total>userInfo.money">
+            <span class="c4 s12" style="margin-left:1em;" v-if="userInfo&&total>(epSwitch?userInfo.money:userInfo.reward)">
               {{$t('餘額不足，請選擇其他支付方式')}}
               <!-- <a class="c6" href="../member/index.html#/user/recharge">{{$t('請先充值')}}</a> -->
             </span>
           </p>
-          <div class="pwd" v-if="userInfo&&total<=userInfo.money">
+          <div class="pwd" v-if="userInfo&&total<=(epSwitch?userInfo.money:userInfo.reward)">
             <p>{{$t('請輸入您的支付密碼')}}：</p>
             <input type="password" v-model="password" />
             <span @click="pay" v-if="password">{{$t('確定')}}</span>
@@ -281,7 +281,7 @@ export default {
       this.ajax({
         apiName: "pay",
         data: {
-          payWay,
+          payWay:payWay ? 1 : 0,
           orderNumber,
           password
         }
@@ -320,7 +320,6 @@ export default {
     }).then(res => {
       console.log("address", res);
       this.address = res.data.items;
-      this.address = [];
       let index;
       this.address.forEach((v, i) => (v.setting ? (index = i) : ""));
       let defuAddress = this.address.splice(index, 1);

@@ -103,6 +103,7 @@ export default {
     $route: "fetchDate"
   },
   created() {
+    document.title = this.$store.state.app.language == "zh" ? "最新資訊" : "Latest News";
     const todate = new Date();
     this.fetchDate();
   }

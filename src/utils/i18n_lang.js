@@ -117,7 +117,7 @@ const lang = {
     '查看訂單': ['Check Order'],
     '繼續購物': ['Continue Shopping'],
     '相關問答': ['Related questions and answers'],
-    '姓名': ['Name'],
+    '暱稱': ['Nickname'],
     '電話': ['Phone'],
     '郵箱': ['Mailbox'],
     '發送': ['Send'],
@@ -137,7 +137,9 @@ const lang = {
     '複製鏈接': ['Copy Link'],
     '備註信息': ['Remarks'],
     '餘額不足，請選擇其他支付方式': ['Insufficient balance, please choose another payment method'],
-    '未登錄': ['Not Logged In']
+    '未登錄': ['Not Logged In'],
+    '用戶全名': ['User Full Name'],
+    '手機號': ['Phone Number'],
 }
 
 const messages = {

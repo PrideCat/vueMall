@@ -132,6 +132,7 @@ export default {
     }
   },
   created() {
+    document.title = this.$store.state.app.language == "zh" ? "首頁" : "Home";
     const todate = new Date();
     this.bannerStart();
     this.$store.dispatch("setMenuI", 0);

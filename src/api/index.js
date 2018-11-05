@@ -81,7 +81,7 @@ export default {
                                     msg = '密碼錯誤'
                                     break;
                                 case 'less':
-                                    msg = '餘額不足'
+                                    msg = '餘額不足，請選擇其他支付方式'
                                     break;
                             }
                             this.$message.error({

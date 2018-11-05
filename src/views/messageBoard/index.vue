@@ -28,20 +28,23 @@
 				<div>
 					<div>
 						<i></i>
-						<input type="text" :placeholder="$t('姓名')" v-model="data.name">
+						<input type="text" :placeholder="$t('用戶全名')" v-model="data.name" disabled="disabled" style="background:transparent;">
 					</div>
 					<div>
 						<i></i>
-						<input type="text" :placeholder="$t('電話')" v-model="data.mobile">
+						<input type="text" :placeholder="$t('手機號')" v-model="data.mobile">
 					</div>
 					<div>
 						<i></i>
 						<input type="text" :placeholder="$t('郵箱')" v-model="data.email">
 					</div>
 				</div>
-				<textarea v-model="data.content"></textarea>
+				<div class="mesBox1">
+          <p v-if="!userInfo">暫無用戶信息，請先<span @click="login">登錄</span></p>
+          <textarea v-model="data.content" :placeholder="content"></textarea>
+        </div>
 			</div>
-			<span class="submit" @click="addQuestion">{{$t('發送')}}</span>
+			<span class="submit" @click="addQuestion" v-if="userInfo">{{$t('發送')}}</span>
 		</div>
 	</div>
 </template>
@@ -52,6 +55,7 @@ export default {
   data() {
     return {
       items: [],
+      content:"",
       data: {
         name: "",
         mobile: "",
@@ -59,6 +63,14 @@ export default {
         content: ""
       }
     };
+  },
+  computed:{
+    userInfo() {
+      return this.$store.state.app.userInfo;
+    },
+    lang() {
+      return this.$store.state.app.language;
+    }
   },
   methods: {
     init() {
@@ -74,30 +86,77 @@ export default {
       });
     },
     addQuestion() {
-      const data = this.data;
+      const data = JSON.parse(JSON.stringify(this.data));
+      if(!data.content)data.content="留言內容";
       this.ajax({
         apiName: "addQuestion",
         data
       }).then(res => {
         console.log("addQuestion", res);
         this.init();
-        this.data.name = "";
-        this.data.mobile = "";
-        this.data.email = "";
+        // this.data.name = "";
+        // this.data.mobile = "";
+        // this.data.email = "";
         this.data.content = "";
+        this.$message.success({
+          message:
+            this.lang == "zh" ? "留言成功" : "Message success"
+        });
       });
+    },
+    login() {
+      window.sessionStorage.setItem("inMellToLogin", 1);
+      window.location.href = "../member/index.html";
+    },
+    setdata(){
+      if(this.userInfo){
+        this.data.name = this.userInfo.nickname;
+        this.data.mobile = this.userInfo.mobile;
+        this.data.email = this.userInfo.email;
+      }
+    }
+  },
+  watch:{
+    userInfo: {
+      handler() {
+        this.setdata();
+      },
+      deep: true
     }
   },
   created() {
+    this.setdata();
     this.$store.dispatch("setMenuI", 0);
     this.$store.dispatch("setBreadCrumbs", [{ label: "留言板", isI18n: true }]);
-
     this.init();
+    this.content=this.lang=="zh"?"請輸入留言內容":"Please enter the message content";
   }
 };
 </script>
 
 <style scoped>
+.mesBox1{
+  position:relative;
+}
+.mesBox1 p{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  margin: auto;
+  border-radius: 5px;
+  background: rgba(0,0,0,.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.mesBox1 p span{
+  color: #4ca9cd;
+  cursor: pointer;
+}
+
 .w1200 {
   width: 1200px;
   margin: 0 auto;
@@ -225,7 +284,7 @@ export default {
   margin-right: 10px;
 }
 .mesBox > div > div > input {
-  width: calc(100% - 70px);
+  width: calc(100% - 32px);
   height: 100%;
   border: 0;
   outline: medium;
@@ -246,7 +305,7 @@ export default {
   background-size: 16px;
   background-position: 50%;
 }
-.mesBox > textarea {
+.mesBox >div> textarea {
   width: 100%;
   resize: none;
   height: 300px;
