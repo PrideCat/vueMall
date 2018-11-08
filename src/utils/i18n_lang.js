@@ -140,6 +140,9 @@ const lang = {
     '未登錄': ['Not Logged In'],
     '用戶全名': ['User Full Name'],
     '手機號': ['Phone Number'],
+    '免責聲明': ['Disclaimer'],
+    '私隱政策': ['Privacy Policy'],
+    '常見問題': ['Common Problem'],
 }
 
 const messages = {

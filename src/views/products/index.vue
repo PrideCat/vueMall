@@ -88,7 +88,7 @@ export default {
     }
   },
   created() {
-    document.title = this.$store.state.app.language == "zh" ? "全部產品" : "All Products";
+    document.title = this.$store.state.app.language == "zh" ? "產品分類" : "Product Categories";
     const type = this.type;
     let data = this.data;
     let breadCrumbs = [{ label: "全部產品", isI18n: true, src: "/product" }];

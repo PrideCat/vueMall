@@ -43,6 +43,7 @@
 export default {
 	name:'joinUs',
 	created() {
+	    document.title = this.$store.state.app.language == "zh" ? "加入我們" : "Join Us";
 	    this.$store.dispatch("setMenuI", 6);
 	    this.$store.dispatch("setBreadCrumbs", [
 	      { label: "加入我們", isI18n: true }

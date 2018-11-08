@@ -4,7 +4,7 @@
       <div class="b_content">
         <ul class="fbox" :style="`margin-left:${bannerI*-100}%;`">
           <li v-for="(item,index) in banner.lists" :key="index">
-            <img width="1920" :src="item.src">
+            <img width="1920" height="900" :src="item.src">
           </li>
         </ul>
       </div>
@@ -96,9 +96,9 @@ export default {
       banner: {
         index: 0,
         lists: [
-          { src: require("./img/banner1.jpg") },
-          { src: require("./img/banner1.jpg") },
-          { src: require("./img/banner1.jpg") }
+          { src: require("./img/banner2.png") },
+          { src: require("./img/banner2.png") },
+          { src: require("./img/banner2.png") },
         ],
         timer: null,
         timer1: null

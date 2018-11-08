@@ -13,7 +13,7 @@
               </div>
               <div>
                 <ul class="fbox">
-                  <li>
+                  <!-- <li>
                     <router-link to="/faq" tag="a">{{$t("如何下單")}}</router-link>
                     <span class="s12">|</span>
                     <a href="javascript:void(0);">{{$t("如何付款")}}</a>
@@ -21,7 +21,7 @@
                     <a href="javascript:void(0);">{{$t("免責聲明")}}</a>
                     <span class="s12">|</span>
                     <a href="javascript:void(0);">{{$t("隱私政策")}}</a>
-                  </li>
+                  </li> -->
                   <li v-if="userInfo">
                     <span>{{$t('歡迎登錄，')+userInfo.nickname}}</span>
                     <span class="s12">|</span>
@@ -42,7 +42,7 @@
           <div :class="`h_tab maxWidth s18 c1 ${$route.name==='home'?'':'activeHead'}`">
             <ul class="defuWidth fbox f_jc_sb f_si_c">
               <li v-if="index!=4" :class="`posct ${menuI==index?'active':''}`" :style="item.type=='img'?'width:auto;':''" v-for="(item,index) in menu.item" :key="index">
-                <img v-if="item.type=='img'" :src="item.src">
+                <img v-if="item.type=='img'" width="257.5" height="98" style="padding:0 25px;" :src="item.src">
                 <router-link v-else :to="item.src" tag="a">{{$t(item.label)}}</router-link>
                 <ol v-if="index==1">
                   <li>
@@ -135,15 +135,21 @@
                 </li>
                 <li>
                   <p class="s18 c3">{{$t("新手上路")}}</p>
-                  <p>
+                  <!-- <p>
                     <a href="javascript:void(0);">{{$t("如何註冊")}}</a>
+                  </p> -->
+                  <p>
+                    <router-link to="/faq?id=0" tag="a">{{$t("免責聲明")}}</router-link>
                   </p>
                   <p>
-                    <router-link to="/faq" tag="a">{{$t("如何下單")}}</router-link>
+                    <router-link to="/faq?id=1" tag="a">{{$t("私隱政策")}}</router-link>
                   </p>
                   <p>
+                    <router-link to="/faq?id=2" tag="a">{{$t("常見問題")}}</router-link>
+                  </p>
+                  <!-- <p>
                     <a href="javascript:void(0);">{{$t("如何付款")}}</a>
-                  </p>
+                  </p> -->
                 </li>
                 <li>
                   <p class="s18 c3">{{$t("最新資訊")}}</p>
@@ -159,12 +165,12 @@
                 </li>
                 <li>
                   <p class="s18 c3">{{$t("關注我們")}}</p>
-                  <p>
+                  <!-- <p>
                     <a href="javascript:void(0);">{{$t("商店簡介")}}</a>
                   </p>
                   <p>
                     <a href="javascript:void(0);">{{$t("公司介紹")}}</a>
-                  </p>
+                  </p> -->
                   <p>
                     <router-link to="/messageBoard" tag="a">{{$t("留言板")}}</router-link>
                   </p>
@@ -276,8 +282,16 @@ export default {
             label: "留言板"
           },
           {
-            src: "/faq",
-            label: "如何下單"
+            src: "/faq?id=0",
+            label: "免責聲明"
+          },
+          {
+            src: "/faq?id=1",
+            label: "私隱政策"
+          },
+          {
+            src: "/faq?id=2",
+            label: "常見問題"
           }
         ]
       }

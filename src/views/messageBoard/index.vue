@@ -125,6 +125,7 @@ export default {
     }
   },
   created() {
+    document.title = this.$store.state.app.language == "zh" ? "留言板" : "Message Board";
     this.setdata();
     this.$store.dispatch("setMenuI", 0);
     this.$store.dispatch("setBreadCrumbs", [{ label: "留言板", isI18n: true }]);

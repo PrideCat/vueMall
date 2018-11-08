@@ -245,6 +245,7 @@ export default {
     this.qrcode();
   },
   created() {
+    document.title = this.$store.state.app.language == "zh" ? "產品詳情" : "Product Details";
     let type = this.$route.query.type;
     const id = this.$route.query.id;
     let breadCrumbs = [{ label: "全部產品", isI18n: true, src: "/product" }];

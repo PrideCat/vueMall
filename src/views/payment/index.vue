@@ -305,6 +305,7 @@ export default {
     }
   },
   created() {
+    document.title = this.$store.state.app.language == "zh" ? "支付" : "Pay";
     let items = [];
     this.$store.dispatch("setMenuI", 2);
     this.$store.dispatch("setBreadCrumbs", [

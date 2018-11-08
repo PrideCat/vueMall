@@ -32,7 +32,7 @@ export default {
         .main .m_items:last-child .defuItemBox ul{flex-wrap:nowrap !important;}
         .defuTitle p:nth-child(3){right: -10vw !important;top: -10vw !important;}
         .b_head1{background: rgba(0,0,0,.3);position: relative;top: 0;z-index: 1;width: 100%;height: 50px;margin-bottom: -50px;}
-        .b_head1 img{height: 50px;margin: 0 auto;}
+        .b_head1 img{height: 40px;margin: 0 auto;padding: 5px 0;}
         .b_head1 span{position:absolute;top:0;bottom:0;left:10px;}
         .b_head1 span svg path{fill:#fff;}
         .b_head1.activeHead{background: #fff;margin-bottom:0;}

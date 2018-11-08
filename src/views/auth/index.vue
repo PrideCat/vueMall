@@ -1,33 +1,23 @@
 <template>
   <div class="main">
-    <!-- <div class="m_head defuWidth">
-      <div class="h_pic">
-        <img src="./img/banner1.jpg">
-      </div>
-      <div class="h_search fbox">
-        <p class="fbox flex">
-          <input class="flex s16" type="text" :placeholder="$t('輸入您想要搜索的產品')" v-model="searchTxt">
-        </p>
-        <p class="b5 c1 fbox">
-          <a class="flex posct s18" href="javascript:void(0);">{{$t("搜索")}}</a>
-        </p>
-      </div>
-    </div> -->
     <div class="m_body">
       <ul class="defuWidth fbox f_jc_sb">
-        <li v-for="(item,index) in $store.state.app.productCategories" :key="index">
-          <p @click="show()"><img src="./img/banner1.jpg"></p>
+        <li v-for="(item,index) in items" :key="index">
+          <p @click="show(index)"><img :src="item.src"></p>
           <p class="fbox f_jc_sb f_si_c">
-            <span class="c3 s22">{{$t(item.name)}}</span>
-            <!-- <router-link class="s16 c6 b1" :to="`/products?type=${item.type}`" tag="a">{{$t("查看分類")}}></router-link> -->
+            <span class="c3 s22">
+              <!-- {{$t(item.name)}} -->
+            </span>
           </p>
-          <p class="des">你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗</p>
+          <p class="des">
+            <!-- 你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗你好吗 -->
+          </p>
           <p></p>
         </li>
       </ul>
     </div>
     <div :class="this.switch?'position':'position hide'" @click="hide()">
-      <div @click.stop><img src="./img/banner1.jpg"></div>
+      <div @click.stop><img :src="items[itemI].src"></div>
     </div>
   </div>
 </template>
@@ -38,7 +28,22 @@ export default {
   data() {
     return {
       searchTxt: "",
-      switch: 0 //查看大图的开关
+      switch: 0, //查看大图的开关
+      itemI:0,
+      items:[
+        {name:"1",src:require("./img/1.jpeg")},
+        {name:"kmar",src:require("./img/2.jpeg")},
+        {name:"發明專利證書",src:require("./img/3.jpeg")},
+        {name:"certificate",src:require("./img/4.jpeg")},
+        {name:"特許證",src:require("./img/5.jpeg")},
+        {name:"6",src:require("./img/6.jpeg")},
+        {name:"the united states of amenica",src:require("./img/7.jpeg")},
+        {name:"excellent korean technology",src:require("./img/8.jpeg")},
+        {name:"certificate of inno-biz",src:require("./img/9.jpg")},
+        {name:"certificate",src:require("./img/10.jpg")},
+        {name:"ctfa",src:require("./img/11.jpg")},
+        {name:"12",src:require("./img/12.jpg")},
+      ]
     };
   },
   computed: {},
@@ -46,11 +51,13 @@ export default {
     hide() {
       this.switch = 0;
     },
-    show() {
+    show(i) {
       this.switch = 1;
+      this.itemI = i;
     }
   },
   created() {
+    document.title = this.$store.state.app.language == "zh" ? "認證" : "Certification";
     this.$store.dispatch("setMenuI", 5);
     this.$store.dispatch("setBreadCrumbs", [
       { label: "認證", isI18n: true }

@@ -73,6 +73,7 @@ export default {
     $route: "fetchDate"
   },
   created() {
+    document.title = this.$store.state.app.language == "zh" ? "資訊詳情" : "Information Details";
     console.log(this.itemInfo);
     this.fetchDate();
   }
