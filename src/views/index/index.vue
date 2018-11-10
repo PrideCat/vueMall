@@ -126,11 +126,15 @@
                     <img src="./img/icon.png">
                   </div>
                   <div class="c3">
-                    <p>{{$t("本站查詢和聯繫我們")}}</p>
+                    <!-- <p>{{$t("本站查詢和聯繫我們")}}</p>
                     <p>whatapps: 9503-2910</p>
                     <p>facebook: balabal</p>
                     <p>{{$t("微信服務號")}}: 0900232</p>
-                    <p>{{$t("週一至週六")}}：10:30 -- 20:00</p>
+                    <p>{{$t("週一至週六")}}：10:30 -- 20:00</p> -->
+                    <p>Facebook: Headwind International Group Limited</p>
+                    <p>{{$t('微信')}}: headwind37430668</p>
+                    <p>{{$t('週一至週五')}}: 10:00a.m.-6:00 p.m.</p>
+                    <p>{{$t('週六')}} : 10:00 a.m.- 1:00p.m.</p>
                   </div>
                 </li>
                 <li>
@@ -177,7 +181,7 @@
                 </li>
                 <li>
                   <p class="s18 c3">{{$t("微信服務號")}}</p>
-                  <p><img src="./img/QRcode.jpg"></p>
+                  <p><img width="175" src="./img/QRcode.jpg"></p>
                 </li>
               </ol>
             </li>

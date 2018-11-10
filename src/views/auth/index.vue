@@ -115,17 +115,26 @@ export default {
 }
 .main .m_body ul {
   flex-wrap: wrap;
+  padding-top: 10px;
 }
 .main .m_body ul li {
   margin-bottom: 60px;
-  width: 350px;
+  
+}
+.main .m_body ul li p:first-child{
+width: 350px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 .main .m_body ul li img {
-  width: 350px;
-  height: 400px;
+  width: 100%;
+  /* height: 400px; */
   /*height: 300px;*/
 }
-.main .m_body ul li:hover img {
+.main .m_body ul li:hover p:first-child {
   box-shadow: 0 0 5px 1px #4ca9cd;
 }
 .main .m_body ul li p:last-child {

@@ -143,6 +143,9 @@ const lang = {
     '免責聲明': ['Disclaimer'],
     '私隱政策': ['Privacy Policy'],
     '常見問題': ['Common Problem'],
+    '微信': ['WeChat'],
+    '週一至週五': ['Monday to Friday'],
+    '週六': ['Saturday']
 }
 
 const messages = {
