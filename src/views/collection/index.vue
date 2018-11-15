@@ -89,6 +89,7 @@ export default {
   },
   watch: {},
   created() {
+    document.title = this.$store.state.app.language == "zh" ? "我的收藏" : "My Collection";
     this.$store.dispatch("setMenuI", 2);
     this.$store.dispatch("setBreadCrumbs", [
       { label: "全部產品", isI18n: true, src: "/product" }

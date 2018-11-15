@@ -161,6 +161,7 @@ export default {
     }
   },
   created() {
+    document.title = this.$store.state.app.language == "zh" ? "購物車" : "Shopping Cart";
     this.$store.dispatch("setMenuI", 2);
     this.$store.dispatch("setBreadCrumbs", [
       { label: "全部產品", isI18n: true, src: "/product" }
@@ -247,6 +248,7 @@ export default {
   margin-left: 20px;
   padding: 0 20px;
   box-sizing: border-box;
+  white-space: nowrap;
 }
 .s_body > div > div:last-child > p {
   margin: 40px 0 30px;

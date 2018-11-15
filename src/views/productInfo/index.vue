@@ -15,7 +15,8 @@
         </div>
         <div class="h_info flex">
           <div class="i_txt">
-            <p>{{info.content}}</p>
+            <p v-if="info.content&&info.content.indexOf('<')>-1" v-html="info.content"></p>
+            <pre v-else style="font:inherit;max-width:602px;white-space: pre-line;">{{info.content}}</pre>
             <!-- <p>價值 $1,330</p>
           <p>套裝包括︰</p>
           <p>PLANTSCRIPTION™ 悅肌再生逆齡抗皺精華 30ml</p>
@@ -245,6 +246,7 @@ export default {
     this.qrcode();
   },
   created() {
+    document.title = this.$store.state.app.language == "zh" ? "產品詳情" : "Product Details";
     let type = this.$route.query.type;
     const id = this.$route.query.id;
     let breadCrumbs = [{ label: "全部產品", isI18n: true, src: "/product" }];
@@ -334,7 +336,7 @@ export default {
 }
 .main .m_head .h_pic div:first-child img {
   width: 526px;
-  height: 324px;
+  /* height: 324px; */
 }
 .main .m_head .h_pic div:last-child {
   width: 528px;
@@ -349,9 +351,14 @@ export default {
 .main .m_head .h_pic div:last-child ul li + li {
   margin-left: 20px;
 }
+.main .m_head .h_pic div:last-child ul li{
+  width:98px;height: 98px;display: flex;align-items: center;justify-content: center;border: 1px solid #ccc;
+}
 .main .m_head .h_pic div:last-child ul li img {
-  width: 98px;
-  height: 98px;
+  /* width: 98px;
+  height: 98px; */
+  width: 100%;
+  border:0;
 }
 .main .m_head .h_info {
   margin-left: 70px;

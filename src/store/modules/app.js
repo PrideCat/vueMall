@@ -25,7 +25,8 @@ const app = {
         userInfo: sessionStorage.getItem("userInfoStorage"),
         userStorage: sessionStorage.getItem("userStorage"),
         cartsLen: 0,
-        isMobile: 0
+        isMobile: 0,
+        mobileMenuIsShow: 0
     },
     mutations: {
         SET_LANGUAGE: (state, language) => {
@@ -49,6 +50,9 @@ const app = {
         },
         SET_IS_MOBILE: (state, isMobile) => {
             state.isMobile = isMobile
+        },
+        SET_MOBILE_MENU_IS_SHOW: (state, mobileMenuIsShow) => {
+            state.mobileMenuIsShow = mobileMenuIsShow
         },
     },
     actions: {
@@ -86,6 +90,11 @@ const app = {
             commit
         }, isMobile) {
             commit('SET_IS_MOBILE', isMobile)
+        },
+        setMobileMenuIsShow({
+            commit
+        }, mobileMenuIsShow) {
+            commit('SET_MOBILE_MENU_IS_SHOW', mobileMenuIsShow)
         },
     }
 }

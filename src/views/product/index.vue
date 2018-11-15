@@ -28,6 +28,7 @@ export default {
   computed: {},
   methods: {},
   created() {
+    document.title = this.$store.state.app.language == "zh" ? "產品" : "Product";
     this.$store.dispatch("setMenuI", 2);
     this.$store.dispatch("setBreadCrumbs", [
       { label: "全部產品", isI18n: true }
@@ -68,6 +69,7 @@ export default {
   line-height: 38px;
   border-radius: 3px;
   border: 1px solid #4ca9cd;
+  white-space:nowrap;
 }
 .main .m_body ul li:hover p:last-child b {
   background: #4ca9cd;
