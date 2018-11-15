@@ -6,14 +6,14 @@
 			<div class="companyInfo">
 				<div>
 					<h2>聯繫方式</h2>
-					<p>電話：(852)37430668</p>
-					<p>傳真：(852)37430600</p>
+					<p>電話：(852)3743-0668</p>
+					<p>傳真：(852)3743-0600</p>
 					<p>電郵：info@headwind.hk</p>
 					<p>地址：香港九龍尖沙咀廣東道30號新港中心第一座6樓612室</p>
 				</div>
 				<div style="width: 327px;">
 					<h2>辦公時間：</h2>
-					<p>上午10:00至晚上6:00(星期一至五)</p>
+					<p>上午10:00至下午6:00(星期一至五)</p>
 					<p>上午10:00至下午1:00(星期六)</p>
 					<p>星期日及公眾假期休息</p>
 					<p>顧客服務熱線：(852)3743-0668</p>
@@ -22,8 +22,8 @@
 			<div class="companyInfo" style="border-bottom: 0">
 				<div>
 					<h2>Contact Us</h2>
-					<p>Tel：(852)37430668</p>
-					<p>Fax：(852)37430600</p>
+					<p>Tel：(852)3743-0668</p>
+					<p>Fax：(852)3743-0600</p>
 					<p>E-Mail：info@headwind.hk</p>
 					<p>Address：Suite 612,6/F,Tower 1,Silvercord,30 Canton Road,Tsim Sha Tsui,Kowloon,Hong Kong</p>
 				</div>
@@ -43,6 +43,7 @@
 export default {
 	name:'joinUs',
 	created() {
+	    document.title = this.$store.state.app.language == "zh" ? "加入我們" : "Join Us";
 	    this.$store.dispatch("setMenuI", 6);
 	    this.$store.dispatch("setBreadCrumbs", [
 	      { label: "加入我們", isI18n: true }
