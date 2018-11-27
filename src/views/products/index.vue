@@ -14,7 +14,8 @@
         </div>
       </div>
       <div class="m_body">
-        <ul class="defuWidth fbox ct s18">
+        <p class="c2 ct s18" style="padding-bottom:200px;" v-if="isVip">{{$t(theTxt)}}</p>
+        <ul class="defuWidth fbox ct s18" v-else>
           <li v-for="(item,index) in items" :key="index">
             <router-link class="cursor-p" :to="`/productInfo?type=${type}&id=${item.id}`" tag="p"><img :src="item.pic"></router-link>
               <router-link class="c6 cursor-p" :to="`/productInfo?type=${type}&id=${item.id}`" tag="p">{{item.name}}</router-link>
@@ -49,7 +50,9 @@ export default {
         no: 1,
         size: -1,
         dir: 0
-      }
+      },
+      isVip: false,
+      theTxt: ""
     };
   },
   computed: {
@@ -58,6 +61,9 @@ export default {
     },
     lang() {
       return this.$store.state.app.language;
+    },
+    userInfo() {
+      return this.$store.state.app.userInfo;
     }
   },
   methods: {
@@ -85,10 +91,27 @@ export default {
         console.log(res);
         this.items = res.data.items;
       });
+    },
+    init1() {
+      this.isVip = false;
+      console.log(123213123,this.userInfo.type,this.data.type)
+      if (!this.userInfo) {
+        this.isVip = true;
+        if (this.userInfo.type !== 1 && this.data.type !== 0) {
+          this.theTxt = "當前頁面為會員套餐頁面!";
+        } else if (this.userInfo.type == 1 && this.data.type == 0) {
+          this.theTxt = "當前頁面為會員套餐頁面!";
+        } else {
+          this.isVip = false;
+        }
+      }
     }
   },
   created() {
-    document.title = this.$store.state.app.language == "zh" ? "產品分類" : "Product Categories";
+    document.title =
+      this.$store.state.app.language == "zh"
+        ? "產品分類"
+        : "Product Categories";
     const type = this.type;
     let data = this.data;
     let breadCrumbs = [{ label: "全部產品", isI18n: true, src: "/product" }];
@@ -107,6 +130,15 @@ export default {
     this.$store.dispatch("setBreadCrumbs", breadCrumbs);
 
     this.init();
+    this.init1();
+  },
+  watch: {
+    userInfo: {
+      handler() {
+        this.init1();
+      },
+      deep: true
+    }
   }
 };
 </script>
