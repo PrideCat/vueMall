@@ -177,7 +177,8 @@ export default {
       orderNumber: "",
       popIsShow: 0,
       deliveryWay: 0,
-      remark: ""
+      remark: "",
+      isRetail: false
     };
   },
   computed: {
@@ -188,7 +189,7 @@ export default {
     },
     total() {
       let money = 0;
-      this.items.forEach(v => (money += v.checked ? v.money * v.amount : 0));
+      this.items.forEach(v => (money += v.checked ? (!this.userInfo || (this.userInfo.type == 0 && v.type == "1")?v.retail:v.money) * v.amount : 0));
       return money;
     },
     cartsLen() {

@@ -146,7 +146,9 @@ const lang = {
     '微信': ['WeChat'],
     '週一至週五': ['Monday to Friday'],
     '週六': ['Saturday'],
-    '電話': ['Tel']
+    '電話': ['Tel'],
+    '當前頁面為會員套餐頁面!': ['The current page is the member package page!'],
+    '當前頁面為零售套餐頁面!': ['The current page is a retail package page!'],
 }
 
 const messages = {

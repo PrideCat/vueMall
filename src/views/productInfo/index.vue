@@ -42,7 +42,7 @@
               </p>
             </div>
             <div class="c_psTxt fbox f_jc_sb f_si_c">
-              <p class="s16 c6 fbox f_si_c">
+              <p class="s16 c6 fbox f_si_c" v-show="!isRetail">
                 <i class="s14">i</i>
                 <b>{{$t('購買此商品可以獲得')+' '+info.integral+' '+$t('積分')}}</b>
               </p>
@@ -122,12 +122,13 @@ export default {
     return {
       info: {},
       details: [],
-      qrcodeIsShow: 0
+      qrcodeIsShow: 0,
+      isRetail: false
     };
   },
   computed: {
     money() {
-      return this.info.money * this.info.amount;
+      return (this.isRetail?this.info.retail:this.info.money) * this.info.amount;
     },
     lang() {
       return this.$store.state.app.language;
@@ -148,6 +149,11 @@ export default {
     }
   },
   methods: {
+    init1(){
+      if(!this.userInfo || (this.userInfo.type == 0 && this.info.type == "1")){
+        this.isRetail = true;
+      }
+    },
     copy() {
       document.getElementById("copy").children[0].select();
       document.execCommand("Copy");
@@ -276,6 +282,15 @@ export default {
           src: `/products?type=${type}`
         });
     });
+    this.init1();
+  },
+  watch: {
+    userInfo: {
+      handler() {
+        this.init1();
+      },
+      deep: true
+    }
   }
 };
 </script>

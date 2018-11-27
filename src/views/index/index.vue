@@ -367,6 +367,7 @@ export default {
         }
       }).then(res => {
         console.log(res);
+        // res.data.type = 0;
         this.$store.dispatch("setUserInfo", res.data);
         console.log(this.userInfo);
         this.ajax({

@@ -4,37 +4,72 @@
       <div class="h_pic">
         <img src="./img/bg.png">
       </div>
-        <div class="h_search fbox">
-          <p class="fbox flex">
-            <input class="flex s16" type="text" :placeholder="$t('輸入您想要搜索的產品')" v-model="data.name">
+      <div class="h_search fbox">
+        <p class="fbox flex">
+          <input
+            class="flex s16"
+            type="text"
+            :placeholder="$t('輸入您想要搜索的產品')"
+            v-model="data.name"
+          >
         </p>
-            <p class="b5 c1 fbox">
-              <a class="flex posct s18" href="javascript:void(0);" @click="init">{{$t("搜索")}}</a>
-            </p>
-        </div>
-      </div>
-      <div class="m_body">
-        <p class="c2 ct s18" style="padding-bottom:200px;" v-if="isVip">{{$t(theTxt)}}</p>
-        <ul class="defuWidth fbox ct s18" v-else>
-          <li v-for="(item,index) in items" :key="index">
-            <router-link class="cursor-p" :to="`/productInfo?type=${type}&id=${item.id}`" tag="p"><img :src="item.pic"></router-link>
-              <router-link class="c6 cursor-p" :to="`/productInfo?type=${type}&id=${item.id}`" tag="p">{{item.name}}</router-link>
-              <p>
-                <span class="c2">HK</span>
-                <span class="c3">${{item.money}}</span>
-              </p>
-              <p>
-                <a class="c1 b5 s16" href="javascript:void(0);" @click="addCart(item.id,1)">
-                  <b>{{$t("加入購物車")}}</b>
-                </a>
-              </p>
-              <p>
-                <router-link class="c6 s14" :to="`/productInfo?type=${type}&id=${item.id}`" tag="a">{{$t("了解詳情")}}>></router-link>
-              </p>
-          </li>
-        </ul>
+        <p class="b5 c1 fbox">
+          <a
+            class="flex posct s18"
+            href="javascript:void(0);"
+            @click="init"
+          >{{$t("搜索")}}</a>
+        </p>
       </div>
     </div>
+    <div class="m_body">
+      <p
+        class="c2 ct s18"
+        style="padding-bottom:200px;"
+        v-if="isVip"
+      >{{$t(theTxt)}}</p>
+      <ul
+        class="defuWidth fbox ct s18"
+        v-else
+      >
+        <li
+          v-for="(item,index) in items"
+          :key="index"
+        >
+          <router-link
+            class="cursor-p"
+            :to="`/productInfo?type=${type}&id=${item.id}`"
+            tag="p"
+          ><img :src="item.pic"></router-link>
+          <router-link
+            class="c6 cursor-p"
+            :to="`/productInfo?type=${type}&id=${item.id}`"
+            tag="p"
+          >{{item.name}}</router-link>
+          <p>
+            <span class="c2">HK</span>
+            <span class="c3">${{isRetail?item.retail:item.money}}</span>
+          </p>
+          <p>
+            <a
+              class="c1 b5 s16"
+              href="javascript:void(0);"
+              @click="addCart(item.id,1)"
+            >
+              <b>{{$t("加入購物車")}}</b>
+            </a>
+          </p>
+          <p>
+            <router-link
+              class="c6 s14"
+              :to="`/productInfo?type=${type}&id=${item.id}`"
+              tag="a"
+            >{{$t("了解詳情")}}>></router-link>
+          </p>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -52,7 +87,8 @@ export default {
         dir: 0
       },
       isVip: false,
-      theTxt: ""
+      theTxt: "當前頁面為會員套餐頁面!",
+      isRetail: false
     };
   },
   computed: {
@@ -94,16 +130,16 @@ export default {
     },
     init1() {
       this.isVip = false;
-      console.log(123213123,this.userInfo.type,this.data.type)
-      if (!this.userInfo) {
+      this.isRetail = false;
+      if (!this.userInfo || (this.userInfo.type !== 1 && this.data.type !== "0")){
         this.isVip = true;
-        if (this.userInfo.type !== 1 && this.data.type !== 0) {
-          this.theTxt = "當前頁面為會員套餐頁面!";
-        } else if (this.userInfo.type == 1 && this.data.type == 0) {
-          this.theTxt = "當前頁面為會員套餐頁面!";
-        } else {
-          this.isVip = false;
-        }
+        this.theTxt = "當前頁面為會員套餐頁面!";
+      }else if(this.userInfo && this.userInfo.type == 1 && this.data.type == "0"){
+        this.isVip = true;
+        this.theTxt = "當前頁面為零售套餐頁面!";
+      }
+      if(!this.userInfo || (this.userInfo.type == 0 && this.data.type == "1")){
+        this.isRetail = true;
       }
     }
   },
