@@ -96,9 +96,9 @@ export default {
       banner: {
         index: 0,
         lists: [
-          { src: require("./img/banner2.png") },
-          { src: require("./img/banner2.png") },
-          { src: require("./img/banner2.png") },
+          { src: require("./img/banner3.png") },
+          { src: require("./img/banner3.png") },
+          { src: require("./img/banner3.png") },
         ],
         timer: null,
         timer1: null

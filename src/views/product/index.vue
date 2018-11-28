@@ -8,7 +8,7 @@
     <div class="m_body">
       <ul class="defuWidth fbox f_jc_sb">
         <router-link class="cursor-p" :to="`/products?type=${item.type}`" tag="li" v-for="(item,index) in $store.state.app.productCategories" :key="index">
-          <p><img src="./img/bg.png"></p>
+          <p><img :src="require(`./img/bg${index}.jpg`)"></p>
           <p class="fbox f_jc_sb f_si_c">
             <span class="c3 s22">{{$t(item.name)}}</span>
             <b class="s16 c6 b1" href="javascript:void(0);">{{$t("查看分類")}}></b>

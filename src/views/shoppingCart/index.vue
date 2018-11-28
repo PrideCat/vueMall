@@ -63,7 +63,7 @@
                 <b>hk${{total}}</b>
               </span>
             </span>
-            <router-link class="s18 b6 c1 posct" :to="`/payment?items=${encodeURIComponent(JSON.stringify(items))}`" tag="a">
+            <router-link class="s18 b6 c1 posct" :to="`/payment?items=${JSON.stringify(items).compile()}`" tag="a">
               <b>{{$t('去結賬')}}</b>
             </router-link>
           </p>

@@ -57,12 +57,12 @@
                 </p>
                 <p class="posct">
                   <span>HK</span>&nbsp;
-                  <span class="c6">${{item.money}}</span>
+                  <span class="c6">${{!userInfo||(userInfo.type===0&&item.type===1)?item.retail:item.money}}</span>
                 </p>
                 <p class="posct">{{item.amount}}</p>
                 <p class="posct">
                   <span>HK</span>&nbsp;
-                  <span class="c6">${{item.money*item.amount}}</span>
+                  <span class="c6">${{(!userInfo||(userInfo.type===0&&item.type===1)?item.retail:item.money)*item.amount}}</span>
                 </p>
                 <p class="posct">
                 </p>
@@ -189,7 +189,7 @@ export default {
     },
     total() {
       let money = 0;
-      this.items.forEach(v => (money += v.checked ? (!this.userInfo || (this.userInfo.type == 0 && v.type == "1")?v.retail:v.money) * v.amount : 0));
+      this.items.forEach(v => (money += v.checked ? (!this.userInfo||(this.userInfo.type===0&&v.type===1?v.retail:v.money)) * v.amount : 0));
       return money;
     },
     cartsLen() {
@@ -327,8 +327,7 @@ export default {
       let defuAddress = this.address.splice(index, 1);
       this.address = defuAddress.concat(this.address);
     });
-
-    this.items = JSON.parse(this.$route.query.items);
+    this.items = JSON.parse(this.$route.query.items.uncompile());
     this.items.forEach(v => (v.checked ? items.push(v) : ""));
     this.items = items;
     console.log(this.items);

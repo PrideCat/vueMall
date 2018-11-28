@@ -139,3 +139,23 @@ Date.timeOfDuration = function(times, format) {
     fields = null
     return format
 }
+
+String.prototype.compile = function() {
+    let code = this;
+    console.log(code);
+    let c = String.fromCharCode(code.charCodeAt(0) + code.length);
+    for (let i = 1; i < code.length; i++) {
+        c += String.fromCharCode(code.charCodeAt(i) + code.charCodeAt(i - 1));
+    }
+    return encodeURIComponent(escape(c));
+}
+
+String.prototype.uncompile = function() {
+    let code = this;
+    code = unescape(code);
+    let c = String.fromCharCode(code.charCodeAt(0) - code.length);
+    for (let i = 1; i < code.length; i++) {
+        c += String.fromCharCode(code.charCodeAt(i) - c.charCodeAt(i - 1));
+    }
+    return c;
+}
