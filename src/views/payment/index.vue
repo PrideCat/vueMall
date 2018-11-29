@@ -312,7 +312,16 @@ export default {
       const contact = theAddress.contact;
       const deliveryWay = this.deliveryWay;
       const remark = this.remark;
-
+      let data = {
+        source,
+        cids,
+        amounts,
+        deliveryWay,
+        address,
+        mobile,
+        contact,
+        remark
+      };
       this.items.forEach(v => {
         if (v.checked) {
           cids.push(v.cid || v.id);
@@ -320,35 +329,28 @@ export default {
         }
       });
       console.log(this.userInfo);
-
+      if(this.$route.query.uid)data.uid=this.$route.query.uid;
       this.ajax({
         apiName: "addOrder",
-        data: {
-          source,
-          cids,
-          amounts,
-          deliveryWay,
-          address,
-          mobile,
-          contact,
-          remark
-        }
+        data
       }).then(res => {
         console.log("addOrder", res);
         this.orderNumber = res.data.orderNumber;
         this.showPis();
 
         let userStorage = JSON.parse(sessionStorage.getItem("userStorage"));
-        if(this.userInfo)this.ajax({
-          apiName: "login",
-          data: {
-            uid: userStorage.uid,
-            password: userStorage.password
-          }
-        }).then(res => {
-          console.log(res);
-          this.$store.dispatch("setUserInfo", res.data);
-        });
+        if(this.userInfo){
+          this.ajax({
+            apiName: "login",
+            data: {
+              uid: userStorage.uid,
+              password: userStorage.password
+            }
+          }).then(res => {
+            console.log(res);
+            this.$store.dispatch("setUserInfo", res.data);
+          });
+        }
       });
     },
     pay() {
@@ -391,6 +393,26 @@ export default {
       }).then(res => {
         console.log(res);
       });
+    },
+    loadAddress(){
+      if(this.userInfo){
+        this.ajax({
+          apiName: "address",
+          data: {
+            no: 1,
+            size: -1
+          }
+        }).then(res => {
+          console.log("address", res);
+          this.address = res.data.items;
+          let index;
+          this.address.forEach((v, i) => (v.setting ? (index = i) : ""));
+          let defuAddress = this.address.splice(index, 1);
+          this.address = defuAddress.concat(this.address);
+        });
+      }else{
+        this.address = [];
+      }
     }
   },
   created() {
@@ -405,29 +427,13 @@ export default {
     this.items = items;
     this.isWeChatPay=!this.userInfo?1:0;
     console.log(this.items);
+    this.loadAddress();
   },
   watch: {
     userInfo:{
       handler(){
         this.isWeChatPay=!this.userInfo?1:0;
-        if(this.userInfo){
-          this.ajax({
-            apiName: "address",
-            data: {
-              no: 1,
-              size: -1
-            }
-          }).then(res => {
-            console.log("address", res);
-            this.address = res.data.items;
-            let index;
-            this.address.forEach((v, i) => (v.setting ? (index = i) : ""));
-            let defuAddress = this.address.splice(index, 1);
-            this.address = defuAddress.concat(this.address);
-          });
-        }else{
-          this.address = [];
-        }
+        this.loadAddress();
       },
       deep:true
     }

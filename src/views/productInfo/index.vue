@@ -244,7 +244,7 @@ export default {
       this.canBuy(_ => {
         this.$router.push({
           path:
-            `/payment?items=${encodeURIComponent(JSON.stringify([this.info]))}${this.$route.query.uid?`&uid=${this.$route.query.uid}`:''}` 
+            `/payment?code=${JSON.stringify([this.info]).compile()}${this.$route.query.uid?`&uid=${this.$route.query.uid}`:''}` 
         });
       },this.info.type===1?1:0);
     }
