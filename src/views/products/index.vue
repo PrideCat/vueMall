@@ -38,12 +38,12 @@
         >
           <router-link
             class="cursor-p"
-            :to="`/productInfo?type=${type}&id=${item.id}`"
+            :to="`/productInfo?type=${type}&id=${item.id+(userInfo&&userInfo.type===1&&item.type===1?`&uid=${userInfo.uid}`:'')}`"
             tag="p"
           ><img :src="item.pic"></router-link>
           <router-link
             class="c6 cursor-p"
-            :to="`/productInfo?type=${type}&id=${item.id}`"
+            :to="`/productInfo?type=${type}&id=${item.id+(userInfo&&userInfo.type===1&&item.type===1?`&uid=${userInfo.uid}`:'')}`"
             tag="p"
           >{{item.name}}</router-link>
           <p>
@@ -134,11 +134,11 @@ export default {
       if (!this.userInfo || (this.userInfo.type !== 1 && this.data.type !== "0")){
         this.isVip = true;
         this.theTxt = "當前頁面為會員套餐頁面!";
-      }else if(this.userInfo && this.userInfo.type == 1 && this.data.type == "0"){
+      }else if(this.userInfo && this.userInfo.type === 1 && this.data.type === "0"){
         this.isVip = true;
         this.theTxt = "當前頁面為零售套餐頁面!";
       }
-      if(!this.userInfo || (this.userInfo.type == 0 && this.data.type == "1")){
+      if(!this.userInfo || (this.userInfo.type === 0 && this.data.type === "1")){
         this.isRetail = true;
       }
     }

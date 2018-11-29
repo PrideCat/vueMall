@@ -205,47 +205,48 @@ export default {
         );
       });
     },
-    canBuy(callback) {
-      if (!this.userInfo) {
+    canBuy(callback,noLogin) {
+      if (!this.userInfo&&!noLogin) {
         window.sessionStorage.setItem("inMellToLogin", 1);
         window.location.href = "../member/index.html";
       }
-      const uType = this.userInfo.type;
-      const uRank = this.userInfo.rank;
-      const pType = this.info.type;
-      let bool;
-      if (pType == 0 && uType == 0) {
-        bool = true;
-      } else if (pType == 1 && uType == 1) {
-        bool = true;
-      } else if (pType == 2 && uRank == 5) {
-        bool = true;
-      } else if (
-        pType == 3 &&
-        (uType == 0 || uRank == 6 || (uRank == 1 && uType == 1))
-      ) {
-        bool = true;
-      } else {
-        bool = false;
-      }
-      if (bool) {
-        if (callback) callback();
-      } else
-        this.$message.error({
-          message:
-            this.lang == "zh"
-              ? "當前套餐無法進行購買"
-              : "Current package cannot be purchased"
-        });
-      return bool;
+      // const uType = this.userInfo.type;
+      // const uRank = this.userInfo.rank;
+      // const pType = this.info.type;
+      // let bool;
+      if(callback)callback();
+      // if (pType == 0 && uType == 0) {
+      //   bool = true;
+      // } else if (pType == 1 && uType == 1) {
+      //   bool = true;
+      // } else if (pType == 2 && uRank == 5) {
+      //   bool = true;
+      // } else if (
+      //   pType == 3 &&
+      //   (uType == 0 || uRank == 6 || (uRank == 1 && uType == 1))
+      // ) {
+      //   bool = true;
+      // } else {
+      //   bool = false;
+      // }
+      // if (bool) {
+      //   if (callback) callback();
+      // } else
+      //   this.$message.error({
+      //     message:
+      //       this.lang == "zh"
+      //         ? "當前套餐無法進行購買"
+      //         : "Current package cannot be purchased"
+      //   });
+      // return bool;
     },
     bug() {
       this.canBuy(_ => {
         this.$router.push({
           path:
-            "/payment?items=" + encodeURIComponent(JSON.stringify([this.info]))
+            `/payment?items=${encodeURIComponent(JSON.stringify([this.info]))}${this.$route.query.uid?`&uid=${this.$route.query.uid}`:''}` 
         });
-      });
+      },this.info.type===1?1:0);
     }
   },
   mounted() {

@@ -34,12 +34,12 @@
               </p>
               <p class="posct">
                 <span>HK</span>&nbsp;
-                <span class="c6">${{item.money}}</span>
+                <span class="c6">${{!userInfo||(userInfo.type===0&&item.type===1)?item.retail:item.money}}</span>
               </p>
               <p class="posct"><input class="c6" type="number" v-model="item.amount" @click.stop></p>
                 <p class="posct">
                   <span>HK</span>&nbsp;
-                  <span class="c6">${{item.money*item.amount}}</span>
+                  <span class="c6">${{(!userInfo||(userInfo.type===0&&item.type===1)?item.retail:item.money)*item.amount}}</span>
                 </p>
                 <p class="posct">
                   <i @click.stop="removeCart(item.id)">×</i>
@@ -63,7 +63,7 @@
                 <b>hk${{total}}</b>
               </span>
             </span>
-            <router-link class="s18 b6 c1 posct" :to="`/payment?items=${JSON.stringify(items).compile()}`" tag="a">
+            <router-link class="s18 b6 c1 posct" :to="`/payment?code=${JSON.stringify(items).compile()}`" tag="a">
               <b>{{$t('去結賬')}}</b>
             </router-link>
           </p>
@@ -110,8 +110,11 @@ export default {
   computed: {
     total() {
       let money = 0;
-      this.items.forEach(v => (money += v.checked ? v.money * v.amount : 0));
+      this.items.forEach(v => (money += v.checked ? (!this.userInfo||(this.userInfo.type===0&&v.type===1)?v.retail:v.money) * v.amount : 0));
       return money;
+    },
+    userInfo() {
+      return this.$store.state.app.userInfo;
     }
   },
   methods: {

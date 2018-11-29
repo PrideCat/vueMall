@@ -9,11 +9,7 @@
           <option value="1">{{$t('物流收貨')}}</option>
         </select>
         <h3>{{$t('收貨人信息')}}</h3>
-        <p v-if="!address.length" class="c7">
-          {{$t('暫無收貨地址信息')}}，
-          <a class="c6" href="../member/index.html#/user/addresses">{{$t('先去添加')}}</a>
-        </p>
-        <ul :class="ulswitch?'info':'info close'">
+        <ul :class="ulswitch?'info':'info close'" v-if="address.length">
           <li v-for="(item,index) in address" :key="index" @click="activeI=index">
             <span :class="activeI==index?'choose':''">
               {{item.contact}}
@@ -26,10 +22,52 @@
             </p>
           </li>
         </ul>
-        <span class="more" @click="ultoggle()" v-if="address.length">
+        <span class="more" @click="ultoggle()" v-if="address.length" style="margin-bottom:10px;">
           {{$t(switchTxt)}}
           <i :class="ulswitch?'open':'close'"></i>
         </span>
+        <ul class="info" v-if="eidtAddressIsShow">
+          <li>
+            <span>
+              <input type="text" v-model="addAddressItem.contact" :placeholder="$t('收貨人')" style="width: 100%;border: 0px;height: 100%;display: block;padding: 0 1em;box-sizing: border-box;">
+            </span>
+            <p class="inlineChildCenter" style="line-height:inherit;">
+              <select v-if="deliveryWay==1" v-model="addAddressItem.seat" placeholder="收貨人" style="height:100%;">
+                <option value="" disabled="disabled">{{$t('所在區域')}}</option>
+                <option>{{$t('中西区')}}</option>
+                <option>{{$t('东区')}}</option>
+                <option>{{$t('南区')}}</option>
+                <option>{{$t('湾仔区')}}</option>
+                <option>{{$t('九龙区')}}</option>
+                <option>{{$t('观塘区')}}</option>
+                <option>{{$t('深水埗区')}}</option>
+                <option>{{$t('黄大仙区')}}</option>
+                <option>{{$t('油尖旺区')}}</option>
+                <option>{{$t('离岛区')}}</option>
+                <option>{{$t('葵青区')}}</option>
+                <option>{{$t('北区')}}</option>
+                <option>{{$t('西贡区')}}</option>
+                <option>{{$t('沙田区')}}</option>
+                <option>{{$t('大埔区')}}</option>
+                <option>{{$t('荃湾区')}}</option>
+                <option>{{$t('屯门区')}}</option>
+                <option>{{$t('元朗区')}}</option>
+              </select>
+              <input v-if="deliveryWay==1" v-model="addAddressItem.address" type="text" :placeholder="$t('收貨地址')" style="width:120px;height:100%;border:1px solid #aaa;box-sizing:border-box;padding:0 1em;">
+              <!-- {{deliveryWay==1?(item.seat||'')+(item.address||''):''}}  -->
+              &nbsp;&nbsp;&nbsp;
+              <span>
+                <input type="text" v-model="addAddressItem.mobile" :placeholder="$t('聯繫號碼')" style="width:120px;height:100%;border:1px solid #aaa;box-sizing:border-box;padding:0 1em;">
+              </span>
+              <em style="background:#4CA9CE;cursor: pointer;" @click="addAddress">{{$t('添加')}}</em>
+            </p>
+          </li>
+        </ul>
+        <p class="c7" style="margin-left: 2%;margin-bottom: 30px;margin-top:10px;cursor: pointer;">
+          <!-- {{$t('暫無收貨地址信息')}}， -->
+          <!-- <a class="c6" href="../member/index.html#/user/addresses">{{$t('手動添加')}}</a> -->
+          <a class="c6" @click="eidtAddressIsShow=true">{{$t('手動添加')}}</a>
+        </p>
         <h3>{{$t('送貨清單')}}</h3>
         <div class="m_item c7">
           <div class="fbox i_title i_col">
@@ -100,7 +138,7 @@
           <span>${{total}}</span>
         </p>
         <p>
-          <span>{{$t('寄送至')}}：{{address[activeI]?(address[activeI].seat+address[activeI].address):''}}</span>
+          <span v-if="deliveryWay==1">{{$t('寄送至')}}：{{address[activeI]?(address[activeI].seat+address[activeI].address):''}}</span>
           <span>{{$t('收貨人')}}：{{address[activeI]?address[activeI].contact:''}}</span>
           <span>{{address[activeI]?address[activeI].mobile:''}}</span>
         </p>
@@ -116,14 +154,19 @@
           {{$t('請選擇您的支付方式')}}
           <i @click="hidePis()"></i>
         </h3>
+        <div style="font-size: 13px;color: rgb(244, 67, 54);text-align: justify;margin-top: 10px;margin-bottom: 20px;padding: 0px 1em;line-height: 1.5;">
+          <p style="margin:0;">{{$t('註冊成為會員享受更低價格和積分獎勵！')}}</p>
+          <p>{{$t('聯繫電話：852)3743-0668')}}</p>
+        </div>
         <div>
           <div class="payType">
-            <span :class="epSwitch?'':'check'" @click="ep1()">EP1</span>
-            <span :class="!epSwitch?'':'check'" @click="ep2()">EP2</span>
+            <span v-if="userInfo" :class="isWeChatPay||epSwitch?'':'check'" @click="ep1();isWeChatPay=0">EP1</span>
+            <span v-if="userInfo" :class="isWeChatPay||!epSwitch?'':'check'" @click="ep2();isWeChatPay=0">EP2</span>
+            <span :class="isWeChatPay?'check':''" @click="isWeChatPay=1">{{$t('微信支付')}}</span>
           </div>
           <div class="payTypeCheck">
             <span>{{$t('支付方式')}}：</span>
-            <span>{{!epSwitch?'EP1':'EP2'}}</span>
+            <span>{{isWeChatPay?$t('微信支付'):(!epSwitch?'EP1':'EP2')}}</span>
           </div>
           <p>{{$t('應付金額')}}：
             <span class="sum">${{total}}</span>
@@ -132,10 +175,14 @@
               <!-- <a class="c6" href="../member/index.html#/user/recharge">{{$t('請先充值')}}</a> -->
             </span>
           </p>
-          <div class="pwd" v-if="userInfo&&total<=(epSwitch?userInfo.reward:userInfo.money)">
-            <p>{{$t('請輸入您的支付密碼')}}：</p>
-            <input type="password" v-model="password" />
-            <span @click="pay" v-if="password">{{$t('確定')}}</span>
+          <div class="pwd" v-if="(isWeChatPay||userInfo&&total<=(epSwitch?userInfo.reward:userInfo.money))">
+            <p v-if="!isWeChatPay">{{$t('請輸入您的支付密碼')}}：</p>
+            <input type="password" v-if="!isWeChatPay" v-model="password" />
+            <span @click="pay" v-if="!QRCode&&(password||isWeChatPay)">{{$t('確定')}}</span>
+          </div>
+          <div v-if="QRCode" style="margin: -50px 0 0 0;text-align: center;">
+            <img :src="QRCode" style="width: 50%;display: inline-block;">
+            <p style="color: #9E9E9E;font-size: 13px;">{{$t('請掃描二維碼進行支付操作！')}}</p>
           </div>
         </div>
       </div>
@@ -178,7 +225,16 @@ export default {
       popIsShow: 0,
       deliveryWay: 0,
       remark: "",
-      isRetail: false
+      isRetail: false,
+      eidtAddressIsShow: false,
+      isWeChatPay:0,
+      addAddressItem:{
+        contact:"",
+        seat:"",
+        address:"",
+        mobile:""
+      },
+      QRCode: ""
     };
   },
   computed: {
@@ -189,7 +245,7 @@ export default {
     },
     total() {
       let money = 0;
-      this.items.forEach(v => (money += v.checked ? (!this.userInfo||(this.userInfo.type===0&&v.type===1?v.retail:v.money)) * v.amount : 0));
+      this.items.forEach(v => (money += v.checked ? (!this.userInfo||(this.userInfo.type===0&&v.type===1)?v.retail:v.money) * v.amount : 0));
       return money;
     },
     cartsLen() {
@@ -203,6 +259,26 @@ export default {
     }
   },
   methods: {
+    addAddress(){
+      if(!this.addAddressItem.contact){
+        this.$message.error(this.lang=="zh"?"未填寫收貨人！":"The consignee is not filled out!");
+        return;
+      }
+      if(!this.addAddressItem.seat&&this.deliveryWay==1){
+        this.$message.error(this.lang=="zh"?"未填寫所在區域！":"Not filled in the area!");
+        return;
+      }
+      if(!this.addAddressItem.address&&this.deliveryWay==1){
+        this.$message.error(this.lang=="zh"?"未填寫收貨地址！":"The delivery address is not filled!");
+        return;
+      }
+      if(!this.addAddressItem.mobile){
+        this.$message.error(this.lang=="zh"?"未填寫聯繫號碼！":"The contact number is not filled out!");
+        return;
+      }
+      if(!this.ulswitch)this.ultoggle();
+      this.address.push(JSON.parse(JSON.stringify(this.addAddressItem)));
+    },
     ultoggle() {
       this.ulswitch = !this.ulswitch;
       this.switchTxt = this.ulswitch ? "收起" : "更多地址";
@@ -224,7 +300,7 @@ export default {
       let cids = [];
       let amounts = [];
       if (!this.address.length) {
-        this.$message.success({
+        this.$message.error({
           message:
             this.lang == "zh" ? "請先添加地址！" : "Please add an address first!"
         });
@@ -263,7 +339,7 @@ export default {
         this.showPis();
 
         let userStorage = JSON.parse(sessionStorage.getItem("userStorage"));
-        this.ajax({
+        if(this.userInfo)this.ajax({
           apiName: "login",
           data: {
             uid: userStorage.uid,
@@ -279,20 +355,32 @@ export default {
       let orderNumber = this.orderNumber;
       let payWay = this.epSwitch;
       let password = this.password;
-      this.ajax({
-        apiName: "pay",
-        data: {
-          payWay:payWay ? 1 : 0,
-          orderNumber,
-          password
-        }
-      }).then(res => {
-        console.log("pay", res);
-        this.hidePis();
-        this.$store.dispatch("setCartsLen", this.cartsLen - this.items.length);
-        // this.items.forEach(v => this.removeCart(v.id));
-        this.popIsShow = 1;
-      });
+      if(this.isWeChatPay){
+        this.ajax({
+          apiName:"weChatPay",
+          data:{
+            orderNumber
+          }
+        }).then(res =>{
+          console.log('weChatPay',res);
+          this.QRCode = res.result;
+        });
+      }else{
+        this.ajax({
+          apiName: "pay",
+          data: {
+            payWay:payWay ? 1 : 0,
+            orderNumber,
+            password
+          }
+        }).then(res => {
+          console.log("pay", res);
+          this.hidePis();
+          this.$store.dispatch("setCartsLen", this.cartsLen - this.items.length);
+          // this.items.forEach(v => this.removeCart(v.id));
+          this.popIsShow = 1;
+        });
+      }
     },
     removeCart(id) {
       this.ajax({
@@ -312,25 +400,37 @@ export default {
     this.$store.dispatch("setBreadCrumbs", [
       { label: "全部產品", isI18n: true, src: "/product" }
     ]);
-
-    this.ajax({
-      apiName: "address",
-      data: {
-        no: 1,
-        size: -1
-      }
-    }).then(res => {
-      console.log("address", res);
-      this.address = res.data.items;
-      let index;
-      this.address.forEach((v, i) => (v.setting ? (index = i) : ""));
-      let defuAddress = this.address.splice(index, 1);
-      this.address = defuAddress.concat(this.address);
-    });
-    this.items = JSON.parse(this.$route.query.items.uncompile());
+    this.items = JSON.parse(this.$route.query.code.uncompile());
     this.items.forEach(v => (v.checked ? items.push(v) : ""));
     this.items = items;
+    this.isWeChatPay=!this.userInfo?1:0;
     console.log(this.items);
+  },
+  watch: {
+    userInfo:{
+      handler(){
+        this.isWeChatPay=!this.userInfo?1:0;
+        if(this.userInfo){
+          this.ajax({
+            apiName: "address",
+            data: {
+              no: 1,
+              size: -1
+            }
+          }).then(res => {
+            console.log("address", res);
+            this.address = res.data.items;
+            let index;
+            this.address.forEach((v, i) => (v.setting ? (index = i) : ""));
+            let defuAddress = this.address.splice(index, 1);
+            this.address = defuAddress.concat(this.address);
+          });
+        }else{
+          this.address = [];
+        }
+      },
+      deep:true
+    }
   }
 };
 </script>
@@ -403,12 +503,18 @@ export default {
   height: 31px;
   overflow: hidden;
 }
-
+.info{
+  margin: 0 -15px;
+  padding: 0 15px;
+}
 .info > li {
   display: flex;
   align-items: center;
-  width: 96%;
-  margin: 0 auto 20px;
+  width: 98%;
+  margin: 0 0 20px -4.25%;
+  overflow: auto;
+  white-space: nowrap;
+  padding: 0 5.25%;
 }
 .info > li:last-child {
   margin-bottom: 0;
@@ -574,7 +680,7 @@ export default {
   align-items: center;
 }
 .payTypeCheck > span:nth-child(2) {
-  width: 80px;
+  min-width: 80px;
   height: 31px;
   text-align: center;
   line-height: 31px;

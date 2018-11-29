@@ -21,7 +21,8 @@ export default {
                     questions: 'question/retrive',
                     addQuestion: 'question/add',
                     removeQuestion: 'question/remove',
-                    signOut: 'auth/out'
+                    signOut: 'auth/out',
+                    weChatPay: 'commodity/order/wechat'
                 }
                 return urljson[name]
             },
@@ -83,10 +84,15 @@ export default {
                                 case 'less':
                                     msg = '餘額不足，請選擇其他支付方式'
                                     break;
+                                default:
+                                    resolve(res.data)
+                                    break;
                             }
-                            this.$message.error({
-                                message: i18n_lang[this.$store.state.app.language][msg]
-                            })
+                            if (msg) {
+                                this.$message.error({
+                                    message: i18n_lang[this.$store.state.app.language][msg]
+                                })
+                            }
                         }
                     }).catch(error => {
                         reject(error)

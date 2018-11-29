@@ -220,6 +220,10 @@ table {
     display: inline-block;
 }
 
+.inlineChildCenter>* {
+    vertical-align: middle;
+}
+
 .maxWidth {
     width: 1920px;
 }

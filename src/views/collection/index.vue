@@ -30,7 +30,7 @@
               </p>
               <p class="posct">
                 <span>HK</span>&nbsp;
-                <span class="c6">${{item.money}}</span>
+                <span class="c6">${{!userInfo||(userInfo.type===0&&item.type===1)?item.retail:item.money}}</span>
               </p>
               <p class="posct">
                 <i @click.stop="removeFavorite(item.id)">×</i>
@@ -61,7 +61,11 @@ export default {
       items: []
     };
   },
-  computed: {},
+  computed: {
+    userInfo() {
+      return this.$store.state.app.userInfo;
+    }
+  },
   methods: {
     removeFavorite(id) {
       this.ajax({
