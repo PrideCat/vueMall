@@ -22,7 +22,11 @@ export default {
                     addQuestion: 'question/add',
                     removeQuestion: 'question/remove',
                     signOut: 'auth/out',
-                    weChatPay: 'commodity/order/wechat'
+                    weChatPay: 'commodity/order/wechat',
+                    orderInfo: 'commodity/order/msg',
+                    reloadOrder: 'commodity/load',
+                    feePay: 'fee/order/pay',
+                    feeWeChatPay: 'fee/order/wechat'
                 }
                 return urljson[name]
             },
@@ -83,6 +87,9 @@ export default {
                                     break;
                                 case 'less':
                                     msg = '餘額不足，請選擇其他支付方式'
+                                    break;
+                                case 'period':
+                                    msg = '年費未到期！'
                                     break;
                                 default:
                                     resolve(res.data)

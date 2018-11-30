@@ -175,7 +175,9 @@ const lang = {
     '註冊成為會員享受更低價格和積分獎勵！': ['Register as a member to enjoy lower prices and reward points!'],
     '聯繫電話：852)3743-0668': ['Contact Number: 852)3743-0668'],
     '微信支付': ['WeChat Pay'],
-    '請掃描二維碼進行支付操作！': ['Please scan the code for payment!']
+    '請掃描二維碼進行支付操作！': ['Please scan the code for payment!'],
+    '購買當前套餐請需支付年費': ['You need to pay an annual fee to purchase the current package.'],
+    '年費未到期！': ['The annual fee has not expired!']
 }
 
 const messages = {
