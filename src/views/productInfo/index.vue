@@ -150,7 +150,7 @@ export default {
   },
   methods: {
     init1(){
-      if(!this.userInfo || (this.userInfo.type == 0 && this.info.type == "1")){
+      if(!this.userInfo || (this.userInfo.type === 0 && (this.info.type === "0"||this.info.type === "1"))){
         this.isRetail = true;
       }
     },

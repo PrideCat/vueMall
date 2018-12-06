@@ -149,7 +149,7 @@ const lang = {
     '電話': ['Tel'],
     '當前頁面為會員套餐頁面!': ['The current page is the member package page!'],
     '當前頁面為零售套餐頁面!': ['The current page is a retail package page!'],
-    '手動添加': ['Manually Add'],
+    '手動填寫': ['Fill In Manually'],
     '中西区': ['Central and Western District'],
     '东区': ['Eastern District'],
     '南区': ['Southern District'],
@@ -175,7 +175,8 @@ const lang = {
     '註冊成為會員享受更低價格和積分獎勵！': ['Register as a member to enjoy lower prices and reward points!'],
     '聯繫電話：852)3743-0668': ['Contact Number: 852)3743-0668'],
     '微信支付': ['WeChat Pay'],
-    '請掃描二維碼進行支付操作！': ['Please scan the code for payment!']
+    '請掃描二維碼進行支付操作！': ['Please scan the code for payment!'],
+    '確認':['Confirm']
 }
 
 const messages = {

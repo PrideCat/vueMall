@@ -131,15 +131,19 @@ export default {
     init1() {
       this.isVip = false;
       this.isRetail = false;
-      if (!this.userInfo || (this.userInfo.type !== 1 && this.data.type !== "0")){
-        this.isVip = true;
-        this.theTxt = "當前頁面為會員套餐頁面!";
-      }else if(this.userInfo && this.userInfo.type === 1 && this.data.type === "0"){
-        this.isVip = true;
-        this.theTxt = "當前頁面為零售套餐頁面!";
-      }
-      if(!this.userInfo || (this.userInfo.type === 0 && this.data.type === "1")){
-        this.isRetail = true;
+      try {
+        if ((!this.userInfo&&this.data.type!=="0") || (this.userInfo.type !== 1 && this.data.type !== "0")){
+          this.isVip = true;
+          this.theTxt = "當前頁面為會員套餐頁面!";
+        }else if(this.userInfo && this.userInfo.type === 1 && this.data.type === "0"){
+          this.isVip = true;
+          this.theTxt = "當前頁面為零售套餐頁面!";
+        }
+        if(!this.userInfo || (this.userInfo.type === 0 && (this.data.type === "0"||this.data.type === "1"))){
+          this.isRetail = true;
+        }
+      } catch (error) {
+        
       }
     }
   },

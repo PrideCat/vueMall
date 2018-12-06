@@ -54,7 +54,7 @@
         <ul class="fbox">
           <li v-for="(item,index) in orders" :key="index">
             <router-link :to="`/productInfo?id=${item.id}`">
-              <p><img width="382" height="250" :src="item.pic"></p>
+              <p><img width="487" height="250" :src="item.pic"></p>
               <p class="c3 s16">{{item.name}}</p>
               <p class="c7 cr">{{item.create_time.toTimes().format("yyyy-MM-dd")}}</p>
             </router-link>
@@ -238,8 +238,8 @@ export default {
   flex-wrap: nowrap;
 }
 .defuItemBox ul li {
-  min-width: 380px;
-  width: 380px;
+  min-width: 487px;
+  width: 487px;
 }
 .defuItemBox ul li + li {
   margin-left: 31px;

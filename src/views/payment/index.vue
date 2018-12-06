@@ -59,14 +59,14 @@
               <span>
                 <input type="text" v-model="addAddressItem.mobile" :placeholder="$t('聯繫號碼')" style="width:120px;height:100%;border:1px solid #aaa;box-sizing:border-box;padding:0 1em;">
               </span>
-              <em style="background:#4CA9CE;cursor: pointer;" @click="addAddress">{{$t('添加')}}</em>
+              <em style="background:#4CA9CE;cursor: pointer;" @click="addAddress">{{$t('確認')}}</em>
             </p>
           </li>
         </ul>
         <p class="c7" style="margin-left: 2%;margin-bottom: 30px;margin-top:10px;cursor: pointer;">
           <!-- {{$t('暫無收貨地址信息')}}， -->
           <!-- <a class="c6" href="../member/index.html#/user/addresses">{{$t('手動添加')}}</a> -->
-          <a class="c6" @click="eidtAddressIsShow=true">{{$t('手動添加')}}</a>
+          <a class="c6" @click="eidtAddressIsShow=true">{{$t('手動填寫')}}</a>
         </p>
         <h3>{{$t('送貨清單')}}</h3>
         <div class="m_item c7">
@@ -234,7 +234,8 @@ export default {
         address:"",
         mobile:""
       },
-      QRCode: ""
+      QRCode: "",
+      hasAddAddress: false
     };
   },
   computed: {
@@ -277,7 +278,14 @@ export default {
         return;
       }
       if(!this.ulswitch)this.ultoggle();
-      this.address.push(JSON.parse(JSON.stringify(this.addAddressItem)));
+      if(!this.hasAddAddress)
+        this.address.push(JSON.parse(JSON.stringify(this.addAddressItem)));
+      else{
+        for(let k in this.addAddressItem){
+          this.address[this.address.length-1][k] = this.addAddressItem[k];
+        }
+      }
+      this.hasAddAddress = true;
     },
     ultoggle() {
       this.ulswitch = !this.ulswitch;
@@ -436,6 +444,14 @@ export default {
         this.loadAddress();
       },
       deep:true
+    },
+    deliveryWay(){
+      if(this.deliveryWay==1){
+        if(this.hasAddAddress){
+          this.address.splice(this.address.length-1);
+          this.hasAddAddress=false;
+        }
+      }
     }
   }
 };
