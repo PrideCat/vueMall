@@ -151,7 +151,7 @@
     <div :class="pis?'position':'position hide'">
       <div>
         <h3>
-          {{$t('請選擇您的支付方式')}}
+          {{$t(this.isFee?'購買當前套餐請需支付年費':'請選擇您的支付方式')}}
           <i @click="hidePis()"></i>
         </h3>
         <div style="font-size: 13px;color: rgb(244, 67, 54);text-align: justify;margin-top: 10px;margin-bottom: 20px;padding: 0px 1em;line-height: 1.5;">
@@ -169,8 +169,8 @@
             <span>{{isWeChatPay?$t('微信支付'):(!epSwitch?'EP1':'EP2')}}</span>
           </div>
           <p>{{$t('應付金額')}}：
-            <span class="sum">${{total}}</span>
-            <span class="c4 s12" style="margin-left:1em;" v-if="userInfo&&total>(epSwitch?userInfo.reward:userInfo.money)">
+            <span class="sum">${{this.isFee?380:total}}</span>
+            <span class="c4 s12" style="margin-left:1em;" v-if="!isWeChatPay&&userInfo&&(this.isFee?380:total)>(epSwitch?userInfo.reward:userInfo.money)">
               {{$t('餘額不足，請選擇其他支付方式')}}
               <!-- <a class="c6" href="../member/index.html#/user/recharge">{{$t('請先充值')}}</a> -->
             </span>
@@ -191,13 +191,13 @@
     <div :class="`position ${popIsShow?'':'hide'}`">
       <div>
         <h3>{{$t('支付狀態')}}
-          <i @click="popIsShow=0"></i>
+          <!-- <i @click="popIsShow=0"></i> -->
         </h3>
         <div>
           <div style="width: 100px;margin:0 auto 10px"><img style="width: 100%" src="./img/success.png"></div>
           <p style="text-align: center;">{{$t('支付成功')}}</p>
           <div class="button">
-            <span>
+            <span v-show="userInfo">
               <a href="../member/index.html#/user/order" style="display:block;">{{$t('查看訂單')}}</a>
             </span>
             <router-link to="/product" tag="span">{{$t('繼續購物')}}</router-link>
@@ -235,7 +235,9 @@ export default {
         mobile:""
       },
       QRCode: "",
-      hasAddAddress: false
+      hasAddAddress: false,
+      timer: null,
+      isFee: false
     };
   },
   computed: {
@@ -293,12 +295,18 @@ export default {
     },
     ep1() {
       this.epSwitch = 0;
+      clearTimeout(this.timer);
+      this.QRCode = '';
     },
     ep2() {
       this.epSwitch = 1;
+      clearTimeout(this.timer);
+      this.QRCode = '';
     },
     hidePis() {
       this.pis = 0;
+      clearTimeout(this.timer);
+      this.QRCode = '';
     },
     showPis() {
       this.pis = 1;
@@ -330,6 +338,7 @@ export default {
         contact,
         remark
       };
+      let ids = [];
       this.items.forEach(v => {
         if (v.checked) {
           cids.push(v.cid || v.id);
@@ -338,57 +347,130 @@ export default {
       });
       console.log(this.userInfo);
       if(this.$route.query.uid)data.uid=this.$route.query.uid;
-      this.ajax({
-        apiName: "addOrder",
-        data
-      }).then(res => {
-        console.log("addOrder", res);
-        this.orderNumber = res.data.orderNumber;
-        this.showPis();
 
-        let userStorage = JSON.parse(sessionStorage.getItem("userStorage"));
-        if(this.userInfo){
-          this.ajax({
-            apiName: "login",
-            data: {
-              uid: userStorage.uid,
-              password: userStorage.password
-            }
-          }).then(res => {
-            console.log(res);
-            this.$store.dispatch("setUserInfo", res.data);
-          });
+      this.items.forEach(v=>{
+        ids.push(v.id);
+      });
+      this.ajax({
+        apiName:"reloadOrder",
+        data:{
+          ids
         }
+      }).then(res =>{
+        console.log('reloadOrder',res);
+        res.data.forEach((v,i)=>{
+          for(let k in v){
+            this.items[i][k] = v[k];
+          }
+        });
+        this.ajax({
+          apiName: "addOrder",
+          data
+        }).then(res => {
+          console.log("addOrder", res);
+          this.orderNumber = res.data.orderNumber;
+          if(res.result=='feeTime')this.isFee=true;
+          this.showPis();
+          if(this.userInfo){
+            let userStorage = JSON.parse(sessionStorage.getItem("userStorage"));
+            this.ajax({
+              apiName: "login",
+              data: {
+                uid: userStorage.uid,
+                password: userStorage.password
+              }
+            }).then(res => {
+              console.log(res);
+              this.$store.dispatch("setUserInfo", res.data);
+            });
+          }
+        });
       });
     },
     pay() {
       let orderNumber = this.orderNumber;
       let payWay = this.epSwitch;
       let password = this.password;
+      let data={};
       if(this.isWeChatPay){
+        if(!this.isFee)data.orderNumber=orderNumber;
         this.ajax({
-          apiName:"weChatPay",
-          data:{
-            orderNumber
-          }
+          apiName:this.isFee?"feeWeChatPay":"weChatPay",
+          data
         }).then(res =>{
           console.log('weChatPay',res);
           this.QRCode = res.result;
+          const viewOrderInfo = _ => {
+            const resFn = res =>{
+              let flag;
+              if(this.isFee){
+                flag = res.data.feeTime.split("-").join(":").split(":").join(" ").split(" ");
+                flag = new Date(flag[0],flag[1],flag[2],flag[3],flag[4],flag[5]).getTime()>new Date().getTime();
+              }else{
+                flag = res.data.trace == 2;
+              }
+              if(flag){
+                if(this.isFee){
+                  this.isFee = false;
+                  this.QRCode = '';
+                }else{
+                  this.hidePis();
+                  if(this.userInfo)this.$store.dispatch("setCartsLen", this.cartsLen - this.items.length);
+                  this.popIsShow = 1;
+                }
+              }else if(this.QRCode){
+                clearTimeout(this.timer);
+                this.timer = setTimeout(_ => {
+                  viewOrderInfo();
+                }, 5000);
+              }
+            };
+            if(this.isFee){
+              let userStorage = JSON.parse(sessionStorage.getItem("userStorage"));
+              this.ajax({
+                apiName: "login",
+                data: {
+                  uid: userStorage.uid,
+                  password: userStorage.password
+                }
+              }).then(res => {
+                console.log(res);
+                resFn(res);
+              });
+            }else{
+              this.ajax({
+                apiName:"orderInfo",
+                data:{
+                  orderNumber
+                }
+              }).then(res =>{
+                console.log(res);
+                // res.data.trace=2;
+                resFn(res);
+              });
+            }
+          };
+          viewOrderInfo();
         });
       }else{
+        data = {
+          payWay:payWay ? 1 : 0,
+          password
+        };
+        if(!this.isFee)data.orderNumber = orderNumber;
         this.ajax({
-          apiName: "pay",
-          data: {
-            payWay:payWay ? 1 : 0,
-            orderNumber,
-            password
-          }
+          apiName: this.isFee?"feePay":"pay",
+          data
         }).then(res => {
           console.log("pay", res);
-          this.hidePis();
-          this.$store.dispatch("setCartsLen", this.cartsLen - this.items.length);
-          // this.items.forEach(v => this.removeCart(v.id));
-          this.popIsShow = 1;
+          if(this.isFee){
+            this.isFee = false;
+          }else{
+            this.hidePis();
+            this.$store.dispatch("setCartsLen", this.cartsLen - this.items.length);
+            // this.items.forEach(v => this.removeCart(v.id));
+            this.popIsShow = 1;
+          }
         });
       }
     },

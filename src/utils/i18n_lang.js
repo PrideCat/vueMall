@@ -176,7 +176,9 @@ const lang = {
     '聯繫電話：852)3743-0668': ['Contact Number: 852)3743-0668'],
     '微信支付': ['WeChat Pay'],
     '請掃描二維碼進行支付操作！': ['Please scan the code for payment!'],
-    '確認':['Confirm']
+    '確認': ['Confirm'],
+    '購買當前套餐請需支付年費': ['You need to pay an annual fee to purchase the current package.'],
+    '年費未到期！': ['The annual fee has not expired!']
 }
 
 const messages = {
