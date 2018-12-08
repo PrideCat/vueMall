@@ -128,6 +128,7 @@ export default {
   },
   computed: {
     money() {
+      console.log(this.isRetail);
       return (this.isRetail?this.info.retail:this.info.money) * this.info.amount;
     },
     lang() {
@@ -150,7 +151,7 @@ export default {
   },
   methods: {
     init1(){
-      if(!this.userInfo || (this.userInfo.type === 0 && (this.info.type === "0"||this.info.type === "1"))){
+      if(!this.userInfo || (this.userInfo && this.userInfo.type === 0 && (this.info.type === 0 || this.info.type === 1))){
         this.isRetail = true;
       }
     },
@@ -287,6 +288,12 @@ export default {
   },
   watch: {
     userInfo: {
+      handler() {
+        this.init1();
+      },
+      deep: true
+    },
+    info: {
       handler() {
         this.init1();
       },

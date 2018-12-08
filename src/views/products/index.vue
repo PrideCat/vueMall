@@ -129,29 +129,27 @@ export default {
       });
     },
     init1() {
+
       this.isVip = false;
       this.isRetail = false;
-      try {
-        if ((!this.userInfo&&this.data.type!=="0") || (this.userInfo.type !== 1 && this.data.type !== "0")){
-          this.isVip = true;
-          this.theTxt = "當前頁面為會員套餐頁面!";
-        }else if(this.userInfo && this.userInfo.type === 1 && this.data.type === "0"){
-          this.isVip = true;
-          this.theTxt = "當前頁面為零售套餐頁面!";
-        }
-        if(!this.userInfo || (this.userInfo.type === 0 && (this.data.type === "0"||this.data.type === "1"))){
-          this.isRetail = true;
-        }
-      } catch (error) {
-        
+
+      if ((!this.userInfo&&this.data.type!=="0") || (this.userInfo && this.userInfo.type !== 1 && this.data.type !== "0")){
+        this.isVip = true;
+        this.theTxt = "當前頁面為會員套餐頁面!";
+      } else if (this.userInfo && this.userInfo.type === 1 && this.data.type === "0"){
+        this.isVip = true;
+        this.theTxt = "當前頁面為零售套餐頁面!";
       }
+
+      if(!this.userInfo || (this.userInfo.type === 0 && (this.data.type === "0"||this.data.type === "1"))){
+        this.isRetail = true;
+      }
+
     }
   },
   created() {
-    document.title =
-      this.$store.state.app.language == "zh"
-        ? "產品分類"
-        : "Product Categories";
+
+    document.title = this.$store.state.app.language == "zh" ? "產品分類" : "Product Categories";
     const type = this.type;
     let data = this.data;
     let breadCrumbs = [{ label: "全部產品", isI18n: true, src: "/product" }];
@@ -171,6 +169,7 @@ export default {
 
     this.init();
     this.init1();
+
   },
   watch: {
     userInfo: {
@@ -238,6 +237,7 @@ export default {
   margin-top: 30px;
 }
 .main .m_body ul li {
+  width: 274px;
   margin-right: 30px;
   border: 1px solid #ccc;
 }

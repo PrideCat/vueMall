@@ -152,7 +152,7 @@
       <div>
         <h3>
           {{$t(this.isFee?'購買當前套餐請需支付年費':'請選擇您的支付方式')}}
-          <i @click="hidePis()"></i>
+          <i v-if="!isFee" @click="hidePis()"></i>
         </h3>
         <div style="font-size: 13px;color: rgb(244, 67, 54);text-align: justify;margin-top: 10px;margin-bottom: 20px;padding: 0px 1em;line-height: 1.5;">
           <p style="margin:0;">{{$t('註冊成為會員享受更低價格和積分獎勵！')}}</p>
@@ -338,7 +338,6 @@ export default {
         contact,
         remark
       };
-      let ids = [];
       this.items.forEach(v => {
         if (v.checked) {
           cids.push(v.cid || v.id);
@@ -348,43 +347,28 @@ export default {
       console.log(this.userInfo);
       if(this.$route.query.uid)data.uid=this.$route.query.uid;
 
-      this.items.forEach(v=>{
-        ids.push(v.id);
-      });
+     
       this.ajax({
-        apiName:"reloadOrder",
-        data:{
-          ids
+        apiName: "addOrder",
+        data
+      }).then(res => {
+        console.log("addOrder", res);
+        this.orderNumber = res.data.orderNumber;
+        if(res.result=='feeTime')this.isFee=true;
+        this.showPis();
+        if(this.userInfo){
+          let userStorage = JSON.parse(sessionStorage.getItem("userStorage"));
+          this.ajax({
+            apiName: "login",
+            data: {
+              uid: userStorage.uid,
+              password: userStorage.password
+            }
+          }).then(res => {
+            console.log(res);
+            this.$store.dispatch("setUserInfo", res.data);
+          });
         }
-      }).then(res =>{
-        console.log('reloadOrder',res);
-        res.data.forEach((v,i)=>{
-          for(let k in v){
-            this.items[i][k] = v[k];
-          }
-        });
-        this.ajax({
-          apiName: "addOrder",
-          data
-        }).then(res => {
-          console.log("addOrder", res);
-          this.orderNumber = res.data.orderNumber;
-          if(res.result=='feeTime')this.isFee=true;
-          this.showPis();
-          if(this.userInfo){
-            let userStorage = JSON.parse(sessionStorage.getItem("userStorage"));
-            this.ajax({
-              apiName: "login",
-              data: {
-                uid: userStorage.uid,
-                password: userStorage.password
-              }
-            }).then(res => {
-              console.log(res);
-              this.$store.dispatch("setUserInfo", res.data);
-            });
-          }
-        });
       });
     },
     pay() {
@@ -405,7 +389,7 @@ export default {
               let flag;
               if(this.isFee){
                 flag = res.data.feeTime.split("-").join(":").split(":").join(" ").split(" ");
-                flag = new Date(flag[0],flag[1],flag[2],flag[3],flag[4],flag[5]).getTime()>new Date().getTime();
+                flag = new Date(flag[0],flag[1]-1,flag[2],flag[3],flag[4],flag[5]).getTime()>new Date().getTime();
               }else{
                 flag = res.data.trace == 2;
               }
@@ -518,6 +502,29 @@ export default {
     this.isWeChatPay=!this.userInfo?1:0;
     console.log(this.items);
     this.loadAddress();
+
+    let ids = [];
+    this.items.forEach(v=>{
+      ids.push(v.cid);
+    });
+    this.ajax({
+      apiName:"reloadOrder",
+      data:{
+        ids
+      }
+    }).then(res =>{
+      console.log('reloadOrder',res);
+      if(res.result=='feeTime'){
+        this.isFee = true;
+        this.showPis();
+      }else if(res.data){
+        res.data.forEach((v,i)=>{
+          for(let k in v){
+            this.items[i][k] = v[k];
+          }
+        });
+      }
+    });
   },
   watch: {
     userInfo:{
