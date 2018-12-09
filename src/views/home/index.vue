@@ -31,7 +31,7 @@
         <ul class="fbox">
           <li v-for="(item,index) in news" :key="index">
             <router-link :to="`/newsDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`">
-              <p><img width="382" height="250" :src="item.pic"></p>
+              <p><img width="311" height="250" :src="item.pic"></p>
               <p class="c6 s16">{{item.name}}</p>
               <p class="c7 cr">{{item.createTime.toTimes().format("yyyy-MM-dd")}}</p>
             </router-link>
@@ -96,9 +96,9 @@ export default {
       banner: {
         index: 0,
         lists: [
-          { src: require("./img/banner3.png") },
-          { src: require("./img/banner3.png") },
-          { src: require("./img/banner3.png") },
+          { src: require("./img/banner3.jpg") },
+          { src: require("./img/banner3.jpg") },
+          { src: require("./img/banner3.jpg") },
         ],
         timer: null,
         timer1: null
@@ -238,8 +238,8 @@ export default {
   flex-wrap: nowrap;
 }
 .defuItemBox ul li {
-  min-width: 487px;
-  width: 487px;
+  min-width: 311px;
+  width: 311px;
 }
 .defuItemBox ul li + li {
   margin-left: 31px;

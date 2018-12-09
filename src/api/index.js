@@ -7,6 +7,7 @@ export default {
                 const urljson = {
                     address: 'address/list',
                     login: 'user/login',
+                    getUserInfo: 'user/msg',
                     commoditys: 'commodity/retrive',
                     commodityInfo: 'commodity/msg',
                     carts: 'cart/retrive',

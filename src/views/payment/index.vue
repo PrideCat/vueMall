@@ -175,7 +175,7 @@
               <!-- <a class="c6" href="../member/index.html#/user/recharge">{{$t('請先充值')}}</a> -->
             </span>
           </p>
-          <div class="pwd" v-if="(isWeChatPay||userInfo&&total<=(epSwitch?userInfo.reward:userInfo.money))">
+          <div class="pwd" v-if="(isWeChatPay||userInfo&&(this.isFee?380:total)<=(epSwitch?userInfo.reward:userInfo.money))">
             <p v-if="!isWeChatPay">{{$t('請輸入您的支付密碼')}}：</p>
             <input type="password" v-if="!isWeChatPay" v-model="password" />
             <span @click="pay" v-if="!QRCode&&(password||isWeChatPay)">{{$t('確定')}}</span>
@@ -309,7 +309,25 @@ export default {
       this.QRCode = '';
     },
     showPis() {
-      this.pis = 1;
+      this.getUserInfo(_=>{
+        this.pis = 1;
+      });
+    },
+    getUserInfo(callback){
+      if(this.userInfo){
+        this.ajax({
+          apiName: "getUserInfo",
+          data: {
+            uid: this.userInfo.uid
+          }
+        }).then(res => {
+          console.log(res);
+          this.$store.dispatch("setUserInfo", res.data);
+          if(callback)callback(res);
+        });
+      }else{
+        callback();
+      }
     },
     addOrder() {
       const source = this.total;
@@ -346,8 +364,6 @@ export default {
       });
       console.log(this.userInfo);
       if(this.$route.query.uid)data.uid=this.$route.query.uid;
-
-     
       this.ajax({
         apiName: "addOrder",
         data
@@ -356,19 +372,7 @@ export default {
         this.orderNumber = res.data.orderNumber;
         if(res.result=='feeTime')this.isFee=true;
         this.showPis();
-        if(this.userInfo){
-          let userStorage = JSON.parse(sessionStorage.getItem("userStorage"));
-          this.ajax({
-            apiName: "login",
-            data: {
-              uid: userStorage.uid,
-              password: userStorage.password
-            }
-          }).then(res => {
-            console.log(res);
-            this.$store.dispatch("setUserInfo", res.data);
-          });
-        }
+        if(this.userInfo)this.getUserInfo();
       });
     },
     pay() {
@@ -397,10 +401,11 @@ export default {
                 if(this.isFee){
                   this.isFee = false;
                   this.QRCode = '';
+                  this.$message.success(this.lang=="zh"?"支付成功，請繼續進行購物!":"Payment is successful, please continue shopping!");
                 }else{
                   this.hidePis();
                   if(this.userInfo)this.$store.dispatch("setCartsLen", this.cartsLen - this.items.length);
-                  this.popIsShow = 1;
+                  // this.popIsShow = 1;
                 }
               }else if(this.QRCode){
                 clearTimeout(this.timer);
@@ -409,30 +414,22 @@ export default {
                 }, 5000);
               }
             };
-            if(this.isFee){
-              let userStorage = JSON.parse(sessionStorage.getItem("userStorage"));
-              this.ajax({
-                apiName: "login",
-                data: {
-                  uid: userStorage.uid,
-                  password: userStorage.password
-                }
-              }).then(res => {
-                console.log(res);
+            this.getUserInfo(res=>{
+              if(this.isFee){
                 resFn(res);
-              });
-            }else{
-              this.ajax({
-                apiName:"orderInfo",
-                data:{
-                  orderNumber
-                }
-              }).then(res =>{
-                console.log(res);
-                // res.data.trace=2;
-                resFn(res);
-              });
-            }
+              }else{
+                this.ajax({
+                  apiName:"orderInfo",
+                  data:{
+                    orderNumber
+                  }
+                }).then(res =>{
+                  console.log(res);
+                  // res.data.trace=2;
+                  resFn(res);
+                });
+              }
+            });
           };
           viewOrderInfo();
         });
@@ -505,7 +502,7 @@ export default {
 
     let ids = [];
     this.items.forEach(v=>{
-      ids.push(v.cid);
+      ids.push(v.cid||v.id);
     });
     this.ajax({
       apiName:"reloadOrder",

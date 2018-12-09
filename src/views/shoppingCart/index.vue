@@ -63,9 +63,9 @@
                 <b>hk${{total}}</b>
               </span>
             </span>
-            <router-link class="s18 b6 c1 posct" :to="`/payment?code=${JSON.stringify(items).compile()}`" tag="a">
+            <a class="s18 b6 c1 posct" href="javascript:void(0);" @click="toPay">
               <b>{{$t('去結賬')}}</b>
-            </router-link>
+            </a>
           </p>
         </div>
         <div style="display:none;">
@@ -115,9 +115,16 @@ export default {
     },
     userInfo() {
       return this.$store.state.app.userInfo;
+    },
+    lang(){
+      return this.$store.state.app.language;
     }
   },
   methods: {
+    toPay(){
+      if(this.total)this.$router.push(`/payment?code=${JSON.stringify(this.items).compile()}`);
+      else this.$message.error(this.lang=="zh"?"請選擇結算商品！":"Please select a billing item!");
+    },
     allCheck() {
       this.isAllChecked = !this.isAllChecked;
       this.items.forEach(v => (v.checked = this.isAllChecked));
