@@ -403,10 +403,10 @@ export default {
                   this.QRCode = '';
                   this.$message.success(this.lang=="zh"?"支付成功，請繼續進行購物!":"Payment is successful, please continue shopping!");
                 }else{
-                  this.hidePis();
                   if(this.userInfo)this.$store.dispatch("setCartsLen", this.cartsLen - this.items.length);
                   // this.popIsShow = 1;
                 }
+                this.hidePis();
               }else if(this.QRCode){
                 clearTimeout(this.timer);
                 this.timer = setTimeout(_ => {
@@ -446,12 +446,13 @@ export default {
           console.log("pay", res);
           if(this.isFee){
             this.isFee = false;
+            this.$message.success(this.lang=="zh"?"支付成功，請繼續進行購物!":"Payment is successful, please continue shopping!");
           }else{
-            this.hidePis();
             this.$store.dispatch("setCartsLen", this.cartsLen - this.items.length);
             // this.items.forEach(v => this.removeCart(v.id));
             this.popIsShow = 1;
           }
+          this.hidePis();
         });
       }
     },
@@ -526,8 +527,8 @@ export default {
   watch: {
     userInfo:{
       handler(){
-        this.isWeChatPay=!this.userInfo?1:0;
-        this.loadAddress();
+        // this.isWeChatPay=!this.userInfo?1:0;
+        // this.loadAddress();
       },
       deep:true
     },

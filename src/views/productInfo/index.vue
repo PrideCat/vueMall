@@ -92,7 +92,7 @@
         <div class="fbox">
           <ul style="width:100%;">
             <li v-for="(item,index) in details" :key="index">
-              <img style="max-width:100%;" :src="item.pic" />
+              <img style="width:100%;" :src="item.pic" />
           </li>
           </ul>
           <!-- <div class="c2">
