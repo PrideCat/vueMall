@@ -30,7 +30,7 @@
               <div class="fbox f_si_c flex">
                 <p class="flex fbox f_jc_sb c6">
                   <span>
-                    <span class="c2">HK:</span>${{money}}
+                    <span class="c2">USD:</span>${{money}}
                   </span>
                   <span>{{$t('數量')}}:</span>
                 </p>

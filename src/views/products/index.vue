@@ -47,7 +47,7 @@
             tag="p"
           >{{item.name}}</router-link>
           <p>
-            <span class="c2">HK</span>
+            <span class="c2">USD</span>
             <span class="c3">${{isRetail?item.retail:item.money}}</span>
           </p>
           <p>

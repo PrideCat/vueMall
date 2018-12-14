@@ -94,12 +94,12 @@
                   </span>
                 </p>
                 <p class="posct">
-                  <span>HK</span>&nbsp;
+                  <span>USD</span>&nbsp;
                   <span class="c6">${{!userInfo||(userInfo.type===0&&item.type===1)?item.retail:item.money}}</span>
                 </p>
                 <p class="posct">{{item.amount}}</p>
                 <p class="posct">
-                  <span>HK</span>&nbsp;
+                  <span>USD</span>&nbsp;
                   <span class="c6">${{(!userInfo||(userInfo.type===0&&item.type===1)?item.retail:item.money)*item.amount}}</span>
                 </p>
                 <p class="posct">

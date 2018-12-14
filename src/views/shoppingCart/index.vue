@@ -33,12 +33,12 @@
                 </span>
               </p>
               <p class="posct">
-                <span>HK</span>&nbsp;
+                <span>USD</span>&nbsp;
                 <span class="c6">${{!userInfo||(userInfo.type===0&&item.type===1)?item.retail:item.money}}</span>
               </p>
               <p class="posct"><input class="c6" type="number" v-model="item.amount" @click.stop></p>
                 <p class="posct">
-                  <span>HK</span>&nbsp;
+                  <span>USD</span>&nbsp;
                   <span class="c6">${{(!userInfo||(userInfo.type===0&&item.type===1)?item.retail:item.money)*item.amount}}</span>
                 </p>
                 <p class="posct">
@@ -60,7 +60,7 @@
             <span>
               <span class="s12">{{$t('總額')}}：</span>
               <span class="s24 c9">
-                <b>hk${{total}}</b>
+                <b>USD${{total}}</b>
               </span>
             </span>
             <a class="s18 b6 c1 posct" href="javascript:void(0);" @click="toPay">
@@ -78,7 +78,7 @@
                 <p><img src="./img/bg.png"></p>
                   <p class="c6">ageLOC® 活顏倍彈源液</p>
                   <p>
-                    <span class="c2">HK</span>
+                    <span class="c2">USD</span>
                     <span class="c3">$2,070.00</span>
                   </p>
                   <p>
