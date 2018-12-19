@@ -9,7 +9,7 @@
           <option value="1">{{$t('物流收貨')}}</option>
         </select>
         <h3>{{$t('收貨人信息')}}</h3>
-        <ul :class="ulswitch?'info':'info close'" v-if="address.length">
+        <ul :class="ulswitch || address.length < 4 ?'info':'info close'" v-if="address.length">
           <li v-for="(item,index) in address" :key="index" @click="activeI=index">
             <span :class="activeI==index?'choose':''">
               {{item.contact}}
@@ -22,11 +22,11 @@
             </p>
           </li>
         </ul>
-        <span class="more" @click="ultoggle()" v-if="address.length" style="margin-bottom:10px;">
+        <span class="more" @click="ultoggle()" v-if="address.length>=4" style="margin-bottom:10px;">
           {{$t(switchTxt)}}
           <i :class="ulswitch?'open':'close'"></i>
         </span>
-        <ul class="info" v-if="eidtAddressIsShow">
+        <ul class="info" style="margin-top:20px;" v-if="eidtAddressIsShow">
           <li>
             <span>
               <input type="text" v-model="addAddressItem.contact" :placeholder="$t('收貨人')" style="width: 100%;border: 0px;height: 100%;display: block;padding: 0 1em;box-sizing: border-box;">
@@ -330,7 +330,8 @@ export default {
       }
     },
     addOrder() {
-      const source = this.total;
+      // const source = this.total;
+      const source = this.$route.query.uid?0:1;
       let cids = [];
       let amounts = [];
       if (!this.address.length) {

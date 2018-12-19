@@ -262,6 +262,11 @@ export default {
 .main .m_body ul li p:nth-child(2) {
   margin-top: 40px;
   text-decoration: underline;
+  height: 48px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 .main .m_body ul li p:nth-child(3) {
   margin: 10px 0 25px;
