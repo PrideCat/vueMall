@@ -31,7 +31,7 @@
         <ul class="fbox">
           <li v-for="(item,index) in news" :key="index">
             <router-link :to="`/newsDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`">
-              <p><img width="311" height="250" :src="item.pic"></p>
+              <p><img :src="item.pic"></p>
               <p class="c6 s16">{{item.name}}</p>
               <p class="c7 cr">{{item.createTime.toTimes().format("yyyy-MM-dd")}}</p>
             </router-link>
@@ -54,7 +54,7 @@
         <ul class="fbox">
           <li v-for="(item,index) in orders" :key="index">
             <router-link :to="`/productInfo?id=${item.id}`">
-              <p><img width="487" height="250" :src="item.pic"></p>
+              <p><img :src="item.pic"></p>
               <p class="c3 s16">{{item.name}}</p>
               <p class="c7 cr">{{item.create_time.toTimes().format("yyyy-MM-dd")}}</p>
             </router-link>
@@ -248,10 +248,19 @@ export default {
   line-height: 25px;
   font-weight: bold;
 }
+.defuItemBox ul li p:first-child{
+  width: 311px;
+  height: 250px;
+  line-height: 250px;
+  text-align: center;
+  margin-bottom: 6px;
+}
 .defuItemBox ul li p:first-child img {
   border: 1px solid #ccc;
-  width: 100%;
-  margin-bottom: 6px;
+  max-width: 100%;
+  max-height: 100%;
+  display: inline-block;
+  vertical-align: middle;
 }
 .defuItemBox ul li p:nth-child(2) {
   height: 25px;
@@ -335,5 +344,11 @@ export default {
 }
 .main .m_items {
   padding-bottom: 32px;
+}
+.main .m_items:last-child .defuItemBox ul li p:first-child{
+  width: auto;
+  height: auto;
+  line-height: inherit;
+  text-align: left;
 }
 </style>

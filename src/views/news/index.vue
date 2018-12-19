@@ -17,7 +17,7 @@
         <div class="flex al-c sp-b">
           <div>
             <p>{{$t('年份索引')}}</p>
-            <p>Vintage Index</p>
+            <p>Year Index</p>
           </div>
           <i class="down"></i>
         </div>

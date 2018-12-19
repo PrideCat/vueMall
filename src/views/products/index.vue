@@ -247,9 +247,17 @@ export default {
 .main .m_body ul li:hover {
   border-color: #4ca9cd;
 }
-.main .m_body ul li img {
+.main .m_body ul li p:first-child{
   width: 274px;
   height: 220px;
+  line-height: 220px;
+  text-align: center;
+}
+.main .m_body ul li img {
+  max-width: 100%;
+  max-height: 100%;
+  display: inline-block;
+  vertical-align: middle;
 }
 .main .m_body ul li p:nth-child(2) {
   margin-top: 40px;

@@ -130,7 +130,8 @@ width: 350px;
   overflow: hidden;
 }
 .main .m_body ul li img {
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
   /* height: 400px; */
   /*height: 300px;*/
 }

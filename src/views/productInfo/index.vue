@@ -380,7 +380,8 @@ export default {
 .main .m_head .h_pic div:last-child ul li img {
   /* width: 98px;
   height: 98px; */
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
   border:0;
 }
 .main .m_head .h_info {

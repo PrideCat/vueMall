@@ -1,5 +1,5 @@
 String.prototype.toTimes = function() {
-    return new Date(this.replace(/\/|\\/g, '-'));
+    return new Date(this.replace(/\/|\\/g, '/'));
 }
 
 /**
