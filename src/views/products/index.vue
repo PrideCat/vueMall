@@ -265,8 +265,10 @@ export default {
   height: 48px;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /*! autoprefixer: on */
 }
 .main .m_body ul li p:nth-child(3) {
   margin: 10px 0 25px;
