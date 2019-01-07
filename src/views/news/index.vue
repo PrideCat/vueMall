@@ -4,11 +4,16 @@
       <div class="content">
         <div v-for="(item,index) in items" :key="index">
           <h3>
-            <i></i>{{$t(item.month+'月')}}</h3>
+            <i></i>
+            {{$t(item.month+'月')}}
+          </h3>
           <ul>
             <li v-for="(items,indexs) in item.children" :key="indexs">
               <span>{{items.createTime.toTimes().format("yyyy-MM-dd")}}</span>
-              <router-link :to="`/${$route.name}Detail?itemInfo=${encodeURIComponent(JSON.stringify(items))}`" tag="p">{{items.name}}</router-link>
+              <router-link
+                :to="`/${$route.name}Detail?itemInfo=${encodeURIComponent(JSON.stringify(items))}`"
+                tag="p"
+              >{{items.name}}</router-link>
             </li>
           </ul>
         </div>
@@ -45,14 +50,15 @@ export default {
   },
   methods: {
     init(type, year) {
+      const data = {
+        type,
+        no: 1,
+        size: -1
+      };
+      if (year) data.year = year;
       this.ajax({
         apiName: "news",
-        data: {
-          type,
-          year,
-          no: 1,
-          size: -1
-        }
+        data
       }).then(res => {
         console.log(res);
 
@@ -94,7 +100,7 @@ export default {
           label = "公司事件";
           break;
       }
-      this.init(type, year || "2018");
+      this.init(type, year);
       this.$store.dispatch("setMenuI", menuI);
       this.$store.dispatch("setBreadCrumbs", [{ label, isI18n: true }]);
     }
@@ -103,7 +109,8 @@ export default {
     $route: "fetchDate"
   },
   created() {
-    document.title = this.$store.state.app.language == "zh" ? "最新資訊" : "Latest News";
+    document.title =
+      this.$store.state.app.language == "zh" ? "最新資訊" : "Latest News";
     const todate = new Date();
     this.fetchDate();
   }

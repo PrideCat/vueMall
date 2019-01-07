@@ -21,7 +21,7 @@
                     <a href="javascript:void(0);">{{$t("免責聲明")}}</a>
                     <span class="s12">|</span>
                     <a href="javascript:void(0);">{{$t("隱私政策")}}</a>
-                  </li> -->
+                  </li>-->
                   <li v-if="userInfo">
                     <span>{{$t('歡迎登錄，')+userInfo.nickname}}</span>
                     <span class="s12">|</span>
@@ -41,8 +41,20 @@
           </div>
           <div :class="`h_tab maxWidth s18 c1 ${$route.name==='home'?'':'activeHead'}`">
             <ul class="defuWidth fbox f_jc_sb f_si_c">
-              <li v-if="index!=4" :class="`posct ${menuI==index?'active':''}`" :style="item.type=='img'?'width:auto;':''" v-for="(item,index) in menu.item" :key="index">
-                <img v-if="item.type=='img'" width="257.5" height="98" style="padding:0 25px;" :src="item.src">
+              <li
+                v-if="index!=4"
+                :class="`posct ${menuI==index?'active':''}`"
+                :style="item.type=='img'?'width:auto;':''"
+                v-for="(item,index) in menu.item"
+                :key="index"
+              >
+                <img
+                  v-if="item.type=='img'"
+                  width="257.5"
+                  height="98"
+                  style="padding:0 25px;"
+                  :src="item.src"
+                >
                 <router-link v-else :to="item.src" tag="a">{{$t(item.label)}}</router-link>
                 <ol v-if="index==1">
                   <li>
@@ -66,34 +78,50 @@
           <img :src="menu.item[3].src">
           <span class="posct" @click="showMobileMenu">
             <svg viewBox="0 0 1214 1024" width="23.7" height="20">
-              <path d="M890.88 93.090909h-837.818182a46.545455 46.545455 0 0 1 0-93.090909h837.818182a46.545455 46.545455 0 1 1 0 93.090909zM1168.290909 558.545455h-1117.090909a46.545455 46.545455 0 1 1 0-93.09091h1117.090909a46.545455 46.545455 0 0 1 0 93.09091zM584.610909 1024H46.545455a46.545455 46.545455 0 0 1 0-93.090909h538.065454a46.545455 46.545455 0 0 1 0 93.090909z" />
+              <path
+                d="M890.88 93.090909h-837.818182a46.545455 46.545455 0 0 1 0-93.090909h837.818182a46.545455 46.545455 0 1 1 0 93.090909zM1168.290909 558.545455h-1117.090909a46.545455 46.545455 0 1 1 0-93.09091h1117.090909a46.545455 46.545455 0 0 1 0 93.09091zM584.610909 1024H46.545455a46.545455 46.545455 0 0 1 0-93.090909h538.065454a46.545455 46.545455 0 0 1 0 93.090909z"
+              ></path>
             </svg>
           </span>
         </div>
         <div id="mobileMenu" class="show" v-show="mobileMenuIsShow" @click="hideMobileMenu">
-          <ul class="m_content" @click.stop="">
+          <ul class="m_content" @click.stop>
             <li>
-              <p><i @click="hideMobileMenu">×</i></p>
+              <p>
+                <i @click="hideMobileMenu">×</i>
+              </p>
             </li>
             <li>
               <ol>
-                <li><img src="./img/avatar.png" alt=""></li>
+                <li>
+                  <img src="./img/avatar.png" alt>
+                </li>
                 <li v-if="userInfo">{{userInfo.nickname}}</li>
                 <li v-else @click="login">{{$t("未登錄")}}</li>
               </ol>
+            </li>
             <li>
               <ul>
                 <li v-for="(item,index) in mobileMenu.item" :key="index">
-                  <a href="javascript:void(0);" @click="toMember" v-if="item.src=='/'">{{$t(item.label)}}</a>
+                  <a
+                    href="javascript:void(0);"
+                    @click="toMember"
+                    v-if="item.src=='/'"
+                  >{{$t(item.label)}}</a>
                   <router-link :to="item.src" v-else>{{$t(item.label)}}</router-link>
                 </li>
               </ul>
             </li>
             <li>
-              <p><a><select v-model="lang">
-                  <option value="zh">{{$t("繁體中文")}}</option>
-                  <option value="en">{{$t("英文")}}</option>
-                </select></a><a @click="signOut">{{$t("退出登錄")}}</a></p>
+              <p>
+                <a>
+                  <select v-model="lang">
+                    <option value="zh">{{$t("繁體中文")}}</option>
+                    <option value="en">{{$t("英文")}}</option>
+                  </select>
+                </a>
+                <a @click="signOut">{{$t("退出登錄")}}</a>
+              </p>
             </li>
           </ul>
         </div>
@@ -102,7 +130,11 @@
             <router-link to="/home" tag="a">{{$t("首頁")}}</router-link>
             <span v-for="(item,index) in breadCrumbs" :key="index">
               <b>></b>
-              <router-link :class="item.src?'':'c7'" :to="item.src?item.src:''" tag="a">{{item.isI18n?$t(item.label):item.label}}</router-link>
+              <router-link
+                :class="item.src?'':'c7'"
+                :to="item.src?item.src:''"
+                tag="a"
+              >{{item.isI18n?$t(item.label):item.label}}</router-link>
             </span>
           </p>
         </div>
@@ -110,10 +142,14 @@
         <div class="b_tools defuWidth">
           <ul>
             <li class="posct b1" v-show="scrollTop>300">
-              <a class="posct" @click="toTop" href="javascript:void(0);"><img src="./img/arrow.png"></a>
+              <a class="posct" @click="toTop" href="javascript:void(0);">
+                <img src="./img/arrow.png">
+              </a>
             </li>
             <li class="posct b6">
-              <router-link to="/shoppingCart" tag="a" class="posct" :data-number="cartsLen||''"><img src="./img/shoppingCart.png"></router-link>
+              <router-link to="/shoppingCart" tag="a" class="posct" :data-number="cartsLen||''">
+                <img src="./img/shoppingCart.png">
+              </router-link>
             </li>
           </ul>
         </div>
@@ -130,16 +166,16 @@
                     <p>whatapps: 9503-2910</p>
                     <p>facebook: balabal</p>
                     <p>{{$t("微信服務號")}}: 0900232</p>
-                    <p>{{$t("週一至週六")}}：10:30 -- 20:00</p> -->
+                    <p>{{$t("週一至週六")}}：10:30 -- 20:00</p>-->
                     <p>Facebook:</p>
                     <span>Headwind International Group Limited</span>
                     <p>{{$t('微信')}}:</p>
                     <span>headwind37430668</span>
-                    <p>{{$t('週一至週五')}}: </p>
-                    <span>10:00a.m.-6:00 p.m.</span>
-                    <p>{{$t('週六')}} : </p>
-                    <span>10:00 a.m.- 1:00p.m.</span>
-                    <p>{{$t('電話')}} : </p>
+                    <p>{{$t('週一至週五')}}:</p>
+                    <span>10:00 - 18:00</span>
+                    <p>{{$t('週六')}} :</p>
+                    <span>10:00 - 13:00</span>
+                    <p>{{$t('電話')}} :</p>
                     <span>(852)3743-0668</span>
                   </div>
                 </li>
@@ -147,7 +183,7 @@
                   <p class="s18 c3">{{$t("新手上路")}}</p>
                   <!-- <p>
                     <a href="javascript:void(0);">{{$t("如何註冊")}}</a>
-                  </p> -->
+                  </p>-->
                   <p>
                     <router-link to="/faq?id=0" tag="a">{{$t("免責聲明")}}</router-link>
                   </p>
@@ -159,7 +195,7 @@
                   </p>
                   <!-- <p>
                     <a href="javascript:void(0);">{{$t("如何付款")}}</a>
-                  </p> -->
+                  </p>-->
                 </li>
                 <li>
                   <p class="s18 c3">{{$t("最新資訊")}}</p>
@@ -180,14 +216,16 @@
                   </p>
                   <p>
                     <a href="javascript:void(0);">{{$t("公司介紹")}}</a>
-                  </p> -->
+                  </p>-->
                   <p>
                     <router-link to="/messageBoard" tag="a">{{$t("留言板")}}</router-link>
                   </p>
                 </li>
                 <li>
                   <p class="s18 c3">{{$t("微信服務號")}}</p>
-                  <p><img width="175" src="./img/QRcode.jpg"></p>
+                  <p>
+                    <img width="175" src="./img/QRcode.jpg">
+                  </p>
                 </li>
               </ol>
             </li>
@@ -195,12 +233,12 @@
               <span>{{$t("友情鏈接")}} ：</span>
               <a href="javascript:void(0);">{{$t("遊民星空")}}</a>
               <a href="javascript:void(0);">{{$t("太平洋網絡")}}</a>
-            </li> -->
+            </li>-->
             <li class="ct">
               <!-- <p>{{$t("广告经营许可证: 430100S003粤ICP备11046297号-4增值电信业务经营许可证: 粤ICP备11046297号")}}</p> -->
               <!-- <p>Copyright 2005~2014 360XH.COM All Rights Reserved</p> -->
               <p>&nbsp;</p>
-              <p>© 2018. Headwind International. All Rights Reserved.</p>
+              <p>© 2019.Headwind International group limited. All Rights Reserved.</p>
             </li>
           </ul>
         </div>
@@ -492,7 +530,7 @@ export default {
   line-height: 40px;
   padding-left: 20px;
 }
-#mobileMenu .m_content > li:nth-child(3) ul li a{
+#mobileMenu .m_content > li:nth-child(3) ul li a {
   display: block;
 }
 #mobileMenu .m_content > li:nth-child(4) {
@@ -675,9 +713,9 @@ export default {
 }
 .main .m_content .c_body .b_foot ul > li:first-child ol li:first-child p {
   /*margin-bottom: 15px;*/
-  font-weight: 600
+  font-weight: 600;
 }
-.main .m_content .c_body .b_foot ul > li:first-child ol li:first-child span{
+.main .m_content .c_body .b_foot ul > li:first-child ol li:first-child span {
   margin-bottom: 10px;
   display: block;
 }
@@ -711,7 +749,7 @@ export default {
   border-bottom: 1px solid #ccc;
   padding-bottom: 20px;
   text-align: center;
-  font-weight: 600
+  font-weight: 600;
 }
 .main .m_content .c_body .b_foot ul > li:first-child ol li:nth-child(n + 2) p {
   margin: 20px 0;

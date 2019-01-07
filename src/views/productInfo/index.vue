@@ -6,96 +6,111 @@
     </div>
     <div class="m_head fbox">
       <div class="h_pic">
-        <div><img :src="info.pic"></div>
-          <div>
-            <ul class="fbox">
-              <li><img :src="info.pic"></li>
-            </ul>
-          </div>
+        <div>
+          <img :src="info.pic">
         </div>
-        <div class="h_info flex">
-          <div class="i_txt">
-            <p v-if="info.content&&info.content.indexOf('<')>-1" v-html="info.content"></p>
-            <pre v-else style="font:inherit;max-width:602px;white-space: pre-line;">{{info.content}}</pre>
-            <!-- <p>價值 $1,330</p>
+        <div>
+          <ul class="fbox">
+            <li>
+              <img :src="info.pic">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="h_info flex">
+        <div class="i_txt">
+          <p v-if="info.content&&info.content.indexOf('<')>-1" v-html="info.content"></p>
+          <pre v-else style="font:inherit;max-width:602px;white-space: pre-line;">{{info.content}}</pre>
+          <!-- <p>價值 $1,330</p>
           <p>套裝包括︰</p>
           <p>PLANTSCRIPTION™ 悅肌再生逆齡抗皺精華 30ml</p>
           <p>PLANTSCRIPTION™ 悅肌再生潔面乳 150ml</p>
           <p>PLANTSCRIPTION™ 悅肌再生緊緻塑顏霜 15ml</p>
           <p>MEGA MUSHROOM 靈芝菇菌抗逆健膚紓緩水 30ml</p>
-          <p>PLANTSCRIPTION™ 悅肌再生眼部修護霜 5ml</p> -->
-          </div>
-          <div class="i_content">
-            <div class="c_inputBox fbox s16 f_jc_sb">
-              <div class="fbox f_si_c flex">
-                <p class="flex fbox f_jc_sb c6">
-                  <span>
-                    <span class="c2">USD:</span>${{money}}
-                  </span>
-                  <span>{{$t('數量')}}:</span>
-                </p>
-                <p><span @click="info.amount--">-</span><input class="ct b5 c1 s16" v-model="info.amount"><span @click="info.amount++">+</span></p>
-              </div>
-              <p class="fbox">
-                <a class="posct c6" href="javascript:void(0);" @click="addCart(info.id,info.amount)">{{$t('加入購物車')}}</a>
-                <a class="posct b5 c1" href="javascript:void(0);" @click="bug()">{{$t('立即購買')}}</a>
+          <p>PLANTSCRIPTION™ 悅肌再生眼部修護霜 5ml</p>-->
+        </div>
+        <div class="i_content">
+          <div class="c_inputBox fbox s16 f_jc_sb">
+            <div class="fbox f_si_c flex">
+              <p class="flex fbox f_jc_sb c6">
+                <span>
+                  <span class="c2">USD:</span>
+                  ${{money}}
+                </span>
+                <span>{{$t('數量')}}:</span>
+              </p>
+              <p>
+                <span @click="info.amount--">-</span>
+                <input class="ct b5 c1 s16" v-model="info.amount">
+                <span @click="info.amount++">+</span>
               </p>
             </div>
-            <div class="c_psTxt fbox f_jc_sb f_si_c">
-              <p class="s16 c6 fbox f_si_c" v-show="!isRetail">
-                <i class="s14">i</i>
-                <b>{{$t('購買此商品可以獲得')+' '+info.integral+' '+$t('積分')}}</b>
+            <p class="fbox">
+              <a
+                class="posct c6"
+                href="javascript:void(0);"
+                @click="addCart(info.id,info.amount)"
+              >{{$t('加入購物車')}}</a>
+              <a class="posct b5 c1" href="javascript:void(0);" @click="bug()">{{$t('立即購買')}}</a>
+            </p>
+          </div>
+          <div class="c_psTxt fbox f_jc_sb f_si_c">
+            <p class="s16 c6 fbox f_si_c" v-show="!isRetail">
+              <i class="s14">i</i>
+              <b>{{$t('購買此商品可以獲得')+' '+info.integral+' '+$t('積分')}}</b>
+            </p>
+            <p class="fbox f_si_c">
+              <a href="javascript:void(0);" @click="addFavorite(info.id)">
+                <span class="fbox f_si_c">
+                  <img src="./img/icon1.jpg">
+                  {{$t('收藏')}}
+                </span>
+              </a>
+              <a href="javascript:void(0);" id="qrcodeDom">
+                <span class="fbox f_si_c" @click="qrcodeIsShow=!qrcodeIsShow">
+                  <img src="./img/icon2.jpg">
+                  {{$t('推介')}}
+                </span>
+                <div v-show="qrcodeIsShow">
+                  <div id="qrcode"></div>
+                  <div id="copy">
+                    <input type="text" :value="url" style="width:98px;height:0;border:0;">
+                    <a @click="copy">{{$t('複製鏈接')}}</a>
+                  </div>
+                </div>
+              </a>
+            </p>
+          </div>
+          <div class="c_tag c2">
+            <div class="fbox">
+              <p class="fbox f_si_c">
+                <img src="./img/icon3.jpg">
+                <span>{{$t('正品保障')}}</span>
               </p>
               <p class="fbox f_si_c">
-                <a href="javascript:void(0);" @click="addFavorite(info.id)">
-                  <span class="fbox f_si_c">
-                    <img src="./img/icon1.jpg">{{$t('收藏')}}
-                </span>
-                </a>
-                <a href="javascript:void(0);" id="qrcodeDom">
-                  <span class="fbox f_si_c" @click="qrcodeIsShow=!qrcodeIsShow">
-                    <img src="./img/icon2.jpg">{{$t('推介')}}
-                  </span>
-                    <div v-show="qrcodeIsShow">
-                      <div id="qrcode"></div>
-                      <div id="copy">
-                        <input type="text" :value="url" style="width:98px;height:0;border:0;">
-                        <a @click="copy">{{$t('複製鏈接')}}</a>
-                      </div>
-                    </div>
-                </a>
+                <img src="./img/icon4.jpg">
+                <span>{{$t('天然萃取')}}</span>
               </p>
             </div>
-            <div class="c_tag c2">
-              <div class="fbox">
-                <p class="fbox f_si_c">
-                  <img src="./img/icon3.jpg">
-                  <span>{{$t('正品保障')}}</span>
-                </p>
-                <p class="fbox f_si_c">
-                  <img src="./img/icon4.jpg">
-                  <span>{{$t('天然萃取')}}</span>
-                </p>
-              </div>
-              <!-- <div>
+            <!-- <div>
               <p class="fbox f_si_c">
                 <img src="./img/icon5.jpg">
                 <span>{{$t('微信分享')}}</span>
               </p>
-            </div> -->
-            </div>
+            </div>-->
           </div>
         </div>
       </div>
-      <div class="m_body defuWidth b7">
-        <p class="s16">{{$t('產品介紹')}}</p>
-        <div class="fbox">
-          <ul style="width:100%;">
-            <li v-for="(item,index) in details" :key="index">
-              <img style="width:100%;" :src="item.pic" />
+    </div>
+    <div class="m_body defuWidth b7">
+      <p class="s16">{{$t('產品介紹')}}</p>
+      <div class="fbox">
+        <ul style="width:100%;">
+          <li v-for="(item,index) in details" :key="index">
+            <img style="width:100%;" :src="item.pic">
           </li>
-          </ul>
-          <!-- <div class="c2">
+        </ul>
+        <!-- <div class="c2">
           <p>
             ageLOC®專屬淨膚露 / 霜的研製，是為了在 LumiSpa申請專利中的導頭與皮膚接觸時提供精確的緩衝、清潔，增強抗衰老效益。
           </p>
@@ -107,10 +122,10 @@
           <ul class="fbox">
             <li><img src="./img/bg.png"></li>
           </ul>
-        </div> -->
-        </div>
+        </div>-->
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -128,8 +143,10 @@ export default {
   },
   computed: {
     money() {
-      console.log(this.isRetail);
-      return (this.isRetail?this.info.retail:this.info.money) * this.info.amount;
+      // console.log(this.isRetail);
+      return (
+        (this.isRetail ? this.info.retail : this.info.money) * this.info.amount
+      );
     },
     lang() {
       return this.$store.state.app.language;
@@ -141,17 +158,14 @@ export default {
       return location.href;
     }
   },
-  watch: {
-    info: {
-      handler(val) {
-        if (val.amount <= 0) this.info.amount = 1;
-      },
-      deep: true
-    }
-  },
   methods: {
-    init1(){
-      if(!this.userInfo || (this.userInfo && this.userInfo.type === 0 && (this.info.type === 0 || this.info.type === 1))){
+    init1() {
+      if (
+        !this.userInfo ||
+        (this.userInfo &&
+          this.userInfo.type === 0 &&
+          (this.info.type === 0 || this.info.type === 1))
+      ) {
         this.isRetail = true;
       }
     },
@@ -206,8 +220,8 @@ export default {
         );
       });
     },
-    canBuy(callback,noLogin) {
-      if (!this.userInfo&&!noLogin) {
+    canBuy(callback, noLogin) {
+      if (!this.userInfo && !noLogin) {
         window.sessionStorage.setItem("inMellToLogin", 1);
         window.location.href = "../member/index.html";
       }
@@ -215,7 +229,7 @@ export default {
       // const uRank = this.userInfo.rank;
       // const pType = this.info.type;
       // let bool;
-      if(callback)callback();
+      if (callback) callback();
       // if (pType == 0 && uType == 0) {
       //   bool = true;
       // } else if (pType == 1 && uType == 1) {
@@ -242,19 +256,24 @@ export default {
       // return bool;
     },
     bug() {
-      this.canBuy(_ => {
-        this.$router.push({
-          path:
-            `/payment?code=${JSON.stringify([this.info]).compile()}${this.$route.query.uid?`&uid=${this.$route.query.uid}`:''}` 
-        });
-      },this.info.type===1?1:0);
+      this.canBuy(
+        _ => {
+          this.$router.push({
+            path: `/payment?code=${JSON.stringify([this.info]).compile()}${
+              this.$route.query.uid ? `&uid=${this.$route.query.uid}` : ""
+            }`
+          });
+        },
+        this.info.type === 1 ? 1 : 0
+      );
     }
   },
   mounted() {
     this.qrcode();
   },
   created() {
-    document.title = this.$store.state.app.language == "zh" ? "產品詳情" : "Product Details";
+    document.title =
+      this.$store.state.app.language == "zh" ? "產品詳情" : "Product Details";
     let type = this.$route.query.type;
     const id = this.$route.query.id;
     let breadCrumbs = [{ label: "全部產品", isI18n: true, src: "/product" }];
@@ -294,7 +313,8 @@ export default {
       deep: true
     },
     info: {
-      handler() {
+      handler(val) {
+        if (val.amount <= 0) this.info.amount = 1;
         this.init1();
       },
       deep: true
@@ -374,15 +394,20 @@ export default {
 .main .m_head .h_pic div:last-child ul li + li {
   margin-left: 20px;
 }
-.main .m_head .h_pic div:last-child ul li{
-  width:98px;height: 98px;display: flex;align-items: center;justify-content: center;border: 1px solid #ccc;
+.main .m_head .h_pic div:last-child ul li {
+  width: 98px;
+  height: 98px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
 }
 .main .m_head .h_pic div:last-child ul li img {
   /* width: 98px;
   height: 98px; */
   max-width: 100%;
   max-height: 100%;
-  border:0;
+  border: 0;
 }
 .main .m_head .h_info {
   margin-left: 70px;
@@ -401,20 +426,20 @@ export default {
 .main .m_head .h_info .i_content .c_inputBox > div p:first-child {
   padding: 0 20px;
 }
-.main .m_head .h_info .i_content .c_inputBox > div p:first-child+p {
-display: flex;
-align-items: center;
+.main .m_head .h_info .i_content .c_inputBox > div p:first-child + p {
+  display: flex;
+  align-items: center;
 }
-.main .m_head .h_info .i_content .c_inputBox > div p:first-child+p span {
-      background: #4ca9cd;
-    height: 44px;
-    line-height: 44px;
-    width: 35px;
-    text-align: center;
-    color: #fff;
-    border: 1px solid #fff;
-    box-shadow: 0 0 3px 0px rgba(0,0,0,.5) inset;
-    cursor: pointer;
+.main .m_head .h_info .i_content .c_inputBox > div p:first-child + p span {
+  background: #4ca9cd;
+  height: 44px;
+  line-height: 44px;
+  width: 35px;
+  text-align: center;
+  color: #fff;
+  border: 1px solid #fff;
+  box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.5) inset;
+  cursor: pointer;
 }
 
 .main .m_head .h_info .i_content .c_inputBox > div p input {

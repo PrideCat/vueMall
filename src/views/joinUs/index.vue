@@ -6,33 +6,33 @@
 			<div class="companyInfo">
 				<div>
 					<h2>聯繫方式</h2>
-					<p>電話：(852)3743-0668</p>
-					<p>傳真：(852)3743-0600</p>
-					<p>電郵：info@headwind.hk</p>
-					<p>地址：香港九龍尖沙咀廣東道30號新港中心第一座6樓612室</p>
+					<p>電話: (852)3743-0668</p>
+					<p>傳真: (852)3743-0600</p>
+					<p>電郵: info@headwind.hk</p>
+					<p>地址: 香港九龍尖沙咀廣東道30號新港中心第一座6樓612室</p>
 				</div>
 				<div style="width: 327px;">
 					<h2>辦公時間：</h2>
 					<p>上午10:00至下午6:00(星期一至五)</p>
 					<p>上午10:00至下午1:00(星期六)</p>
-					<p>星期日及公眾假期休息</p>
+					<p>星期日及法定假期休息</p>
 					<p>顧客服務熱線：(852)3743-0668</p>
 				</div>
 			</div>
 			<div class="companyInfo" style="border-bottom: 0">
 				<div>
 					<h2>Contact Us</h2>
-					<p>Tel：(852)3743-0668</p>
-					<p>Fax：(852)3743-0600</p>
-					<p>E-Mail：info@headwind.hk</p>
-					<p>Address：Suite 612,6/F,Tower 1,Silvercord,30 Canton Road,Tsim Sha Tsui,Kowloon,Hong Kong</p>
+					<p class="flex"><span style="width: 35px;">Tel: </span><span>(852)3743-0668</span></p>
+					<p class="flex"><span style="width: 35px;">Fax: </span><span>(852)3743-0600</span></p>
+					<p>E-Mail: info@headwind.hk</p>
+					<p>Address: Suite 612,6/F,Tower 1,Silvercord,30 Canton Road,Tsim Sha Tsui,Kowloon,Hong Kong</p>
 				</div>
 				<div>
 					<h2>Office Hours：</h2>
-					<p>Monday to Firday 10:00a.m - 6:00p.m</p>
-					<p>Saturday 10:00a.m - 1:00p.m</p>
-					<p>Sunday & Public Holiday:Day Off</p>
-					<p>Customer service hotline：(852)3743-0668</p>
+					<p class="flex"><span span style="width: 136px;">Monday to Firday</span><span>10:00 - 18:00</span></p>
+					<p class="flex"><span span style="width: 136px;">Saturday</span><span>10:00 - 13:00</span></p>
+					<p>Sunday & Public Holiday: Day Off</p>
+					<p>Customer service hotline: (852)3743-0668</p>
 				</div>
 			</div>
 		</div>
@@ -53,6 +53,12 @@ export default {
 </script>
 
 <style scoped>
+.flex{
+	display: flex;
+}
+.jst-sp{
+	justify-content: space-between;
+}
 .w1200{
 	width: 1200px;
 	margin:0 auto;

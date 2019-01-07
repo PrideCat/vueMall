@@ -9,11 +9,21 @@
         </ul>
       </div>
       <div class="b_btns defuWidth" v-show="banner.timer==banner.timer1">
-        <a class="posct" href="javascript:void(0);" @click="bannerI--"><img src="./img/left.png"></a>
-        <a class="posct" href="javascript:void(0);" @click="bannerI++"><img src="./img/right.png"></a>
+        <a class="posct" href="javascript:void(0);" @click="bannerI--">
+          <img src="./img/left.png">
+        </a>
+        <a class="posct" href="javascript:void(0);" @click="bannerI++">
+          <img src="./img/right.png">
+        </a>
       </div>
       <div class="b_indexs posct">
-        <a :class="`b1 ${index==bannerI?'active':''}`" href="javascript:void(0);" v-for="(item,index) in banner.lists" :key="index" @click="bannerI=index"></a>
+        <a
+          :class="`b1 ${index==bannerI?'active':''}`"
+          href="javascript:void(0);"
+          v-for="(item,index) in banner.lists"
+          :key="index"
+          @click="bannerI=index"
+        ></a>
       </div>
     </div>
     <div class="m_items">
@@ -31,7 +41,9 @@
         <ul class="fbox">
           <li v-for="(item,index) in news" :key="index">
             <router-link :to="`/newsDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`">
-              <p><img :src="item.pic"></p>
+              <p>
+                <img :src="item.pic">
+              </p>
               <p class="c6 s16">{{item.name}}</p>
               <p class="c7 cr">{{item.createTime.toTimes().format("yyyy-MM-dd")}}</p>
             </router-link>
@@ -54,7 +66,9 @@
         <ul class="fbox">
           <li v-for="(item,index) in orders" :key="index">
             <router-link :to="`/productInfo?id=${item.id}`">
-              <p><img :src="item.pic"></p>
+              <p>
+                <img :src="item.pic">
+              </p>
               <p class="c3 s16">{{item.name}}</p>
               <p class="c7 cr">{{item.create_time.toTimes().format("yyyy-MM-dd")}}</p>
             </router-link>
@@ -77,9 +91,17 @@
         <ul class="fbox">
           <li v-for="(item,index) in companyEvent" :key="index">
             <p class="c7 s24">{{item.createTime.toTimes().format("yyyy-MM-dd")}}</p>
-            <router-link class="c6 s16 cursor-p" :to="`/companyDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`" tag="p">{{item.name}}</router-link>
+            <router-link
+              class="c6 s16 cursor-p"
+              :to="`/companyDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`"
+              tag="p"
+            >{{item.name}}</router-link>
             <p>
-              <router-link class="b5 c1 posct s16" :to="`/companyDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`" tag="a">{{$t("查看詳情")}}</router-link>
+              <router-link
+                class="b5 c1 posct s16"
+                :to="`/companyDetail?itemInfo=${encodeURIComponent(JSON.stringify(item))}`"
+                tag="a"
+              >{{$t("查看詳情")}}</router-link>
             </p>
           </li>
         </ul>
@@ -98,7 +120,7 @@ export default {
         lists: [
           { src: require("./img/banner3.jpg") },
           { src: require("./img/banner3.jpg") },
-          { src: require("./img/banner3.jpg") },
+          { src: require("./img/banner3.jpg") }
         ],
         timer: null,
         timer1: null
@@ -142,7 +164,7 @@ export default {
       apiName: "news",
       data: {
         type: 0,
-        year: todate.getFullYear(),
+        // year: todate.getFullYear(),
         no: 1,
         size: 6
       }
@@ -169,7 +191,7 @@ export default {
       apiName: "news",
       data: {
         type: 1,
-        year: todate.getFullYear(),
+        // year: todate.getFullYear(),
         no: 1,
         size: 6
       }
@@ -248,7 +270,7 @@ export default {
   line-height: 25px;
   font-weight: bold;
 }
-.defuItemBox ul li p:first-child{
+.defuItemBox ul li p:first-child {
   width: 311px;
   height: 250px;
   line-height: 250px;
@@ -345,7 +367,7 @@ export default {
 .main .m_items {
   padding-bottom: 32px;
 }
-.main .m_items:last-child .defuItemBox ul li p:first-child{
+.main .m_items:last-child .defuItemBox ul li p:first-child {
   width: auto;
   height: auto;
   line-height: inherit;
